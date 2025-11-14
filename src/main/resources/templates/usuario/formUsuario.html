@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="*{id} != null ? 'Editar Usuario' : 'Registrar Usuario'">Usuario</title>
+
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/usuarios/formUsuario.css}">
+</head>
+
+<body>
+
+  <div th:replace="fragmentos/header :: siteHeader"></div>
+
+  <main class="main container">
+    <form class="ticket-wrap"
+          th:action="@{/usuario/guardar}"
+          th:object="${usuario}"
+          method="post">
+
+      <header class="ticket-header">
+        <div class="ticket-brand">
+          <i class="fa-solid fa-user-gear"></i>
+          <h1 class="brand-title"
+              th:text="*{id} != null ? 'Editar Usuario' : 'Registrar Usuario'"></h1>
+        </div>
+
+        <div class="ticket-meta">
+
+
+          <div class="meta-item" th:if="*{id} != null">
+            <label class="meta-label"><i class="fa-solid fa-hashtag"></i> ID Usuario</label>
+            <input type="number"
+                   th:field="*{id}"
+                   class="meta-input monospace"
+                   readonly>
+          </div>
+
+          <div class="meta-item">
+            <label class="meta-label"><i class="fa-solid fa-calendar-day"></i> Fecha Registro</label>
+            <input id="fechaRegistro"
+                   type="datetime-local"
+                   th:field="*{fechaRegistro}"
+                   class="meta-input monospace"
+                   readonly>
+          </div>
+        </div>
+      </header>
+      
+
+
+
+
+      <section class="ticket-block">
+        
+                <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-user"></i>ID Usuario</label>
+         <input type="number" th:field="*{id}" class="text-input" required>
+        </div>
+      
+      
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-user"></i> Nombre completo</label>
+          <input type="text" th:field="*{nombre}" class="text-input"
+                 placeholder="Ej. Juan Pérez" required>
+        </div>
+
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-user-tag"></i> Username</label>
+          <input type="text" th:field="*{username}" class="text-input"
+                 placeholder="Ej. jperez" required>
+        </div>
+
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-envelope"></i> Correo electrónico</label>
+          <input type="email" th:field="*{email}" class="text-input"
+                 placeholder="correo@ejemplo.com" required>
+        </div>
+
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-key"></i> Contraseña</label>
+          <input type="password" th:field="*{password}" class="text-input"
+                 placeholder="********" required>
+        </div>
+
+			<div class="block-row">
+			  <label class="lbl"><i class="fa-solid fa-id-badge"></i> Perfil</label>
+			  <div class="select-wrap">
+			    <select th:field="*{perfiles}" multiple="true" class="select-input" required>
+			      <option th:each="p : ${listaPerfiles}"
+			              th:value="${p.id}"
+			              th:text="${p.nombre}">
+			      </option>
+			    </select>
+			    <i class="fa-solid fa-chevron-down select-arrow"></i>
+			  </div>
+			</div>
+
+
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-toggle-on"></i> Estatus</label>
+          <div class="select-wrap">
+            <select th:field="*{estatus}" class="select-input" required>
+              <option value="" disabled th:selected="*{estatus} == null">Selecciona...</option>
+              <option value="1" th:selected="*{estatus} == 1">Activo</option>
+              <option value="0" th:selected="*{estatus} == 0">Inactivo</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </section>
+
+      <div class="ticket-divider dots" aria-hidden="true"></div>
+
+      <footer class="ticket-footer">
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-check"></i> Guardar
+        </button>
+        <a th:href="@{/usuario/listado}" class="btn-outline">
+          <i class="fa-solid fa-xmark"></i> Cancelar
+        </a>
+      </footer>
+    </form>
+  </main>
+
+  <div th:replace="fragmentos/footer :: siteFooter"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const fechaInput = document.getElementById('fechaRegistro');
+      if (fechaInput && !fechaInput.value) {
+        const now = new Date();
+        const local = now.toISOString().slice(0, 16); // yyyy-MM-ddTHH:mm
+        fechaInput.value = local;
+      }
+    });
+  </script>
+</body>
+</html>

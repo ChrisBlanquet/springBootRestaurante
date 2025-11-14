@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+<link rel="stylesheet" th:href="@{/css/producto/listaProductoAdmin.css}">
+</head>
+<body>
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+<main class="main container">
+        <div class="listaProductos">
+
+            <h2>Administración de Productos</h2>
+
+            <div class="listaProductos_header">
+			<form class="listaProductos_serch_box" th:action="@{/producto/listaProductoAdmin}" method="get" id="formFiltroProducto">
+
+			    <i class="fa-solid fa-magnifying-glass"></i>
+			
+			    <!-- Campo de búsqueda -->
+			    <input type="text"
+			           name="nombre"
+			           placeholder="Buscar producto..."
+			           th:value="${param.nombre}"
+			           class="input-busqueda">
+			
+			    <!--Selector de tipo (opcional) -->
+			    <select name="tipo" class="select-tipo" th:value="${param.tipo}">
+			        <option value="">Todos los tipos</option>
+			        <option value="1" th:selected="${param.tipo == '1'}">Entradas</option>
+			        <option value="2" th:selected="${param.tipo == '2'}">Cortes</option>
+			        <option value="3" th:selected="${param.tipo == '3'}">Bebidas</option>
+			        <option value="4" th:selected="${param.tipo == '4'}">Postres</option>
+			    </select>
+			
+			    <!-- Botón Buscar -->
+			    <button type="submit" class="btn_buscar">
+			        <i class="fa-solid fa-search"></i> Buscar
+			    </button>
+			
+			    <!-- Botón Borrar filtros -->
+			    <button type="button" class="btn_limpiar" id="btnLimpiarFiltro">
+			        <i class="fa-solid fa-eraser"></i> Borrar filtros
+			    </button>
+			</form>
+
+                <a th:href="@{/producto/crearProducto}" class="btn_agregarProducto"><i
+                        class="fa-solid fa-plus"></i>Agregar Producto</a>
+            </div>
+
+            <div class="listaProductos_encabezados">
+                <span class="encabezados_tag">ID</span>
+                <span class="encabezados_tag">Nombre del Producto</span>
+                <span class="encabezados_tag">Descripcion</span>
+                <span class="encabezados_tag">Precio</span>
+                <span class="encabezados_tag">Categoria</span>
+                <span class="encabezados_tag tag_acciones">Acciones</span>
+            </div>
+        </div>
+
+        <div class="listaProductos_item" th:each="producto : ${listaProducto}">
+            <div class="listaProductos__item_container-idimg">
+                <span class="listaProductos_item_id"  th:text="${producto.Id}">1</span>
+				<picture class="listaProductos_container-img">
+				    <img class="listaProductos_img" th:src="${producto.foto != null and !#strings.isEmpty(producto.foto)} ? @{/imagen/{tmpImg}(tmpImg=${producto.foto})} : @{/imagen/imagenesEmpresa/default_producto.jpg}" alt="Arrachera Premium">
+				</picture>
+            </div>
+            <span class="listaProductos-nombreProducuto" th:text="${producto.nombre}">Arrachedddra Premium</span>
+            <span class="listaProductos-descripcion" th:text="${producto.descripcion}">Arrachera marinada con especias y hierbas, asada a la perfección.</span>
+            <span class="listaProductos-precio" th:text="'$' + ${producto.precio}">$2500.00</span>
+              <span th:switch="${producto.tipo}">
+              <span th:case="1">Entradas</span>
+              <span th:case="2">Cortes</span>
+              <span th:case="3">Bebidas</span>
+              <span th:case="4">Postres</span>
+              <span th:case="*">Otro</span>
+            </span>
+            <div class="listaProductos_acciones">
+                <a href="verdetalles.html" class="listaProductos_acciones-verDetalles" th:href="@{'listaProductoAdmin/verProducto/' + ${producto.id}}"><i class="fa-solid fa-circle-info"></i>Ver Detalles</a>
+                <a href="#" class="listaProductos_acciones-btneditar" th:href="@{'/producto/editarProducto/' + ${producto.id}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a href="#" class="listaProductos_acciones-btneliminar" onclick="return confirm('¿Seguro que deseas eliminar este producto?');" th:href="@{'/producto/eliminarProducto/' + ${producto.id}}"><i class="fa-solid fa-trash"></i></a>
+            </div>
+  
+        </div>
+
+
+    </main>
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btnLimpiar = document.getElementById("btnLimpiarFiltro");
+  const form = document.getElementById("formFiltroProducto");
+
+  btnLimpiar.addEventListener("click", () => {
+    // Redirige al listado sin parámetros
+    window.location.href = form.getAttribute("action");
+  });
+});
+</script>
+</body>
+</html>

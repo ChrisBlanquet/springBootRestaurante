@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Administración de Perfiles</title>
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/usuarios/listaUsuarios.css}">
+</head>
+
+<body>
+  <div th:replace="fragmentos/header :: siteHeader"></div>
+
+  <main class="main container">
+    <div class="listaProductos">
+      <h2>Administración de Perfiles</h2>
+
+      <div class="listaProductos_header">
+        <search class="listaProductos_serch_box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar Perfil...">
+        </search>
+        <a th:href="@{/perfil/nuevo}" class="btn_agregarProducto">
+          <i class="fa-solid fa-plus"></i> Agregar Perfil
+        </a>
+      </div>
+
+      <div class="listaProductos_encabezados">
+        <span class="encabezados_tag">ID</span>
+        <span class="encabezados_tag">Perfil</span>
+        <span class="encabezados_tag tag_acciones">Acciones</span>
+      </div>
+
+      <div class="listaProductos_item" th:each="p : ${listaPerfiles}">
+        <span class="listaProductos_item_id" th:text="${p.id}">1</span>
+        <span class="listaProductos-nombreProducuto" th:text="${p.nombre}">Administrador</span>
+
+        <div class="listaProductos_acciones">
+          <a th:href="@{/perfil/editar/{id}(id=${p.id})}" class="listaProductos_acciones-btneditar">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+          <a th:href="@{/perfil/eliminar/{id}(id=${p.id})}" class="listaProductos_acciones-btneliminar"
+             onclick="return confirm('¿Seguro que deseas eliminar este perfil?');">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

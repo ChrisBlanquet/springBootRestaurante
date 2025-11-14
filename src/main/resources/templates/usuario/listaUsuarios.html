@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+<link rel="stylesheet" th:href="@{/css/usuarios/listaUsuarios.css}">
+</head>
+<body>
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+<main class="main container">
+  <div class="listaProductos">
+
+    <h2>Administración de Usuarios</h2>
+
+    <div class="listaProductos_header">
+      <search class="listaProductos_serch_box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Buscar Usuario...">
+      </search>
+      <a th:href="@{/usuario/nuevo}" class="btn_agregarProducto">
+        <i class="fa-solid fa-plus"></i> Agregar Usuario
+      </a>
+    </div>
+
+    <div class="listaProductos_encabezados">
+      <span class="encabezados_tag">ID</span>
+      <span class="encabezados_tag">Username</span>
+      <span class="encabezados_tag">Nombre</span>
+      <span class="encabezados_tag">Email</span>
+      <span class="encabezados_tag">Estatus</span>
+      <span class="encabezados_tag">Fecha de registro</span>
+      <span class="encabezados_tag tag_acciones">Acciones</span>
+    </div>
+  </div>
+
+  <div class="listaProductos_item" th:each="user : ${listaUsers}">
+    <div class="listaProductos__item_container-idimg">
+      <span class="listaProductos_item_id" th:text="${user.id}">1</span>
+    </div>
+    <span class="listaProductos-nombreProducuto" th:text="${user.username}">4</span>
+    <span class="listaProductos-descripcion" th:text="${user.nombre}">*********</span>
+    <span class="listaProductos-descripcion" th:text="${user.email}">*********</span>
+              <span th:switch="${user.estatus}" class="listaProductos-descripcion">
+              <span th:case="1">Activo</span>
+              <span th:case="0">Inactivo</span>
+            </span>
+    <span class="listaProductos-descripcion"
+      th:text="${#temporals.format(user.fechaRegistro, 'dd/MM/yyyy')}">05/11/2025</span>
+
+<div class="listaProductos_acciones">
+	  <a th:href="@{usuario/ver/{id}(id=${user.id})}" class="listaProductos_acciones-verDetalles">
+	    <i class="fa-solid fa-circle-info"></i> Ver Detalles
+	  </a>
+	  <a th:href="@{/usuario/editar/{id}(id=${user.id})}" class="listaProductos_acciones-btneditar">
+	    <i class="fa-solid fa-pen-to-square"></i>
+	  </a>
+	  <a th:href="@{/usuario/eliminar/{id}(id=${user.id})}" class="listaProductos_acciones-btneliminar"
+	     onclick="return confirm('¿Seguro que deseas eliminar esta mesa?');">
+	    <i class="fa-solid fa-trash"></i>
+	  </a>
+	</div>
+  </div>
+
+</main>
+
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

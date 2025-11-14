@@ -1,0 +1,298 @@
+@charset "UTF-8";
+
+
+:root{
+  --bg:#fffaf5;
+  --burgundy:#7b1e27;
+  --burgundy-2:#5f151b;
+  --gold:#c8a96a;
+  --ink:#1f2937;
+  --muted:#6b7280;
+  --card-radius:18px;
+  --ring: rgba(200,169,106,.45);
+  --soft-border:#ead9c6;
+  --soft-fill:#fff7ef;
+
+  --shadow-sm:0 8px 20px rgba(0,0,0,.08);
+  --shadow-lg:0 20px 50px rgba(0,0,0,.16);
+}
+
+
+*{ box-sizing: border-box; }
+html,body{
+  height:100%;
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 400px at 100% -50%, #fde8d2 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 300px at -10% 0%, #f9d9c2 0%, rgba(255,255,255,0) 55%),
+    var(--bg);
+  font-family:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.bg-app{
+  min-height:100%;
+}
+
+
+.form-card{
+  width:min(980px, 100%);
+  border-radius:var(--card-radius);
+  overflow:hidden;
+  border:1px solid var(--soft-border);
+  background:#fff;
+  box-shadow:var(--shadow-sm);
+  transition: box-shadow .3s ease, transform .2s ease;
+}
+.form-card:hover{
+  box-shadow:var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.card-header{
+  background:
+    linear-gradient(135deg, rgba(123,30,39,.08), rgba(200,169,106,.10));
+  border-bottom:1px solid var(--soft-border);
+}
+
+.card-header h2{
+  font-weight:800;
+  letter-spacing:.3px;
+  color:#1e232b;
+  margin:0;
+}
+.subtitle{
+  color:var(--muted);
+  margin-top:.25rem;
+}
+
+
+.form-label{
+  color:#3b4453;
+  font-weight:700;
+}
+
+.form-control{
+  background:#fff;
+  border:1px solid #e6dac8;
+  color:var(--ink);
+  border-radius:12px;
+  padding:.7rem .9rem;
+  transition:border-color .2s, box-shadow .2s, transform .05s;
+}
+.form-control::placeholder{ color:#9aa3ae; }
+
+.form-control:focus{
+  border-color:#d9c5a0;
+  box-shadow:0 0 0 .22rem var(--ring);
+  outline:none;
+}
+
+
+.btn{
+  border-radius:14px;
+  padding:.8rem 1rem;
+  font-weight:800;
+  letter-spacing:.2px;
+}
+
+.btn-primary{
+  background:linear-gradient(180deg, var(--burgundy) 0%, var(--burgundy-2) 100%) !important;
+  border:1px solid #6f1a22 !important;
+  color:#fff !important;
+  box-shadow:0 8px 18px rgba(123,30,39,.20);
+}
+.btn-primary:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.02);
+  box-shadow:0 12px 24px rgba(123,30,39,.28);
+}
+
+.btn-outline-secondary{
+  border:2px solid var(--burgundy);
+  color:var(--burgundy);
+  background:#fff;
+}
+.btn-outline-secondary:hover{
+  transform:translateY(-1px);
+  filter:brightness(1.02);
+  box-shadow:0 8px 18px rgba(123,30,39,.12);
+}
+
+
+.switch{
+  display:inline-flex;
+  align-items:center;
+  cursor:pointer;
+  user-select:none;
+}
+.switch input{ display:none; }
+
+.switch .slider{
+  position:relative;
+  width:56px;
+  height:32px;
+  background: #fff;
+  border:1px solid #e6dac8;
+  border-radius:999px;
+  transition: background .2s, border-color .2s, box-shadow .2s;
+  display:inline-block;
+}
+.switch .slider::after{
+  content:"";
+  position:absolute;
+  top:50%; left:4px;
+  transform:translateY(-50%);
+  width:24px; height:24px;
+  border-radius:50%;
+  background: linear-gradient(180deg, #fff, #f4ede2);
+  border:1px solid #e6dac8;
+  box-shadow:0 2px 6px rgba(0,0,0,.12);
+  transition:left .22s cubic-bezier(.4,0,.2,1);
+}
+.switch input:checked + .slider{
+  background: linear-gradient(180deg, rgba(200,169,106,.35), rgba(200,169,106,.55));
+  border-color:#d0b47b;
+  box-shadow: inset 0 0 0 2px rgba(200,169,106,.25);
+}
+.switch input:checked + .slider::after{
+  left:28px;
+}
+.switch-label{
+  font-weight:700;
+  color:var(--muted);
+  margin-left:.5rem;
+}
+
+
+.upload-area{
+  background:#fffdfa;
+  border:1px dashed #e6dac8;
+  border-radius:14px;
+  padding:1rem;
+  transition:border-color .2s, box-shadow .2s;
+}
+.upload-area:hover{
+  border-color:#d9c5a0;
+  box-shadow:0 2px 10px rgba(0,0,0,.04);
+}
+
+.preview{
+  background:#fff;
+  border:1px solid #e6dac8;
+  border-radius:12px;
+  padding:.75rem;
+}
+.preview img{
+  display:block;
+  width:100%;
+  max-height:220px;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid #ead9c6;
+}
+.preview-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem;
+}
+.filename{
+  color:#374151;
+  max-width:70%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+
+.soft-box{
+  background:var(--soft-fill);
+  border:1px solid var(--soft-border);
+  border-radius:14px;
+  padding:14px 16px;
+}
+
+
+@media (max-width: 480px){
+  .card-header h2{ font-size:1.28rem; }
+}
+
+/* Contenedor del switch (reutiliza tu paleta) */
+.toggle-yesno {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  width: 140px;
+  height: 40px;
+  background: var(--soft-fill);   /* fondo apagado */
+  border: 1px solid var(--soft-border);
+  border-radius: 9999px;
+  padding: 4px;
+  user-select: none;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Radios invisibles */
+.toggle-yesno input[type="radio"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Etiquetas: botones */
+.toggle-yesno label {
+  position: relative;
+  z-index: 2;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color .2s ease;
+}
+
+/* Slider visual */
+.toggle-yesno .toggle-slider {
+  position: absolute;
+  z-index: 1;
+  top: 4px; left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background: var(--burgundy);        /* color principal */
+  border-radius: 9999px;
+  transition: transform .25s ease, background .2s ease;
+  transform: translateX(0);
+  box-shadow: 0 4px 12px rgba(123,30,39,.3); /* sombra burgundy */
+}
+
+/* Estado No */
+#destacado-0:checked ~ .toggle-slider {
+  transform: translateX(0);
+  background: var(--muted);
+}
+#destacado-0:checked ~ label[for="destacado-0"] {
+  color: #fff;
+}
+
+/* Estado Sí */
+#destacado-1:checked ~ .toggle-slider {
+  transform: translateX(100%);
+  background: linear-gradient(180deg, var(--gold), #b28d47);
+}
+#destacado-1:checked ~ label[for="destacado-1"] {
+  color: #fff;
+}
+
+/* Hover */
+.toggle-yesno label:hover {
+  color: var(--burgundy);
+}
+
+
+
+
+

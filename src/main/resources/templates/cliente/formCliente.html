@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Formulario Cliente</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+   <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+ <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" th:href="@{/Css/cliente/formCliente.css}">
+</head>
+<body>
+<div th:replace="fragmentos/header :: siteHeader"></div>
+  <div class="bg-app">
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+      <div class="card form-card shadow-lg">
+        <div class="card-header text-center py-4">
+          <h2 class="mb-0">Formulario de Usuario</h2>
+          <p class="subtitle mb-0">Ingresa los datos del cliente</p>
+        </div>
+
+        <div class="card-body p-4 p-md-5">
+          <form method="post" th:action="@{/cliente/guardar}" th:object="${cliente}" enctype="multipart/form-data">
+            <div class="row g-3">
+              <div class="col-md-4" th:classappend="${cliente.Id} != null ? '' : ' d-none'">
+                <label for="Id" class="form-label">ID</label>
+                <input class="form-control" id="id" name="Id" th:field="${cliente.Id}" readonly>
+              </div>
+
+              <div class="col-md-8">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" th:field="${cliente.nombre}" required>
+              </div>
+
+              <div class="col-12">
+                <label for="apellidos" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="apellidos" name="apellidos" th:field="${cliente.apellidos}" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="email" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" id="correo" name="email" th:field="${cliente.email}" required>
+              </div>
+
+              <div class="col-md-3">
+                <label for="credito" class="form-label">Crédito</label>
+                <input type="number" class="form-control" id="credito" name="credito" min="0" step="0.01" th:field="${cliente.credito}" required>
+              </div>
+
+              <div class="col-md-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="10 dígitos" th:field="${cliente.telefono}" required>
+              </div>
+
+
+
+				<div class="col-md-6 d-flex align-items-center">
+			  <div class="w-100">
+			    <label class="form-label d-block">¿Destacado?</label>
+			
+			    <div class="toggle-yesno">
+			      <input type="radio" id="destacado-0" name="destacado" value="0"
+			             th:checked="${cliente.destacado} == 0 or ${cliente.destacado} == null">
+			      <label for="destacado-0">No</label>
+			
+			      <input type="radio" id="destacado-1" name="destacado" value="1"
+			             th:checked="${cliente.destacado} == 1">
+			      <label for="destacado-1">Sí</label>
+			
+			      <!-- “slider” visual -->
+			      <span class="toggle-slider" aria-hidden="true"></span>
+			    </div>
+			  </div>
+			</div>
+	
+
+
+              <div class="col-md-6">
+                <label for="foto" class="form-label">Imagen del cliente</label>
+                <div class="upload-area" id="uploadArea">
+                  <input type="file" id="foto" name="archivo" accept="image/*" class="d-none">
+                  <button type="button" class="btn btn-outline-secondary w-100" id="btnSeleccionar">
+                    <i class="bi bi-image"></i> Elegir imagen
+                  </button>
+                  <small class="text-muted d-block mt-2">Formatos: JPG, PNG</small>
+                  <div class="mt-2 text-truncate" id="fileName" th:text="${cliente.fotocliente}"></div>
+                </div>
+              </div>
+              
+              
+            </div>
+
+            <div class="d-grid d-md-flex gap-2 gap-md-3 mt-4">
+              <button type="submit" class="btn btn-primary flex-fill">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div th:replace="fragmentos/footer :: siteFooter"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+  const chkDestacado = document.getElementById('destacado');
+  const switchText = document.getElementById('switchText');
+
+  if (chkDestacado && switchText) {
+    const updateSwitchText = () => {
+      switchText.textContent = chkDestacado.checked ? 'Sí' : 'No';
+    };
+    chkDestacado.addEventListener('change', updateSwitchText);
+    updateSwitchText();
+  }
+
+
+    const inputFile = document.getElementById('foto');
+    const btnSelect = document.getElementById('btnSeleccionar');
+    const fileName = document.getElementById('fileName');
+
+    btnSelect.addEventListener('click', () => inputFile.click());
+
+    inputFile.addEventListener('change', () => {
+      const file = inputFile.files && inputFile.files[0];
+      fileName.textContent = file ? file.name : '';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+@charset "UTF-8";
+
+:root {
+  --bg-dark: #23272f;
+  --gold: #e6c973;
+  --ink: #222;
+  --paper: #f9f9fb;
+  --line: #20232b;
+}
+
+.main {
+  min-height: 70vh;
+  margin: 3rem auto;
+  display: flex;
+  justify-content: center;
+}
+
+.ticket-wrap {
+  width: min(900px, 95%);
+  background: var(--bg-dark);
+  color: #f3f6fd;
+  border-radius: 18px;
+  padding: 0;
+  position: relative;
+  box-shadow: 0 0 20px rgba(34, 45, 71, 0.14);
+  overflow: hidden;
+  border: 1px solid rgba(230, 201, 115, 0.25);
+}
+
+/* --- CABECERA --- */
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 1.6rem 1.4rem 1rem;
+  background: linear-gradient(180deg, #2a2f39 0%, #23272f 100%);
+  border-bottom: 1px dashed rgba(230, 201, 115, 0.4);
+}
+
+.ticket-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.ticket-brand i {
+  color: var(--gold);
+  font-size: 1.35rem;
+}
+
+.brand-title {
+  font-size: 1.4rem;
+  color: var(--gold);
+  margin: 0;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+.ticket-meta {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.meta-label {
+  font-size: 0.88rem;
+  color: var(--gold);
+}
+.meta-value {
+  font-size: 1rem;
+}
+
+/* --- BLOQUES --- */
+.ticket-block {
+  padding: 1.2rem 1.4rem;
+}
+
+.block-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 0.6rem 0;
+}
+
+.block-row.between {
+  justify-content: space-between;
+}
+
+.lbl {
+  min-width: 150px;
+  color: var(--gold);
+  font-weight: 600;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* --- SECCIÓN DE PRODUCTOS --- */
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.item-line {
+  display: grid;
+  grid-template-columns: 1.5fr 0.35fr 0.6fr;
+  gap: 0.6rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 0.7rem;
+  border-radius: 0.5rem;
+  border: 1px dashed rgba(230, 201, 115, 0.2);
+}
+
+/* --- SEPARADORES --- */
+.ticket-divider {
+  height: 14px;
+  background: radial-gradient(circle at 12px 7px, transparent 7px, rgba(230, 201, 115, 0.35) 7px, rgba(230, 201, 115, 0.35) 8px, transparent 8px) repeat-x;
+  background-size: 24px 14px;
+}
+
+.ticket-divider.dots {
+  background: radial-gradient(circle, rgba(230, 201, 115, 0.45) 1.5px, transparent 1.6px) repeat-x;
+  background-size: 10px 6px;
+  height: 8px;
+}
+
+/* --- TOTALES --- */
+.totals {
+  padding-bottom: 0.8rem;
+}
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+}
+.total-row .total-label {
+  color: var(--gold);
+  font-weight: 600;
+}
+.total-row.grand {
+  border-top: 1px dashed rgba(230, 201, 115, 0.45);
+  margin-top: 0.4rem;
+  padding-top: 0.7rem;
+}
+.total-value {
+  font-family: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/* --- FOOTER --- */
+.ticket-footer {
+  display: flex;
+  justify-content: center;
+  padding: 1.1rem 1.4rem 1.6rem;
+  border-top: 1px dashed rgba(230, 201, 115, 0.4);
+}
+
+.btn-outline {
+  text-decoration: none;
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  padding: 0.55rem 1.3rem;
+  border-radius: 0.6rem;
+  font-weight: 700;
+}
+.btn-outline:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+
+.btn-ticket {
+      color: var(--gold);
+  border: 2px solid var(--gold);
+      border-radius: 0.6rem;
+  padding: 6px 20px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+  margin-left: 2rem;
+}
+
+.btn-ticket:hover {
+  background: var(--gold);
+  box-shadow: 0 3px 6px rgba(0, 86, 210, 0.4);
+  transform: translateY(-1px);
+  color:var(--bg-dark);
+}
+
+.btn-ticket:active {
+  transform: scale(0.97);
+}
+
+
+/* Responsive */
+@media (max-width: 780px) {
+  .item-line {
+    grid-template-columns: 1fr 0.5fr 0.7fr;
+  }
+  .lbl {
+    min-width: 110px;
+  }
+}
+
+

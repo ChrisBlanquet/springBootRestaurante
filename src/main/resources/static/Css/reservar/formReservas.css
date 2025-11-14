@@ -1,0 +1,123 @@
+@charset "UTF-8";
+
+.main {
+  min-height: 80vh;
+  margin-top: 2rem;
+}
+
+.ticket-wrap {
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 700px;
+  margin: auto;
+  font-family: var(--fuente-principal);
+}
+
+.ticket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--color-fondo-principal);
+  margin-bottom: 1.5rem;
+}
+
+.ticket-header h1 {
+  color: var(--color-fondo-principal);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.ticket-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.block-row {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.lbl {
+  font-weight: 600;
+  color: var(--color-fondo-principal);
+  font-size: 1.1rem;
+}
+
+.input-field,
+.select-input {
+  padding: .6rem .8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-fondo-principal);
+}
+
+.ticket-divider {
+  margin: 1.5rem 0;
+  border-top: 2px dashed var(--color-realsarElemento);
+}
+
+.ticket-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  background-color: var(--color-fondo-principal);
+  color: var(--color-texto-principal);
+  border: none;
+  padding: .7rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-realsarElemento);
+  color: var(--color-fondo-principal);
+}
+
+.btn-outline {
+  text-decoration: none;
+  border: 2px solid var(--color-fondo-principal);
+  padding: .6rem 1.2rem;
+  border-radius: 8px;
+  color: var(--color-fondo-principal);
+  transition: .3s;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-fondo-principal);
+  color: #fff;
+}
+
+.select-input::-ms-expand {
+  display: none; /* oculta la flecha en Edge e IE */
+}
+
+/* Ocultar la flecha nativa del select (para usar solo el icono personalizado) */
+.select-input {
+  appearance: none;            /* Firefox y la mayoría */
+  -webkit-appearance: none;    /* Chrome, Safari */
+  -moz-appearance: none;       /* Firefox */
+  background: white;           /* asegúrate de mantener el fondo */
+  background-image: none;      /* elimina posibles flechas del sistema */
+}

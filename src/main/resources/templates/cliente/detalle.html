@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="'Cliente: ' + ${clienteID.nombre} + ' ' + ${clienteID.apellidos}">Detalle Cliente</title>
+    <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/detalleCliente.css}">
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+
+<div class="hero">
+	
+	<div class="card">
+    <div class="avatar-wrapper">
+    
+      <img class="avatar"
+           th:src="@{/imagen/{tmpImg}(tmpImg=${clienteID.fotocliente})}"
+           alt="Avatar Cliente">
+
+
+      <div class="destacado" th:if="${clienteID.destacado == 1}">DESTACADO</div>
+      <div class="no-destacado" th:if="${clienteID.destacado != 1}">Sin destacar</div>
+    </div>
+
+    <div class="info-section">
+      <div class="cliente-id">
+        <strong>ID:</strong> <span th:text="${clienteID.id}"></span>
+      </div>
+
+      <div class="cliente-nombre" th:text="${clienteID.nombre}"></div>
+      <div class="cliente-apellidos" th:text="${clienteID.apellidos}"></div>
+
+      <div class="cliente-info">
+        <strong>Email:</strong> <span th:text="${clienteID.email}"></span>
+      </div>
+
+      <div class="cliente-info">
+        <strong>Teléfono:</strong> <span th:text="${clienteID.telefono}"></span>
+      </div>
+
+
+	<div class="cliente-credito"><strong>Crédito:</strong> <span th:text="${clienteID.credito}"></span></div>
+	
+	<div class="btn-accion">
+	
+		<a th:href="@{/cliente/editar/{id}(id=${clienteID.id})}"class="btn-editar"><i class="fa-solid fa-pen-to-square ico"></i>  Editar</a>
+		
+		<form th:action="@{/cliente/eliminar/{id}(id=${clienteID.id})}"
+		      method="post"
+		      onsubmit="return confirm('¿Eliminar al cliente ');">
+		  <button type="submit" class="btn-eliminar"> <i class="fa-solid fa-trash ico"></i> Eliminar</button>
+		</form>
+	</div>
+
+    </div>
+  </div>
+  
+	
+</div>
+
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

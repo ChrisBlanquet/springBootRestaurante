@@ -1,0 +1,266 @@
+@charset "UTF-8";
+
+:root {
+    --color-fondo-principal: #23272f;
+    --color-texto-principal: #f3f6fd;
+    --color-realsarElemento: #e6c973;
+}
+
+.main {
+    min-height: 70vh;
+    margin-bottom: 3rem;
+}
+
+.main h2 {
+    font-family: var(--fuente-principal);
+    color: var(--color-fondo-principal);
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    text-align: center;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+/* ====== HEADER BUSCADOR ====== */
+.listaEmpleados_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-fondo-principal);
+    border-radius: 0.9rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.listaEmpleados_search_box {
+    display: flex;
+    align-items: center;
+    color: var(--color-texto-principal);
+    flex: 1;
+    margin-right:2rem;
+}
+
+.listaEmpleados_search_box i {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    color: var(--color-realsarElemento);
+    margin-left: 2rem;
+}
+
+.listaEmpleados_search_box input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+    font-family: var(--fuente-principal);
+    font-size: 1rem;
+    border: none;
+    color: var(--color-fondo-principal);
+}
+
+.btn_agregarEmpleado {
+    text-decoration: none;
+    background-color: var(--color-fondo-principal);
+    color: var(--color-texto-principal);
+    border: 2px solid var(--color-realsarElemento);
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-right: 2rem;
+    transition: all 0.3s;
+}
+
+.btn_agregarEmpleado i {
+    margin-right: 0.5rem;
+}
+
+.btn_agregarEmpleado:hover {
+    background-color: var(--color-realsarElemento);
+    color: var(--color-fondo-principal);
+}
+
+/* ====== TARJETAS (CARDS) ====== */
+.cards_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+/* Card general */
+.empleado_card {
+    background-color: var(--color-fondo-principal);
+    color: var(--color-texto-principal);
+    border: 1px solid rgba(230,201,115,0.25);
+    border-radius: 14px;
+    padding: 1.2rem;
+    width: 260px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.empleado_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(230,201,115,0.35);
+}
+
+/* Encabezado */
+.empleado_card_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+.empleado_icono {
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    background-color: rgba(230,201,115,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.empleado_icono i {
+    font-size: 1.8rem;
+    color: var(--color-realsarElemento);
+}
+
+.empleado_card_header h3 {
+    color: var(--color-realsarElemento);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Cuerpo */
+.empleado_card_body {
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.empleado_card_body p {
+    margin: 0.3rem 0;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* Footer (botones) */
+.empleado_card_footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 0.8rem;
+}
+
+.empleado_card_footer a {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    padding: 0.35rem 0.7rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn_ver {
+    background-color: var(--color-realsarElemento);
+    color: var(--color-fondo-principal);
+    font-size: 0.8rem;
+}
+
+.btn_ver:hover {
+    background-color: var(--color-texto-principal);
+}
+
+.btn_editar,
+.btn_eliminar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    background-color: #f3f6fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn_editar i,
+.btn_eliminar i {
+    color: var(--color-fondo-principal);
+    font-size: 1rem;
+}
+
+.btn_editar:hover,
+.btn_eliminar:hover {
+    background-color: var(--color-realsarElemento);
+}
+
+.btn_editar:hover i,
+.btn_eliminar:hover i {
+    color: var(--color-fondo-principal);
+}
+
+
+.listaEmpleados_search_box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.listaEmpleados_search_box input {
+    border: none;
+    outline: none;
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+
+.btn_buscar {
+    background-color: var(--color-realsarElemento);
+    border: none;
+    color: white;
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.btn_buscar:hover {
+    background-color: var(--color-fondo-secundario);
+}
+
+
+.btn_limpiar {
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  gap: 0.4rem;
+}
+
+.btn_limpiar i {
+  color: #fff;
+}
+
+.btn_buscar i,
+.btn_limpiar i{
+	    margin-left: 0rem;
+	    color:white;
+}
+
+.btn_limpiar:hover {
+  background-color: #e74c3c;
+}

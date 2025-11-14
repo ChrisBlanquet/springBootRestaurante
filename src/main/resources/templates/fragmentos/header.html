@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<header class="header" th:fragment="siteHeader">
+    <nav class="header__nav container">
+      <div class="header__logo">
+        <figure class="header__container-img">
+          <img class="header__img" th:src="@{/imagen/imagenesEmpresa/logoCortes.png}" alt="Logo de la empresa">
+        </figure>
+        <h1 class="header__title-logo">La mesa del autor</h1>
+      </div>
+      
+      <div class="header__links">
+            <div class="nav-item">
+                <a class="header__link" th:href="@{/inicio}">Inicio</a>
+            </div>
+
+            <div class="nav-item">
+                <a class="header__link" href="#">Clientes</a>
+                <div class="dropdown">
+                    <div class="dropdown__inner container">
+                        <div class="dropdown__col">
+                            <h4>Clientes</h4>
+                            <a th:href="@{/cliente/listadocli}">Listado de Clientes</a>
+                            
+                            <a th:href="@{/busqueda/cliente}">Busqueda de Clientes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <a class="header__link" href="#">Productos</a>
+                <div class="dropdown">
+                    <div class="dropdown__inner container">
+                   	<div class="dropdown__col">
+                            <h4>Menú</h4>
+                            <a th:href="@{/producto/listaProducto}">Lista de Platillos</a>
+                            <a th:href="@{/producto/crearProducto}">Registrar Productos</a>
+                        </div>
+                        <div class="dropdown__col">
+                            <h4>Cortes</h4>
+                            <a href="#">Arrachera Premium</a>
+                            <a href="#">Ribeye</a>
+                            <a href="#">T-Bone</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                        <div class="nav-item">
+                <a class="header__link" href="#">Administracion</a>
+                <div class="dropdown">
+                    <div class="dropdown__inner container">
+                        <div class="dropdown__col">
+                            <h4>Pedidos</h4>
+                            <a th:href="@{/pedido/listado}">Pedidos</a>
+                            <a th:href="@{/mesa/listado}">Mesas</a>
+                            <a th:href="@{/reservar/listado}">Reservaciones</a>
+                        </div>
+                         <div class="dropdown__col">
+                            <h4>Productos</h4>
+                            <a th:href="@{/producto/listaProductoAdmin}">Administrar Producto</a>
+                        </div>
+                         <div class="dropdown__col">
+                            <h4>Clientes</h4>
+                            <a th:href="@{/cliente/crear}">Crear Cliente</a>
+                        </div>
+                         <div class="dropdown__col">
+                            <h4>Empleados</h4>
+                            <a th:href="@{/empleado/listadoEmpleados}">Administrar Empleados</a>
+                        </div>
+                        
+                        <div class="dropdown__col">
+                            <h4>Usuarios</h4>
+                            <a th:href="@{/usuario/listado}">Usuarios</a>
+                            <a th:href="@{/perfil/listado}">Perfiles</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+      
+      
+      
+      
+
+      <div class="header__shop">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <i class="fa-solid fa-cart-shopping"></i>
+        <i class="fa-regular fa-circle-user"></i>
+        <form th:action="@{/salir}" method="post">
+  <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+</form>
+      </div>
+    </nav>
+  </header>
+
+</body>
+</html>

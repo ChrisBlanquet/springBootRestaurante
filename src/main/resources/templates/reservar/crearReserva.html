@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="*{idServicio} != null ? 'Editar Reservación' : 'Crear Reservación'">Crear Reservación</title>
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/reservar/formReservas.css}">
+</head>
+<body>
+
+  <!-- Corrige sintaxis de fragmento -->
+  <div th:replace="~{fragmentos/header :: siteHeader}"></div>
+
+  <main class="main container">
+    <form class="ticket-wrap"
+          th:action="@{/reservar/guardar}"
+          th:object="${reserva}"
+          method="post">
+
+      <!-- ID oculto -->
+      <input type="hidden" th:field="*{idServicio}" />
+
+      <header class="ticket-header">
+        <div class="ticket-brand">
+          <i class="fa-solid fa-calendar-check"></i>
+          <h1 class="brand-title"
+              th:text="*{idServicio} != null ? 'Editar Reservación' : 'Nueva Reservación'"></h1>
+        </div>
+      </header>
+
+      <section class="ticket-block">
+
+        <!-- Cliente -->
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-user"></i> Cliente</label>
+          <div class="select-wrap">
+            <select class="select-input" th:field="*{cliente.id}" required>
+              <option value="" disabled
+                      th:selected="*{cliente == null}">
+                Selecciona un cliente…
+              </option>
+              <option th:each="c : ${clientes}"
+                      th:value="${c.id}"
+                      th:text="${c.nombre + ' ' + c.apellidos}"
+                      th:selected="${reserva.cliente != null and c.id == reserva.cliente.id}">
+              </option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <!-- Mesa -->
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-chair"></i> Mesa</label>
+          <div class="select-wrap">
+            <select class="select-input" th:field="*{mesa.idMesa}" required>
+              <option value="" disabled
+                      th:selected="*{mesa == null}">
+                Selecciona una mesa…
+              </option>
+              <option th:each="m : ${mesas}"
+                      th:value="${m.idMesa}"
+                      th:text="${'Mesa ' + m.idMesa + ' — ' + m.ubicacion}"
+                      th:selected="${reserva.mesa != null and m.idMesa == reserva.mesa.idMesa}">
+              </option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <!-- Fecha -->
+		<div class="block-row">
+		  <label class="lbl"><i class="fa-solid fa-calendar-day"></i> Fecha</label>
+		  <input type="date"
+		         id="fecha"
+		         name="fecha"
+		         class="input-field"
+		         required
+		         th:value="${reserva.fecha != null ? #temporals.format(reserva.fecha, 'yyyy-MM-dd') : ''}"
+		         onfocus="this.showPicker()">
+		</div>
+
+        <!-- Hora -->
+		<div class="block-row">
+		  <label class="lbl"><i class="fa-solid fa-clock"></i> Hora</label>
+		  <input type="time"
+		         id="hora"
+		         name="hora"
+		         class="input-field"
+		         required
+		         th:value="${reserva.hora != null ? #temporals.format(reserva.hora, 'HH:mm') : ''}"
+		         onfocus="this.showPicker()">
+		</div>
+
+        <!-- Estatus 
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-signal"></i> Estatus</label>
+          <div class="select-wrap">
+            <select class="select-input" th:field="*{estatus}">
+              <option value="1" th:selected="*{estatus == 1}">Pendiente</option>
+              <option value="0" th:selected="*{estatus == 0}">Cancelada</option>
+              <option value="2" th:selected="*{estatus == 2}">Confirmada</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow"></i>
+          </div>
+        </div>
+        -->
+        <input type="hidden" name="estatus" value="1" />
+        
+      </section>
+
+      <div class="ticket-divider" aria-hidden="true"></div>
+
+      <footer class="ticket-footer">
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-check"></i> Guardar
+        </button>
+        <a th:href="@{/reservar/listado}" class="btn-outline">
+          <i class="fa-solid fa-xmark"></i> Cancelar
+        </a>
+      </footer>
+    </form>
+  </main>
+
+  <!-- Corrige sintaxis de fragmento -->
+  <div th:replace="~{fragmentos/footer :: siteFooter}"></div>
+	
+	
+	
+	
+	<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const fechaInput = document.getElementById("fecha");
+  const horaInput = document.getElementById("hora");
+
+  // --- 🔹 Restringir la fecha mínima (solo hoy en adelante)
+  const hoy = new Date().toISOString().split("T")[0];
+  fechaInput.min = hoy;
+
+  // --- 🔹 Cuando se cambie la fecha, ajusta el límite de hora
+  fechaInput.addEventListener("change", () => {
+    const seleccionada = fechaInput.value;
+    const ahora = new Date();
+
+    if (seleccionada === hoy) {
+      // si es hoy, la hora mínima es la hora actual redondeada
+      const horaMin = ahora.toTimeString().slice(0, 5);
+      horaInput.min = horaMin;
+    } else {
+      horaInput.removeAttribute("min");
+    }
+  });
+
+  // --- 🔹 Forzar a que se muestre el picker al hacer clic en el icono o campo
+  fechaInput.addEventListener("click", () => fechaInput.showPicker());
+  horaInput.addEventListener("click", () => horaInput.showPicker());
+});
+</script>
+</body>
+</html>

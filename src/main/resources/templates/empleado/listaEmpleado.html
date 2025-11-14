@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administración de Empleados</title>
+    <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+    <link rel="stylesheet" th:href="@{/css/empleado/listaEmpleado.css}">
+</head>
+
+<body>
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+<main class="main container">
+    <div class="listaEmpleados">
+        <h2>Administración de Empleados</h2>
+
+        <div class="listaEmpleados_header">
+		<form class="listaEmpleados_search_box" th:action="@{/empleado/buscar}" method="get" id="formBusquedaEmpleado">
+		  <i class="fa-solid fa-magnifying-glass"></i>
+		  <input type="text" name="nombre" id="nombreBusqueda"
+		         placeholder="Buscar empleado..." th:value="${param.nombre}" />
+		
+		  <button type="submit" class="btn_buscar">
+		    <i class="fa-solid fa-search"></i> Buscar
+		  </button>
+		
+		  <button type="button" class="btn_limpiar" id="btnLimpiarEmpleado">
+		    <i class="fa-solid fa-eraser"></i> Borrar filtros
+		  </button>
+		</form>
+
+
+            <a th:href="@{/empleado/crearEmpleado}" class="btn_agregarEmpleado">
+                <i class="fa-solid fa-user-plus"></i> Crear Empleado
+            </a>
+        </div>
+
+        <!-- Contenedor de cards -->
+        <div class="cards_container">
+            <div class="empleado_card" th:each="empleado : ${listaEmpleado}">
+                <div class="empleado_card_header">
+                    <div class="empleado_icono">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 th:text="${empleado.nombreCompleto}">Nombre Empleado</h3>
+                </div>
+
+                <div class="empleado_card_body">
+                    <p><i class="fa-solid fa-id-badge"></i> <strong>Clave:</strong> 
+                       <span th:text="${empleado.clave}">EMP001</span>
+                    </p>
+
+                    <p><i class="fa-solid fa-briefcase"></i> <strong>Puesto:</strong>
+                        <span th:switch="${empleado.puesto}">
+                            <span th:case="1">Mesero</span>
+                            <span th:case="2">Cocinero</span>
+                            <span th:case="3">Cajero</span>
+                            <span th:case="*">Administrador</span>
+                        </span>
+                    </p>
+                </div>
+
+                <div class="empleado_card_footer">
+                    <a th:href="@{/empleado/editar/{clave}(clave=${empleado.clave})}" class="btn_editar">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a th:href="@{/empleado/eliminar/{clave}(clave=${empleado.clave})}" 
+                       class="btn_eliminar"
+                       onclick="return confirm('¿Seguro que deseas eliminar este empleado?');">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btnLimpiar = document.getElementById("btnLimpiarEmpleado");
+  const form = document.getElementById("formBusquedaEmpleado");
+  const input = document.getElementById("nombreBusqueda");
+
+  btnLimpiar.addEventListener("click", () => {
+    // Limpia el campo de búsqueda
+    input.value = "";
+
+    // Redirige al listado completo de empleados
+    window.location.href = form.getAttribute("action").replace("/buscar", "/listadoEmpleados");
+  });
+});
+</script>
+
+</body>
+</html>

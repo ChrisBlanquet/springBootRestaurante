@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="*{clave} != null ? 'Editar Empleado' : 'Registrar Empleado'">Empleado</title>
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/pedido/formPedidos.css}">
+</head>
+
+<body>
+  <div th:replace="fragmentos/header :: siteHeader"></div>
+
+  <main class="main container">
+    <form class="ticket-wrap"
+          th:action="@{/empleado/guardar}"
+          th:object="${empleado}"
+          method="post">
+
+      <header class="ticket-header">
+        <div class="ticket-brand">
+          <i class="fa-solid fa-id-card"></i>
+          <h1 class="brand-title" 
+              th:text="*{clave} != null ? 'Editar Empleado' : 'Nuevo Empleado'">Nuevo Empleado</h1>
+        </div>
+        <div class="ticket-meta">
+          <div class="meta-item">
+            <span class="meta-label"><i class="fa-solid fa-hashtag"></i> Clave</span>
+            <input type="text" th:field="*{clave}" class="meta-input" maxlength="8" required
+                   th:readonly="*{clave} != null">
+          </div>
+        </div>
+      </header>
+
+      <section class="ticket-block">
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-user"></i> Nombre completo</label>
+          <input type="text" class="text-input" th:field="*{nombreCompleto}" maxlength="100" required>
+        </div>
+
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-briefcase"></i> Puesto</label>
+          <div class="select-wrap">
+            <select class="select-input" th:field="*{puesto}" required>
+              <option value="" disabled th:selected="*{puesto} == null">Selecciona un puesto…</option>
+              <option value="1" th:selected="*{puesto} == 1">Mesero</option>
+              <option value="2" th:selected="*{puesto} == 2">Cocinero</option>
+              <option value="3" th:selected="*{puesto} == 3">Cajero</option>
+              <option value="4" th:selected="*{puesto} == 4">Administrador</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
+          </div>
+        </div>
+      </section>
+
+      <div class="ticket-divider" aria-hidden="true"></div>
+
+      <footer class="ticket-footer">
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-check"></i> Guardar
+        </button>
+        <a th:href="@{/empleado/listadoEmpleados}" class="btn-outline">
+          <i class="fa-solid fa-xmark"></i> Cancelar
+        </a>
+      </footer>
+    </form>
+  </main>
+
+  <div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

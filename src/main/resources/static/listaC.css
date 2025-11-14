@@ -1,0 +1,260 @@
+/*
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+}
+
+.titulo {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    font-size: 3rem;
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0 5rem;
+}
+
+.itemPrincipal {
+    background: #ebecec;
+    padding: 1.2rem 0.8rem;
+    margin-bottom: 15px;
+    border-radius: 0.4rem;
+    box-shadow: 0 2px 10px rgba(113, 97, 97, 0.4);
+    display: grid;
+    grid-template-columns: 60px 2fr 2fr 1.5fr 1fr 1fr 1fr 80px;
+}
+
+.itemPrincipal span {
+    font-size: 1rem;
+    text-align: center;
+    color: #0f308d;
+    font-weight: bold;
+}
+
+.itemPrincipal span:nth-child(2) {
+    text-align: left;
+    padding-left: 2rem;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 60px 2fr 2fr 1.5fr 1fr 1fr 1fr 80px;
+    background: #ffffff;
+    padding: 3rem 0.8rem;
+    margin-bottom: 15px;
+    border-radius: 1rem;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.item div:nth-child(2) {
+    text-align: left;
+    padding-left: 2rem;
+}
+.item:hover {
+    background-color: #f5f9f9;
+}
+
+.user-nombre{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+.user-nombre span {
+    font-weight: bold;
+    text-align: left;
+}
+
+.destacado{
+    color: #33308D;
+    font-style: bold;
+    font-size: 1.1rem;
+    font-family:'Times New Roman', Times, serif
+}
+
+.listaUser {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+span {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+}
+
+.imgUser {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btnAccion {
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.btnAccion:hover {
+    color: #007bff;
+    transform: scale(1.2);
+}
+*/
+
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --background-color: #ffffff;
+    --text-color-resaltado:#0f308d;
+    --with-lista:60px 2fr 2fr 1.5fr 1.5fr 80px;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: var(--background-color);
+}
+
+.titulo {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    font-size: 3rem;
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0 5rem;
+}
+
+.itemPrincipal {
+    background: #ebecec;
+    padding: 1.2rem 0.8rem;
+    margin-bottom: 15px;
+    border-radius: 0.4rem;
+    box-shadow: 0 2px 10px rgba(113, 97, 97, 0.4);
+    display: grid;
+    grid-template-columns: var(--with-lista);
+}
+
+.itemPrincipal span {
+    font-size: 1rem;
+    text-align: center;
+    color: var(--text-color-resaltado);
+    font-weight: bold;
+}
+
+.itemPrincipal span:nth-child(2) {
+    text-align: left;
+    padding-left: 2rem;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: var(--with-lista);
+    background: #ffffff;
+    padding: 2.4rem 0.8rem;
+    margin-bottom: 15px;
+    border-radius: 1rem;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.item div:nth-child(2) {
+    text-align: left;
+    padding-left: 2rem;
+}
+
+.item:hover {
+    background-color: #f5f9f9;
+}
+
+.user-nombre {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+.user-nombre span {
+    font-weight: bold;
+    text-align: left;
+}
+
+.destacado {
+    color: var(--text-color-resaltado);
+    font-style: bold;
+    font-size: 1.1rem;
+    font-family: 'Times New Roman', Times, serif
+}
+
+.listaUser {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+span {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+}
+
+.imgUser {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btnAccion {
+    border: none;
+    background: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: transform 0.3s ease,
+        color 0.3s ease,
+}
+
+.btnAccion:hover {
+    color: #007bff;
+    transform: scale(1.2);
+}

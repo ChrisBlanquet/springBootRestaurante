@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<footer class="footer" th:fragment="siteFooter">
+    <div class="container footer__content">
+        <div class="footer__brand">
+            <img th:src="@{/imagen/imagenesEmpresa/logoCortes.png}" alt="Logo de la empresa" class="footer__img">
+            <h2 class="footer__title">La mesa del autor</h2>
+            <p class="footer__slogan">El arte de la arrachera premium</p>
+        </div>
+
+        <div class="footer__links">
+            <h3>Menú</h3>
+            <ul>
+                <li><a th:href="@{/inicio}">Inicio</a></li>
+                <li><a th:href="@{/cliente/listadocli}">Cliente</a></li>
+                <li><a th:href="@{/cliente/crear}">Registrar Cliente</a></li>
+                <li><a th:href="@{/producto/listaProducto}">Productos</a></li>
+                <li><a th:href="@{/producto/crearProducto}">Registrar Productos</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__contact">
+            <h3>Contáctanos</h3>
+            <p><i class="fa-solid fa-location-dot"></i> Calle Presa Cheto No. 16, Chilpancingo, Guerrero</p>
+            <p><i class="fa-solid fa-phone"></i> +52 747 123 4567</p>
+            <p><i class="fa-solid fa-envelope"></i> contacto@lamesadelautor.com</p>
+        </div>
+
+        <div class="footer__socials">
+            <h3>Síguenos</h3>
+            <div class="footer__icons">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer__bottom">
+        <p>&copy; 2025 La mesa del autor. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+
+</body>
+</html>

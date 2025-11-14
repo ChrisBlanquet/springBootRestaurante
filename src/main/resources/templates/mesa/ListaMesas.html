@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Administración de Mesas</title>
+<script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+<link rel="stylesheet" th:href="@{/css/mesas/listaMesas.css}">
+</head>
+<body>
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+<main class="main container">
+  <div class="listaProductos">
+
+    <h2>Administración de Mesas</h2>
+
+    <div class="listaProductos_header">
+      <search class="listaProductos_serch_box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Buscar mesa...">
+      </search>
+      <a th:href="@{/mesa/crear}" class="btn_agregarProducto">
+        <i class="fa-solid fa-plus"></i> Agregar Mesa
+      </a>
+    </div>
+
+    <div class="listaProductos_encabezados">
+      <span class="encabezados_tag">ID Mesa</span>
+      <span class="encabezados_tag">Capacidad</span>
+      <span class="encabezados_tag">Ubicación</span>
+      <span class="encabezados_tag tag_acciones">Acciones</span>
+    </div>
+  </div>
+
+  <div class="listaProductos_item" th:each="mesa : ${mesaLista}">
+    <div class="listaProductos__item_container-idimg">
+      <span class="listaProductos_item_id" th:text="${mesa.idMesa}">1</span>
+    </div>
+    <span class="listaProductos-nombreProducuto" th:text="${mesa.capacidad}">4</span>
+    <span class="listaProductos-descripcion" th:text="${mesa.ubicacion}">Zona A</span>
+<div class="listaProductos_acciones">
+	  <a th:href="@{/mesa/ver/{id}(id=${mesa.idMesa})}" class="listaProductos_acciones-verDetalles">
+	    <i class="fa-solid fa-circle-info"></i> Ver Detalles
+	  </a>
+	  <a th:href="@{/mesa/editar/{id}(id=${mesa.idMesa})}" class="listaProductos_acciones-btneditar">
+	    <i class="fa-solid fa-pen-to-square"></i>
+	  </a>
+	  <a th:href="@{/mesa/eliminar/{id}(id=${mesa.idMesa})}" class="listaProductos_acciones-btneliminar"
+	     onclick="return confirm('¿Seguro que deseas eliminar esta mesa?');">
+	    <i class="fa-solid fa-trash"></i>
+	  </a>
+	</div>
+  </div>
+
+</main>
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

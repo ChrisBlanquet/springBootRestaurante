@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Producto</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+     <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/producto/formProducto.css}">
+ <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div th:replace="fragmentos/header :: siteHeader"></div>
+	
+	
+	   <main class="main container">
+        <form class="formAdminProducto" th:action="@{/producto/guardarProducto}" th:object="${producto}" method="post" enctype="multipart/form-data">
+            <div class="formAdminProducto__main">
+                <h2 class="formAdminProducto__titulo">Crear Producto</h2>
+                <div class="formAdminProducto__previewBox">
+                    <label for="imagen" class="formAdminProducto__label">
+                        <i class="fa-solid fa-image"></i> Imagen
+                    </label>
+                    <div class="formAdminProducto__preview">
+                        <img id="imgPreview"<img th:src="${producto != null and producto.foto != null and !#strings.isEmpty(producto.foto)} 
+              ? @{/imagen/{f}(f=${producto.foto})} 
+              : @{/imagen/imagenesEmpresa/default_producto.jpg}" alt="Previsualización" />
+                    </div>
+                    <label for="imagen" class="upload-btn" role="button" tabindex="0" aria-controls="imagen">
+                        <i class="fa-solid fa-upload"></i> Seleccionar imagen
+                    </label>
+						   <span id="fileName"
+						      class="upload-filename"
+						      style="display:block;margin-top:.5rem;"
+						      th:text="${producto != null and producto.foto != null and !#strings.isEmpty(producto.foto)} 
+						                 ? ${producto.foto} 
+						                 : 'Ningún archivo seleccionado'">Ningún archivo seleccionado
+							</span>
+                    <small class="upload-hint">Formatos: JPG, PNG, WebP Máx 5MB</small>
+
+                    <input type="file" id="imagen" name="archivo" accept="image/*" class="formAdminProducto__input"
+                        required onchange="previewImg(event)" th:attr="required=${producto == null or #strings.isEmpty(producto.foto)}" />
+                </div>
+                <div class="formAdminProducto__inputs" >
+                    <div class="formAdminProducto__grupo" th:if="${producto != null and producto.id != null}"
+       					th:field="${producto.Id}" >
+                        <label for="id" class="formAdminProducto__label">
+                            <i class="fa-solid fa-hashtag"></i> ID del Producto
+                        </label>
+                        <input type="text" id="id" name="id" class="formAdminProducto__input" th:field="${producto.id}" readonly required>
+                    </div>
+                    <div class="formAdminProducto__grupo">
+                        <label for="nombre" class="formAdminProducto__label">
+                            <i class="fa-solid fa-box"></i> Nombre
+                        </label>
+                        <input type="text" id="nombre" name="nombre" class="formAdminProducto__input"
+                            placeholder="Nombre del producto" th:field="${producto.nombre}"  required>
+                    </div>
+                    <div class="formAdminProducto__grupo">
+                        <label for="descripcion" class="formAdminProducto__label">
+                            <i class="fa-solid fa-align-left"></i> Descripción
+                        </label>
+                        <textarea id="descripcion" name="descripcion" class="formAdminProducto__input textarea" rows="3"
+                            maxlength="220" placeholder="Descripción detallada (máx 220 caracteres)" th:field="${producto.descripcion}"
+                            required></textarea>
+                        <small class="formAdminProducto__contador"><span id="contadorDesc">0</span>/220</small>
+                    </div>
+                    <div class="formAdminProducto__grupo duo">
+                        <div>
+                            <label for="precio" class="formAdminProducto__label">
+                                <i class="fa-solid fa-dollar-sign"></i> Precio
+                            </label>
+                            <input type="number" id="precio" name="precio" step="0.01" class="formAdminProducto__input"
+                                placeholder="0.00" th:field="${producto.precio}" required>
+                        </div>
+                        <div>
+                            <label for="categoria" class="formAdminProducto__label">
+                                <i class="fa-solid fa-tags"></i> Categoría
+                            </label>
+
+							<div class="select-wrap">
+							  <select id="categoria"
+							          name="tipo"
+							          class="formAdminProducto__input formAdminProducto__select"
+							          required>
+							      <option value="" disabled 
+							              th:selected="${producto == null}">Selecciona una categoría…
+							      </option>
+							      <option value="1" th:selected="${productoEditado != null and productoEditado.tipo == 1}">Entradas</option>
+							      <option value="2" th:selected="${productoEditado != null and productoEditado.tipo == 2}">Cortes</option>
+							      <option value="3" th:selected="${productoEditado != null and productoEditado.tipo == 3}">Bebidas</option>
+							      <option value="4" th:selected="${productoEditado != null and productoEditado.tipo == 4}">Postre</option>
+							  </select>
+							  <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
+							</div>
+                        </div>
+                    </div>
+
+                    <div class="formAdminProducto__acciones">
+                        <button type="submit" class="btn_modern">Guardar <i class="fa-solid fa-check"></i></button>
+						 <a th:href="@{/producto/listaProductoAdmin}" class="btn_modern formAdminProducto_btnCancelar">
+						  Cancelar <i class="fa-solid fa-xmark"></i>
+						</a>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </main>
+	
+  
+  <div th:replace="fragmentos/footer :: siteFooter"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  
+  function previewImg(e) {
+      const file = e.target.files && e.target.files[0];
+      const img = document.getElementById('imgPreview');
+      const nameLabel = document.getElementById('fileName');
+
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+          alert('Formato no soportado. Usa JPG, PNG, WebP o GIF.');
+          e.target.value = '';
+          img.src = '/imagen/imagenesEmpresa/default_producto.jpg';
+          nameLabel.textContent = 'Ningún archivo seleccionado';
+          return;
+      }
+
+
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+          alert('El archivo es muy grande (máx 5MB).');
+          e.target.value = '';
+          img.src = '/imagen/imagenesEmpresa/default_producto.jpg';
+          nameLabel.textContent = 'Ningún archivo seleccionado';
+          return;
+      }
+
+
+      nameLabel.textContent = file.name;
+
+      const reader = new FileReader();
+      reader.onload = function (evt) {
+          img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+  }
+  </script>
+</body>
+</html>

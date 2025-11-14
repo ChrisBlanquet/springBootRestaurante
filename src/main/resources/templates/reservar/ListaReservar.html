@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administración de Reservaciones</title>
+    <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+    <link rel="stylesheet" th:href="@{/css/reservar/listaReservas.css}">
+</head>
+
+<body>
+
+<!-- 🔹 Header general -->
+<div th:replace="~{fragmentos/header :: siteHeader}"></div>
+
+<main class="main container">
+    <div class="listaProductos">
+
+        <h2>Administración de Reservaciones</h2>
+
+		<!-- BUSCADOR DE RANGO DE FECHAS -->
+		<div class="listaProductos_header">
+		  <form th:action="@{/reservar/listado}" method="get" class="listaProductos_serch_box" id="formBuscador">
+		    <i class="fa-solid fa-magnifying-glass"></i>
+		
+		    <label for="inicio">Inicio:</label>
+		    <input type="date" id="inicio" name="inicio" th:value="${param.inicio}">
+		
+		    <label for="fin">Fin:</label>
+		    <input type="date" id="fin" name="fin" th:value="${param.fin}">
+		
+		    <button type="submit" class="btn_buscar">
+		      <i class="fa-solid fa-search"></i> Buscar
+		    </button>
+		
+		    <!-- 🔹 Nuevo botón: Borrar filtros -->
+		    <button type="button" class="btn_limpiar" id="btnLimpiarFiltros">
+		      <i class="fa-solid fa-eraser"></i> Borrar filtros
+		    </button>
+		  </form>
+		
+		  <a th:href="@{/reservar/crear}" class="btn_agregarProducto">
+		    <i class="fa-solid fa-plus"></i> Agregar Reservación
+		  </a>
+		</div>
+
+        <!-- ENCABEZADOS -->
+        <div class="listaProductos_encabezados">
+            <span class="encabezados_tag">ID Servicio</span>
+            <span class="encabezados_tag">Fecha</span>
+            <span class="encabezados_tag">Hora</span>
+            <span class="encabezados_tag">Cliente</span>
+            <span class="encabezados_tag">Mesa</span>
+            <span class="encabezados_tag">Estatus</span>
+            <span class="encabezados_tag tag_acciones">Acciones</span>
+        </div>
+    </div>
+
+
+    <div th:if="${#lists.isEmpty(reservaLista)}" class="listaProductos_item">
+        <span style="grid-column: 1 / span 7; text-align: center; font-weight: 600;">
+            No se encontraron reservaciones en el rango seleccionado.
+        </span>
+    </div>
+
+ 
+    <div class="listaProductos_item" th:each="reserva : ${reservaLista}">
+        <span class="listaProductos_item_id" th:text="${reserva.idServicio}">1</span>
+        <span th:text="${#temporals.format(reserva.fecha, 'yyyy-MM-dd')}">2025-10-20</span>
+        <span th:text="${#temporals.format(reserva.hora, 'HH:mm')}">12:00</span>
+        <span th:text="${reserva.cliente != null ? (reserva.cliente.nombre + ' ' + reserva.cliente.apellidos) : '—'}">Cliente</span>
+        <span th:text="${reserva.mesa != null ? ('Mesa ' + reserva.mesa.idMesa) : '—'}">Mesa</span>
+        <span th:text="${reserva.estatus == 1 ? 'Pendiente' : (reserva.estatus == 0 ? 'Cancelada' : 'Confirmada')}">Activa</span>
+
+
+		<div class="listaProductos_acciones">
+		
+		    <!--Mostrar botón Editar si no esta 2 -->
+		    <a th:if="${reserva.estatus != 2}"
+		       th:href="@{/reservar/editar/{id}(id=${reserva.idServicio})}" 
+		       class="listaProductos_acciones-verDetalles"
+		       title="Editar reservación">
+		        <i class="fa-solid fa-circle-info"></i>
+		    </a>
+		
+		    <!-- Mostrar botón Confirmar si no esta 2 -->
+		    <a th:if="${reserva.estatus != 2}"
+		       th:href="@{/reservar/confirmar/{id}(id=${reserva.idServicio})}"
+		       class="listaProductos_acciones-btnconfirmar"
+		       title="Confirmar reservación">
+		        <i class="fa-solid fa-check"></i>
+		    </a>
+		
+		    <!-- Mostrar botón Eliminar -->
+		    <a th:href="@{/reservar/eliminar/{id}(id=${reserva.idServicio})}"
+		       class="listaProductos_acciones-btneliminar"
+		       onclick="return confirm('¿Seguro que deseas cancelar esta reservación?');"
+		       title="Cancelar reservación">
+		        <i class="fa-solid fa-xmark"></i>
+		    </a>
+		</div>
+
+    </div>
+</main>
+
+<!--Footer general -->
+<div th:replace="~{fragmentos/footer :: siteFooter}"></div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btnLimpiar = document.getElementById("btnLimpiarFiltros");
+  const form = document.getElementById("formBuscador");
+
+  btnLimpiar.addEventListener("click", () => {
+    // Limpia los campos del formulario
+    form.querySelector("#inicio").value = "";
+    form.querySelector("#fin").value = "";
+
+    // Redirige al listado completo sin filtros
+    window.location.href = form.getAttribute("action");
+  });
+});
+</script>
+</body>
+</html>

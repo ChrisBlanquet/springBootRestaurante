@@ -1,0 +1,303 @@
+@charset "UTF-8";
+
+
+.main {
+    min-height: 70vh;
+    margin: 3rem auto;
+    display: flex;
+}
+
+.formAdminProducto {
+    background: #23272f;
+    color: #f3f6fd;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgb(34 45 71 / 14%);
+    width: 100%;
+    margin: 2rem auto;
+    padding: 2.2rem 2rem 1.7rem 2rem;
+    gap: 1.4rem;
+    font-family: var(--fuente-principal);
+}
+
+.formAdminProducto__main {
+    display: grid;
+    grid-template-areas:
+        "titulo titulo titulo titulo titulo"
+        "imagen imagen  form form form"
+        "imagen imagen form form form";
+    gap: 2rem;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.formAdminProducto__titulo {
+    grid-area: titulo;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #e6c973;
+    margin-bottom: 0.2rem;
+    text-align: center;
+    width: 100%;
+}
+
+.formAdminProducto__previewBox {
+    grid-area: imagen;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-start;
+    gap: 0.8em;
+    background: #292f3a;
+    border-radius: 1em;
+    padding: 1em 1em;
+}
+
+.formAdminProducto__preview {
+    width: 250px;
+    height: 250px;
+    background: #fff;
+    border-radius: 1em;
+    border: 2px solid #e6c973;
+    box-shadow: 0 3px 7px rgb(34 45 71 / 7%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.7em;
+    overflow: hidden;
+}
+
+.formAdminProducto__preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1em;
+}
+
+.formAdminProducto__inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+    grid-area: form;
+}
+
+.textarea {
+    resize: none;
+    min-height: 80px;
+    max-height: 150px;
+}
+
+.file-img {
+    width: 100%;
+    border-radius: 0.5em;
+    background: #f9f9fb;
+    color: #23272f;
+    font-family: var(--fuente-secundaria);
+    font-size: 1.09rem;
+    padding: .4em 0.3em;
+    border: 2px solid #20232b;
+    transition: border 0.22s;
+}
+
+.formAdminProducto__grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+}
+
+.formAdminProducto__grupo.duo {
+    flex-direction: row;
+    gap: 1.2rem;
+}
+
+.formAdminProducto__grupo.duo>div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+}
+
+.formAdminProducto__label {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #e6c973;
+    margin-bottom: 0.18rem;
+}
+
+.formAdminProducto__label i {
+    margin-right: 0.5em;
+}
+
+.formAdminProducto__input,
+.formAdminProducto__input[type="file"],
+.formAdminProducto__input[type="number"] {
+    padding: 0.5rem 1rem;
+    border: 2px solid #20232b;
+    border-radius: 0.5rem;
+    font-size: 1.09rem;
+    font-family: var(--fuente-secundaria);
+    color: #222;
+    background: #f9f9fb;
+    transition: border 0.22s;
+}
+
+.formAdminProducto__input:read-only {
+    background: #ececec;
+    color: #aaa;
+}
+
+.formAdminProducto__input:focus {
+    border-color: #e6c973;
+    outline: none;
+}
+
+.formAdminProducto__input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+
+/*IMAGEN*/
+
+
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    border: none;
+    background: linear-gradient(90deg, #e6c973 60%, #f6e2af 100%);
+    color: #222;
+    padding: 0.55em 1.2em;
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 1.02rem;
+    box-shadow: 0 0 7px 0 rgb(34 45 71 / 6%);
+    transition: background 0.22s, color 0.22s, transform .06s ease;
+}
+
+.upload-btn:hover {
+    background: #222;
+    color: #e6c973;
+}
+
+.upload-btn:active {
+    transform: translateY(1px);
+}
+
+.upload-btn i {
+    font-size: 1.05rem;
+}
+
+/* Texto de estado (nombre del archivo) */
+.upload-filename {
+    font-family: var(--fuente-secundaria);
+    font-size: .95rem;
+    color: var(--color-texto-principal);
+    opacity: .9;
+}
+
+.upload-hint {
+    font-size: .85rem;
+    color: #e6c973;
+    opacity: .9;
+}
+
+
+/*SELECTED*/
+
+.select-wrap {
+    position: relative;
+}
+
+.formAdminProducto__select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .7;
+    pointer-events: none;
+    font-size: 0.95rem;
+    color: #222;
+}
+
+.formAdminProducto__select:focus {
+    border-color: #e6c973;
+    outline: none;
+}
+
+
+
+.formAdminProducto__select { color: #000 !important; }
+
+
+
+
+.formAdminProducto__contador {
+    font-size: 0.8rem;
+    color: #e6c973;
+    text-align: right;
+}
+
+.formAdminProducto__acciones {
+    display: flex;
+    gap: 1.3rem;
+    justify-content: space-evenly;
+    margin-top: 1.2rem;
+}
+
+.btn_modern {
+    border: none;
+    background: linear-gradient(90deg, #e6c973 60%, #f6e2af 100%);
+    color: #222;
+    padding: 0.55em 1.5em;
+    font-family: var(--fuente-principal);
+    font-weight: 600;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 1.09rem;
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    box-shadow: 0 0 7px 0 rgb(34 45 71 / 6%);
+    transition: background 0.22s, color 0.22s;
+}
+
+.btn_modern:hover {
+    background: #222;
+    color: #e6c973;
+}
+
+.formAdminProducto_btnCancelar {
+    background: transparent;
+    color: #e6c973;
+    border: 2px solid #e6c973;
+}
+
+.formAdminProducto_btnCancelar:hover {
+    background: #e6c973;
+    color: #222;
+}
+
+.formAdminProducto_btnCancelar{
+	text-decoration:none;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="*{idMesa} != null ? 'Editar Mesa' : 'Registrar Mesa'">Registrar Mesa</title>
+<script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+<link rel="stylesheet" th:href="@{/css/mesas/formMesas.css}">
+</head>
+<body>
+
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+<main class="main container">
+  <form class="ticket-wrap" th:action="@{/mesa/guardar}" th:object="${mesa}" method="post">
+
+    <header class="ticket-header">
+      <div class="ticket-brand">
+        <i class="fa-solid fa-chair"></i>
+        <h1 class="brand-title" th:text="*{idMesa} != null ? 'Editar Mesa' : 'Registrar Mesa'"></h1>
+        <input type="hidden" th:field="*{idMesa}">
+      </div>
+    </header>
+
+    <section class="ticket-block">
+      <div class="block-row">
+        <label class="lbl"><i class="fa-solid fa-users"></i> Capacidad</label>
+        <input type="number" min="1" th:field="*{capacidad}" placeholder="Número de personas" required>
+      </div>
+
+      <div class="block-row">
+        <label class="lbl"><i class="fa-solid fa-location-dot"></i> Ubicación</label>
+        <input type="text" th:field="*{ubicacion}" placeholder="Ejemplo: Zona A, Ventana, Terraza" required>
+      </div>
+    </section>
+
+    <footer class="ticket-footer">
+      <button type="submit" class="btn-primary">
+        <i class="fa-solid fa-check"></i> Guardar
+      </button>
+      <a th:href="@{/mesa/listado}" class="btn-outline">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </a>
+    </footer>
+
+  </form>
+</main>
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+
+</body>
+</html>

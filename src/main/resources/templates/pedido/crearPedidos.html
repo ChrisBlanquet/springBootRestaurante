@@ -1,0 +1,337 @@
+	<!DOCTYPE html>
+	<html xmlns:th="http://www.thymeleaf.org" lang="es">
+	<head>
+	  <meta charset="UTF-8" />
+	  <title th:text="*{idPedido} != null ? 'Editar Pedido' : 'Crear Pedido'">Crear Pedido</title>
+	  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+	
+	
+	  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+	  <link rel="stylesheet" th:href="@{/css/pedido/formPedidos.css}">
+	</head>
+	<body>
+	
+	  <div th:replace="fragmentos/header :: siteHeader"></div>
+	
+	  <main class="main container">
+	    <form class="ticket-wrap"
+	          th:action="@{/pedido/guardar}"
+	          th:object="${pedido}"
+	          method="post">
+	
+		
+	      <header class="ticket-header">
+	        <div class="ticket-brand">
+	          <i class="fa-solid fa-receipt"></i>
+	          <h1 class="brand-title" th:text="*{idPedido} != null ? 'Editar Pedido' : 'Nueva Nota / Pedido'"></h1>
+				<span class="meta-value monospace" th:text="*{idPedido} != null ? *{idPedido} : '—'">—</span>
+				<input type="hidden" th:field="*{idPedido}">
+	        </div>
+	        <div class="ticket-meta">
+	          <div class="meta-item">
+	            <span class="meta-label"><i class="fa-solid fa-hashtag"></i> Folio</span>
+	            <span class="meta-value monospace" th:text="*{idPedido} != null ? *{idPedido} : '—'">—</span>
+	          </div>
+	          <div class="meta-item">
+	            <label for="fecha" class="meta-label"><i class="fa-solid fa-calendar-day"></i> Fecha</label>
+	            <input id="fecha" type="date" th:field="*{fecha}" class="meta-input"   th:attr="readonly=${pedido.reservar != null ? 'readonly' : null}"
+       required>
+	          </div>
+	        </div>
+	      </header>
+	
+	      <section class="ticket-block">
+	        <div class="block-row">
+	          <label class="lbl"><i class="fa-solid fa-user"></i> Cliente</label>
+	          <div class="select-wrap">
+	            <select class="select-input"
+	                    th:field="*{cliente.id}"
+	                    required>
+	              <option value="" disabled
+	                      th:selected="*{cliente} == null">Selecciona un cliente…</option>
+					<option th:each="c : ${clientes}"
+					        th:value="${c.id}"
+					        th:text="${c.nombre + ' ' + c.apellidos}"
+					        th:selected="${c.id == pedido.cliente?.id}"></option>
+	            </select>
+	            <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
+	          </div>
+	        </div>
+	        
+	        
+			        <div class="block-row" id="reservaRow"
+	     th:style="${pedido.reservar != null or (reservas != null and !#lists.isEmpty(reservas))} ? 'display:flex;' : 'display:none;'">
+	
+			  <label for="reserva" class="lbl">
+			    <i class="fa-solid fa-calendar-check"></i> Reservación
+			  </label>
+			  <div class="select-wrap">
+			    <select id="reserva" class="select-input" name="reservar.idServicio">
+				<option value="" disabled
+				        th:selected="${pedido.reservar == null}">
+				  Selecciona una reservación...
+				</option>
+				<option th:each="r : ${reservas}"
+				        th:value="${r.idServicio}"
+				        th:text="${'Fecha: ' + r.fecha + ' | Hora: ' + r.hora + ' | Mesa: ' + r.mesa.ubicacion}"
+				        th:selected="${pedido.reservar != null and r.idServicio == pedido.reservar.idServicio}">
+				</option>
+	
+			    </select>
+			    <i class="fa-solid fa-chevron-down select-arrow"></i>
+			  </div>
+			</div>
+	        
+	
+			<div class="block-row">
+			  <label for="empleado" class="lbl"><i class="fa-solid fa-id-badge"></i> Empleado</label>
+			  <div class="select-wrap">
+			    <select id="empleado" class="select-input" name="claveEmpleado" required>
+			      <option value="" disabled selected>Selecciona un empleado…</option>
+				<option th:each="e : ${empleados}"
+				        th:value="${e.clave}"
+				        th:text="${e.nombreCompleto}"
+				        th:selected="${pedido.atenciones != null and !pedido.atenciones.isEmpty() and pedido.atenciones[0].empleado.clave == e.clave}">
+				</option>
+			    </select>
+			    <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
+			  </div>
+			</div>
+	      </section>
+	
+	
+	      <div class="ticket-divider" aria-hidden="true"></div>
+	
+	<!-- Detalle de productos (estilo renglón de ticket) -->
+		<section class="ticket-block">
+		  <div class="block-row between">
+		    <label class="lbl"><i class="fa-solid fa-box"></i> Conceptos</label>
+		    <button type="button" class="btn-ghost" id="agregarProducto">
+		      <i class="fa-solid fa-plus"></i> Agregar línea
+		    </button>
+		  </div>
+		
+		  <div id="productosContainer" class="items">
+		
+		    <!-- Si existen detalles del pedido (modo edición) -->
+		    <div th:each="detalle : ${pedidoLista}" class="item-line">
+		      <div class="select-wrap item-producto">
+		        <select name="productosSeleccionados" class="select-input select-producto" required>
+		          <option value="" disabled>Selecciona un producto…</option>
+		          <option th:each="p : ${productos}"
+		                  th:value="${p.id}"
+		                  th:attr="data-precio=${p.precio}"
+		                  th:text="${p.nombre}"
+		                  th:selected="${p.id} == ${detalle.producto.id}">
+		          </option>
+		        </select>
+		        <i class="fa-solid fa-chevron-down select-arrow"></i>
+		      </div>
+		
+		      <input type="number"
+		             name="cantidades"
+		             min="1"
+		             th:value="${detalle.cantidad}"
+		             class="num-input qty-input"
+		             aria-label="Cantidad">
+		
+		      <input type="text"
+		             class="money-input monospace subtotal-input"
+		             th:value="${#numbers.formatCurrency(detalle.subtotal)}"
+		             readonly
+		             aria-label="Subtotal">
+		
+		      <button type="button" class="btn-icon btn-remove" title="Quitar">
+		        <i class="fa-solid fa-xmark"></i>
+		      </button>
+		    </div>
+		
+		
+		    <div th:if="${#lists.isEmpty(pedidoLista)}" class="item-line">
+		      <div class="select-wrap item-producto">
+		        <select name="productosSeleccionados" class="select-input select-producto" required>
+		          <option value="" disabled selected>Selecciona un producto…</option>
+		          <option th:each="p : ${productos}"
+		                  th:value="${p.id}"
+		                  th:attr="data-precio=${p.precio}"
+		                  th:text="${p.nombre}">
+		          </option>
+		        </select>
+		        <i class="fa-solid fa-chevron-down select-arrow"></i>
+		      </div>
+		
+		      <input type="number" name="cantidades" min="1" value="1" class="num-input qty-input" aria-label="Cantidad">
+		      <input type="text" class="money-input monospace subtotal-input" value="$0.00" readonly aria-label="Subtotal">
+		
+		      <button type="button" class="btn-icon btn-remove" title="Quitar">
+		        <i class="fa-solid fa-xmark"></i>
+		      </button>
+		    </div>
+		
+		  </div>
+		</section>
+	
+	
+	      
+	      <div class="ticket-divider dots" aria-hidden="true"></div>
+	
+	
+	      <section class="ticket-block totals">
+	        <div class="total-row">
+	          <span class="total-label">Subtotal</span>
+	          <span class="total-value monospace" id="subtotalVis">$0.00</span>
+	        </div>
+	        <div class="total-row">
+	          <span class="total-label">IVA (0%)</span>
+	          <span class="total-value monospace" id="ivaVis">$0.00</span>
+	        </div>
+	        <div class="total-row grand">
+	          <label for="total" class="total-label"><i class="fa-solid fa-dollar-sign"></i> Total</label>
+	          
+	          <input id="total" type="number" step="0.01" min="0" th:field="*{total}" class="money-input monospace send-total" readonly required>
+	        </div>
+	      </section>
+	
+	      
+	      <footer class="ticket-footer">
+	        <button type="submit" class="btn-primary">
+	          <i class="fa-solid fa-check"></i> Guardar
+	        </button>
+	        <a th:href="@{/pedido/listado}" class="btn-outline">
+	          <i class="fa-solid fa-xmark"></i> Cancelar
+	        </a>
+	      </footer>
+	    </form>
+	  </main>
+	
+	  <!-- Footer -->
+	  <div th:replace="fragmentos/footer :: siteFooter"></div>
+	
+	<script>
+	  // --- Helpers ---
+	  const money = v => {
+	    const n = isNaN(v) ? 0 : Number(v);
+	    return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+	  };
+	
+	  function calcLineSubtotal(lineEl) {
+	    const select = lineEl.querySelector('.select-producto');
+	    const qtyEl = lineEl.querySelector('.qty-input');
+	    const subEl = lineEl.querySelector('.subtotal-input');
+	
+	    const precio = Number(select?.selectedOptions[0]?.dataset?.precio || 0);
+	    const qty = Number(qtyEl.value || 0);
+	
+	    const subtotal = precio * qty;
+	    subEl.value = money(subtotal);
+	    return subtotal;
+	  }
+	
+	  function recalcTotals() {
+	    const lines = document.querySelectorAll('.item-line');
+	    let sum = 0;
+	    lines.forEach(l => sum += calcLineSubtotal(l));
+	
+	    const iva = 0;
+	    document.getElementById('subtotalVis').textContent = money(sum);
+	    document.getElementById('ivaVis').textContent = money(iva);
+	
+	    const total = sum + iva;
+	    document.querySelector('.send-total').value = total.toFixed(2);
+	  }
+	
+	  
+	  
+	  document.addEventListener('DOMContentLoaded', () => {
+	    const cont = document.getElementById('productosContainer');
+	    const addBtn = document.getElementById('agregarProducto');
+	
+	    addBtn.addEventListener('click', () => {
+	      const clone = cont.firstElementChild.cloneNode(true);
+	      clone.querySelector('.select-producto').selectedIndex = 0;
+	      clone.querySelector('.qty-input').value = 1;
+	      clone.querySelector('.subtotal-input').value = money(0);
+	      cont.appendChild(clone);
+	      recalcTotals();
+	    });
+	
+	    document.addEventListener('input', e => {
+	      if (e.target.matches('.select-producto, .qty-input')) recalcTotals();
+	    });
+	
+	    document.addEventListener('click', e => {
+	      if (e.target.closest('.btn-remove')) {
+	        const lines = cont.querySelectorAll('.item-line');
+	        if (lines.length > 1) {
+	          e.target.closest('.item-line').remove();
+	          recalcTotals();
+	        }
+	      }
+	    });
+	
+	    recalcTotals(); // inicial
+	
+	
+	    const clienteSelect = document.querySelector("select[name='cliente.id']");
+	    const reservaRow = document.getElementById("reservaRow");
+	    const reservaSelect = document.getElementById("reserva");
+	
+	    clienteSelect.addEventListener("change", async () => {
+	      const idCliente = clienteSelect.value;
+	      if (!idCliente) return;
+	
+	      try {
+	        const res = await fetch(`/pedido/reservas/cliente/${idCliente}`);
+	        if (!res.ok) throw new Error("Error HTTP: " + res.status);
+	        const data = await res.json();
+	
+	        reservaSelect.innerHTML = '<option value="" disabled selected>Selecciona una reservación...</option>';
+	
+	        if (data.length > 0) {
+	          data.forEach(r => {
+	            const opt = document.createElement("option");
+	            opt.value = r.idServicio;
+	            opt.textContent = `Fecha: ${r.fecha} | Hora: ${r.hora} | Mesa: ${r.mesa?.ubicacion || '—'}`;
+	            reservaSelect.appendChild(opt);
+	          });
+	          reservaRow.style.display = "flex";
+	        } else {
+	          reservaRow.style.display = "none";
+	        }
+	      } catch (err) {
+	        console.error("Error al obtener reservaciones:", err);
+	        reservaRow.style.display = "none";
+	      }
+	    });
+	    
+	    
+	    reservaSelect.addEventListener("change", async () => {
+	    	  const idReserva = reservaSelect.value;
+	    	  const fechaInput = document.getElementById("fecha");
+	
+	    	  if (!idReserva) {
+	    	    fechaInput.value = "";
+	    	    fechaInput.readOnly = false;
+	    	    return;
+	    	  }
+	
+	    	  try {
+	    		  const res = await fetch(`/pedido/reservas/detalle/${idReserva}`);
+	    	    if (!res.ok) throw new Error("Error al obtener la reserva");
+	    	    const r = await res.json();
+	
+	    	    // Ajusta formato de fecha (YYYY-MM-DD)
+	    	    const fecha = r.fecha;
+	    	    fechaInput.value = fecha;
+	    	    fechaInput.readOnly = true; // bloquear edición
+	
+	    	  } catch (err) {
+	    	    console.error("Error al obtener fecha de reserva:", err);
+	    	    fechaInput.readOnly = false;
+	    	  }
+	    	});
+	  });
+	</script>
+	
+	</body>
+	</html>

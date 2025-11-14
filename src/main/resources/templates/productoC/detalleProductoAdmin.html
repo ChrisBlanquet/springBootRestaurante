@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+<link rel="stylesheet" th:href="@{/css/producto/detalleProductoAdmin.css}">
+</head>
+<body>
+	<div th:replace="fragmentos/header :: siteHeader"></div>
+	
+	    <main class="main">
+
+        <section class="detalleProducto_admin">
+            <div class="container detalleProducto_admin__container">
+                <div class="detalleProducto_admin__imagen">
+   				<img th:src="${productoID.foto != null and !#strings.isEmpty(productoID.foto)} 
+                 ? @{/imagen/{tmpImg}(tmpImg=${productoID.foto})} 
+                 : @{/imagen/imagenesEmpresa/default_producto.jpg}" alt="Producto" class="formAdminProducto__img">
+                </div>
+                <div class="detalleProducto_admin__info">
+                    <div class="detalleProducto_admin_id">
+                        <span th:text="${productoID.Id}">ID: </span><strong>1023</strong>
+                    </div>
+                    <h2 class="detalleProducto_admin_nombre" th:text="${productoID.nombre}">Arrachera Deluxe</h2>
+                    <p class="detalleProducto_admin_descripcion" th:text="${productoID.descripcion}">Carne selecta marinada con ajo, pimienta y romero,
+                        lista para asar a la parrilla en segundos.</p>
+                    <p class="detalleProducto_admin_precio" th:text="${productoID.precio}">$2300.00</p>
+                    <span class="detalleProducto_admin_categoria" th:switch="${productoID.tipo}">
+                    	<span th:case="1">Entradas</span>
+                    	<span th:case="2">Cortes</span>
+                    	<span th:case="3">Bebidas</span>
+                    	<span th:case="4">Postre</span>
+                    	<span th:case="*">Otro</span>
+                    </span>
+                    <div class="detalleProducto_admin__acciones">
+                        <a href="listaProductosAdmin.html"
+                            class="btn_agregarProducto detalleProducto_admin_btnVista" th:href="@{'/producto/listaProductoAdmin'}">Regresar</a>
+                        <a href="" class="btn_agregarProducto detalleProducto_admin_btnEditar" th:href="@{'/producto/editarProducto/' + ${productoID.id}}">Editar</a>
+                        <a href="" class="btn_agregarProducto detalleProducto_admin_btnEliminar" onclick="return confirm('¿Seguro que deseas eliminar este producto?');" th:href="@{'/producto/eliminarProducto/' + ${productoID.id}}">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+    </main>
+
+
+	<div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

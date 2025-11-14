@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle del Producto</title>
+  <link rel="stylesheet" th:href="@{/css/detalleProducto.css}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+  <main class="product-page">
+
+
+    <nav class="topbar">
+      <a class="back-link" th:href="@{'/listaProducto'}" aria-label="Volver al menú">
+        <span class="chev-left" aria-hidden="true"></span>
+        <span>Menú</span>
+      </a>
+    </nav>
+
+
+    <header class="product-header v2">
+      <div class="title-row">
+        <h1 class="page-title product-heading" th:text="${productoID.nombre}">Nombre del producto</h1>
+      </div>
+
+      <div class="sub-row">
+        <span class="id-pill">
+          ID&nbsp;<span class="id-value" th:text="${productoID.id}">0</span>
+        </span>
+        <div class="type-badge">
+          <span th:switch="${productoID.tipo}">
+            <span th:case="1">Entradas</span>
+            <span th:case="2">Cortes</span>
+            <span th:case="3">Bebidas</span>
+            <span th:case="4">Postre</span>
+            <span th:case="*">Otro</span>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <section class="product-sheet v2">
+      <!-- Media -->
+      <aside class="product-media">
+        <figure class="product-figure">
+          <img class="product-image"
+               th:src="@{/imagen/{tmpImg}(tmpImg=${productoID.foto})}"
+               alt="Imagen del producto">
+        </figure>
+      </aside>
+
+	<article class="product-info">
+	
+
+	  <section class="product-block">
+	    <h2 class="product-block-title">Descripción</h2>
+	    <p class="product-description" th:text="${productoID.descripcion}">
+	      Texto descriptivo del producto.
+	    </p>
+	  </section>
+	
+
+	  <section class="product-rating">
+	    <div class="stars">
+	      ★★★★☆
+	    </div>
+	    <span class="rating-text">4.5 / 5</span>
+	  </section>
+	  
+	  	
+	  <div class="price-hero bottom">
+	    <span class="price-value" th:text="${productoID.precio}">$0.00</span>
+	  </div>
+	
+	  <section class="product-actions row">
+	    <a class="btn btn-dark" href="#" role="button">Ordenar ahora</a>
+	    <a class="btn btn-outline" href="#" role="button">Agregar a favoritos</a>
+	  </section>
+	
+	</article>
+
+    </section>
+  </main>
+
+</body>
+</html>

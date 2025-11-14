@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+<link rel="stylesheet" th:href="@{/css/pedido/listaPedidos.css}">
+</head>
+<body>
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+<main class="main container">
+        <div class="listaProductos">
+
+            <h2>Administración de Pedidos</h2>
+
+    
+<div class="listaProductos_header">
+
+		    <!-- 🔍 FORMULARIO DE FILTROS -->
+		    <form th:action="@{/pedido/listado}" method="get"
+		          class="listaProductos_serch_box d-flex flex-wrap align-items-center gap-2">
+		
+		        <i class="fa-solid fa-magnifying-glass"></i>
+		
+
+		        <input type="text" name="cliente" placeholder="Cliente..."
+		               class="form-control form-control-sm" style="width: 150px;">
+		
+
+		        <input type="text" name="empleado" placeholder="Empleado..."
+		               class="form-control form-control-sm" style="width: 150px;">
+		
+
+		        <label style="font-size: 0.9rem;">Desde:</label>
+		        <input type="date" name="fechaInicio"
+		               class="form-control form-control-sm" style="width: 150px;">
+		
+		        <label style="font-size: 0.9rem;">Hasta:</label>
+		        <input type="date" name="fechaFin"
+		               class="form-control form-control-sm" style="width: 150px;">
+		
+		        <label style="font-size: 0.9rem;">Exacta:</label>
+		        <input type="date" name="fechaExacta"
+		               class="form-control form-control-sm" style="width: 150px;">
+		
+
+		        <button type="submit" class="btn btn-success btn-sm btn-filtrar">
+		            <i class="fa-solid fa-filter"></i> Filtrar
+		        </button>
+		
+
+		        <a th:href="@{/pedido/listado}" class="btn btn-secondary btn-sm  btn-limpiar">
+		            <i class="fa-solid fa-rotate-left"></i> Limpiar
+		        </a>
+	
+		    </form>
+		
+
+		    <a th:href="@{/pedido/crear}" class="btn_agregarProducto">
+		        <i class="fa-solid fa-plus"></i> Agregar Pedido
+		    </a>
+		</div>
+
+
+            <div class="listaProductos_encabezados">
+                <span class="encabezados_tag">ID Pedido</span>
+                <span class="encabezados_tag">Fecha</span>
+                <span class="encabezados_tag">Cliente</span>
+                <span class="encabezados_tag">ID Empleado</span>
+                <span class="encabezados_tag">Total</span>
+                <span class="encabezados_tag tag_acciones">Acciones</span>
+            </div>
+        </div>
+
+        <div class="listaProductos_item" th:each="pedido : ${pedidoLista}">
+            <div class="listaProductos__item_container-idimg">
+                <span class="listaProductos_item_id"  th:text="${pedido.idPedido}">1</span>
+            </div>
+            <span class="listaProductos-nombreProducuto" th:text="${pedido.fecha}"></span>
+             
+  			<span class="listaProductos-descripcion" th:text="${pedido.cliente != null ? (pedido.cliente.nombre + ' ' + pedido.cliente.apellidos) : '—'}"></span>
+            <span th:text="${pedido.atenciones != null && !pedido.atenciones.isEmpty() ? pedido.atenciones[0].empleado.nombreCompleto : '—'}"></span>
+            <span class="listaProductos-descripcion" th:text="${pedido.total}"></span>
+            <div class="listaProductos_acciones">
+                <a  th:href="@{/pedido/ver/{id} (id=${pedido.idPedido})}" class="listaProductos_acciones-verDetalles"><i class="fa-solid fa-circle-info"></i>Ver Detalles</a>
+                <a th:href="@{/pedido/editar/{id} (id=${pedido.idPedido})}" class="listaProductos_acciones-btneditar"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a class="listaProductos_acciones-btneliminar" th:href="@{/pedido/eliminar/{id} (id=${pedido.idPedido})}" onclick="return confirm('¿Seguro que deseas eliminar este producto?');"><i class="fa-solid fa-trash"></i></a>
+        
+            </div>
+  
+        </div>
+
+
+    </main>
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+
+
+<script>
+document.getElementById('btn-borrar-filtros').addEventListener('click', function() {
+    document.querySelectorAll('.listaProductos_serch_box input').forEach(input => input.value = '');
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión · La mesa del autor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/login/login.css}">
+</head>
+
+<body>
+  <main class="main">
+    <section class="ticket-wrap">
+
+      <!-- CABECERA -->
+      <div class="ticket-header">
+        <div class="ticket-brand">
+          <img th:src="@{/imagen/imagenesEmpresa/logoCortes.png}" alt="Logo Restaurante" class="logo-login">
+          <span class="brand-title">La mesa del autor</span>
+        </div>
+        <i class="fa-solid fa-utensils" style="color:var(--gold); font-size:1.5rem;"></i>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="ticket-block">
+        <h2 class="titulo-login">Inicio de sesión</h2>
+
+<div th:if="${error}" class="alert error">
+  <i class="fa-solid fa-triangle-exclamation"></i>
+  Usuario o contraseña incorrectos.
+</div>
+
+<!-- ✅ MENSAJE DE LOGOUT EXITOSO -->
+<div th:if="${logout}" class="alert success">
+  <i class="fa-solid fa-circle-check"></i>
+  Sesión cerrada correctamente.
+</div>
+
+        <form th:action="@{/perform_login}" method="post">
+          <div class="field">
+            <label for="usuario" class="lbl">
+              <i class="fa-regular fa-user"></i> Usuario
+            </label>
+            <input type="text" id="usuario" name="username" placeholder="Ingresa tu usuario" required>
+          </div>
+
+		  <div class="field">
+		  <label for="contrasena" class="lbl">
+		    <i class="fa-solid fa-lock"></i> Contraseña
+		  </label>
+		
+		  <div class="password-wrapper">
+		    <input type="password" id="contrasena" name="password" placeholder="Ingresa tu contraseña" required>
+		    <i class="fa-solid fa-eye" id="togglePassword"></i>
+
+		  </div>
+		</div>
+
+          <div class="ticket-divider"></div>
+
+          <div class="ticket-footer">
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-right-to-bracket"></i> Entrar
+            </button>
+            <a th:href="@{/}" class="btn-outline">
+              <i class="fa-solid fa-home"></i> Volver
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordInput = document.getElementById('contrasena');
+
+  togglePassword.addEventListener('click', () => {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+    togglePassword.classList.toggle('fa-eye-slash');
+  });
+</script>
+  
+</body>
+</html>

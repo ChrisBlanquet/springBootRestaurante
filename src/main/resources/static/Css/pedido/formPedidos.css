@@ -1,0 +1,250 @@
+@charset "UTF-8";
+
+/* Paleta base (tuya) */
+:root{
+  --bg-dark: #23272f;
+  --gold: #e6c973;
+  --ink: #222;
+  --paper: #f9f9fb;
+  --line: #20232b;
+}
+
+.main{
+  min-height:70vh;
+  margin:3rem auto;
+  display:flex;
+  justify-content:center;
+}
+
+.ticket-wrap{
+  width:min(900px, 95%);
+  background: var(--bg-dark);
+  color:#f3f6fd;
+  border-radius: 18px;
+  padding: 0;
+  position: relative;
+  box-shadow: 0 0 20px rgba(34,45,71,.14);
+  overflow: hidden;
+  border: 1px solid rgba(230,201,115,.25);
+}
+
+/* Cabecera estilo marca */
+.ticket-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  padding: 1.6rem 1.4rem 1rem;
+  background: linear-gradient(180deg, #2a2f39 0%, #23272f 100%);
+  border-bottom: 1px dashed rgba(230,201,115,.4);
+}
+
+.ticket-brand{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+}
+
+.ticket-brand i{
+  color: var(--gold);
+  font-size:1.35rem;
+}
+
+.brand-title{
+  font-size:1.4rem;
+  color: var(--gold);
+  margin:0;
+  letter-spacing:.5px;
+  font-weight:700;
+}
+
+.ticket-meta{
+  display:flex;
+  gap:1.2rem;
+  align-items:flex-end;
+  flex-wrap:wrap;
+}
+
+.meta-item{ display:flex; flex-direction:column; gap:.25rem; }
+.meta-label{ font-size:.88rem; color: var(--gold); }
+.meta-value{ font-size:1rem; }
+
+.meta-input{
+  background: var(--paper);
+  color: var(--ink);
+  border:2px solid var(--line);
+  border-radius:.5rem;
+  padding:.45rem .7rem;
+  font-size:1rem;
+}
+
+/* Bloques tipo “papel” */
+.ticket-block{
+  padding: 1.2rem 1.4rem;
+}
+
+.block-row{
+  display:flex;
+  gap: 1rem;
+  align-items:center;
+  margin:.6rem 0;
+}
+
+.block-row.between{ justify-content:space-between; }
+
+.lbl{
+  min-width:150px;
+  color: var(--gold);
+  font-weight:600;
+  display:flex; gap:.5rem; align-items:center;
+}
+
+/* Inputs/Selects “papel” */
+.text-input, .select-input{
+  flex:1;
+  background: var(--paper);
+  color: var(--ink);
+  border:2px solid var(--line);
+  border-radius:.6rem;
+  padding:.6rem .9rem;
+  font-size:1.02rem;
+  transition:border .2s;
+}
+
+.text-input:focus, .select-input:focus{
+  border-color: var(--gold);
+  outline:none;
+}
+
+.select-wrap{ position:relative; width:100%; }
+.select-arrow{
+  position:absolute; right: .8rem; top:50%;
+  transform:translateY(-50%);
+  color: var(--ink);
+  opacity:.7; pointer-events:none;
+}
+
+/* Línea divisoria tipo recibo */
+.ticket-divider{
+  height:14px;
+  background:
+    radial-gradient(circle at 12px 7px, transparent 7px, rgba(230,201,115,.35) 7px, rgba(230,201,115,.35) 8px, transparent 8px) repeat-x;
+  background-size:24px 14px;
+}
+.ticket-divider.dots{
+  background:
+    radial-gradient(circle, rgba(230,201,115,.45) 1.5px, transparent 1.6px) repeat-x;
+  background-size: 10px 6px;
+  height: 8px;
+}
+
+/* Ítems tipo renglón de ticket */
+.items{ display:flex; flex-direction:column; gap:.6rem; }
+.item-line{
+  display:grid;
+  grid-template-columns: 1.5fr .35fr .6fr auto;
+  gap:.6rem;
+  align-items:center;
+}
+
+.item-producto{ width:100%; }
+.num-input{
+  background: var(--paper);
+  color: var(--ink);
+  border:2px solid var(--line);
+  border-radius:.6rem;
+  padding:.55rem .7rem;
+  font-size:1rem;
+  text-align:right;
+}
+.money-input{
+  background: #fff;
+  color: var(--ink);
+  border:2px solid var(--line);
+  border-radius:.6rem;
+  padding:.55rem .7rem;
+  font-size:1rem;
+  text-align:right;
+}
+.monospace{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+
+/* Botonería */
+.btn-ghost{
+  background: transparent;
+  color: var(--gold);
+  border: 2px dashed var(--gold);
+  border-radius:.6rem;
+  padding:.45rem .8rem;
+  cursor:pointer;
+  font-weight:600;
+}
+.btn-ghost:hover{ background: rgba(230,201,115,.1); }
+
+.btn-icon{
+  border:none; background: transparent; color:#f3f6fd;
+  font-size:1.05rem; cursor:pointer;
+  padding:.4rem .55rem; border-radius:.5rem;
+}
+.btn-icon:hover{ background: rgba(230,201,115,.12); color: var(--gold); }
+.btn-remove i{ pointer-events:none; }
+
+/* Totales */
+.totals{ padding-bottom:.8rem; }
+.total-row{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:.4rem 0;
+}
+.total-row .total-label{ color: var(--gold); font-weight:600; }
+.total-row.grand{
+  border-top:1px dashed rgba(230,201,115,.45);
+  margin-top:.4rem; padding-top:.7rem;
+}
+.send-total{
+  width: 180px;
+  border:2px solid var(--gold);
+  background:#fff; color: var(--ink);
+  border-radius:.6rem;
+  padding:.5rem .7rem;
+}
+
+/* Footer acciones */
+.ticket-footer{
+  display:flex; gap:1rem; justify-content:center;
+  padding: 1.1rem 1.4rem 1.6rem;
+  border-top: 1px dashed rgba(230,201,115,.4);
+}
+.btn-primary{
+  border:none;
+  background: linear-gradient(90deg, var(--gold) 60%, #f6e2af 100%);
+  color: var(--ink);
+  padding:.6rem 1.4rem;
+  border-radius:.6rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.btn-primary:hover{ background:#222; color: var(--gold); }
+
+.btn-outline{
+  text-decoration:none; border:2px solid var(--gold);
+  color: var(--gold); padding:.55rem 1.3rem;
+  border-radius:.6rem; font-weight:700;
+}
+.btn-outline:hover{ background: var(--gold); color: var(--ink); }
+
+/* Perforación decorativa */
+.ticket-perforation{
+  display:flex; justify-content:space-between; gap:.4rem;
+  padding: .4rem 1rem 1rem;
+}
+.ticket-perforation span{
+  width:10px; height:10px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #f6e2af, var(--gold));
+  opacity:.7;
+}
+
+/* Responsive */
+@media (max-width: 780px){
+  .item-line{
+    grid-template-columns: 1fr .5fr .7fr auto;
+  }
+  .lbl{ min-width: 110px; }
+}

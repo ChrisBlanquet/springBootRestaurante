@@ -1,0 +1,201 @@
+@charset "UTF-8";
+
+
+/*
+
+    --color-fondo-principal: rgba(26, 32, 44, 1);
+    --color-fondo-principal-trasparente: rgba(26, 32, 44, 0.8);
+    --color-texto-principal: #F8F4E3;
+    --color-realsarElemento: #D4AF37;
+    --fuente-secundaria: 'Lato', sans-serif;
+    --fuente-principal: 'Playfair Display', serif;
+    --tamano-fuente-chica: 1.2rem;
+    --header-h:90px;
+    --header-height: 90px;
+    --header-border: 4px;
+    --header-z: 1000;
+    --dropdown-z: 500;
+
+*/
+
+:root{
+  --bg: #fffaf5;
+  --burgundy: #7b1e27;      /* vino */
+  --burgundy-2: #5f151b;    /* vino oscuro */
+  --gold: #c8a96a;          /* dorado cálido */
+  --ink: #1f2937;           /* gris muy oscuro */
+  --muted: #6b7280;         /* gris medio */
+  --card-radius: 18px;
+  --shadow-sm: 0 8px 20px rgba(0,0,0,.08);
+  --shadow-lg: 0 20px 50px rgba(0,0,0,.16);
+}
+
+
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 400px at 100% -50%, #fde8d2 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(900px 300px at -10% 0%, #f9d9c2 0%, rgba(255,255,255,0) 55%),
+    var(--bg);
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.content-principal{
+	margin-bottom: 2rem;
+}
+
+
+.page-title{
+  font-weight:800;
+  letter-spacing:.4px;
+  color:#1e232b;
+}
+
+
+.cards-grid{
+  display:grid;
+  gap:24px;
+  grid-template-columns:repeat(1,minmax(0,1fr));
+}
+@media (min-width:576px){ .cards-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:992px){ .cards-grid{ grid-template-columns:repeat(3,1fr); } }
+
+
+.food-card{
+  position:relative;
+  background:#fff;
+  border:0;
+  border-radius:var(--card-radius);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  transform:translateY(0) scale(1);
+  transition:transform .35s ease, box-shadow .35s ease, filter .35s ease;
+}
+.food-card:hover{
+  transform:translateY(-6px) scale(1.01);
+  box-shadow:var(--shadow-lg);
+}
+
+
+.food-img{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  display:block;
+  transition:transform .6s ease, filter .3s ease;
+}
+.food-card:hover .food-img{
+  transform:scale(1.06);
+  filter:saturate(1.05);
+}
+
+
+.price-tag{
+  position:absolute;
+  top:14px;
+  right:14px;
+  background:linear-gradient(180deg, var(--burgundy), var(--burgundy-2));
+  color:#fff;
+  font-weight:700;
+  padding:8px 14px;
+  border-radius:999px;
+  box-shadow:0 8px 24px rgba(123,30,39,.25);
+  font-size:.85rem;
+  letter-spacing:.3px;
+}
+
+
+.card-body{
+  padding:16px 16px 18px 16px;
+}
+
+.card-title{
+  font-family:"Playfair Display", Georgia, "Times New Roman", serif;
+  font-weight:700;
+  font-size:1.25rem;
+  margin:4px 0 6px;
+  color:#1e232b;
+}
+
+.card-text.description{
+  font-size:.95rem;
+  color:var(--muted);
+  line-height:1.45;
+  margin:0 0 14px;
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  min-height:44px;
+}
+
+
+.food-card p.text-muted.small{
+  font-size:1.5rem;
+  font-weight:700;
+  color:var(--gold) !important;
+  margin-bottom:12px;
+}
+.food-card p.text-muted.small span{
+  background:none;
+  border:none;
+  padding:0;
+  color:inherit;
+  font-size:inherit;
+  font-weight:inherit;
+}
+
+
+.btn.btn-dark{
+  background:linear-gradient(180deg, var(--burgundy) 0%, var(--burgundy-2) 100%) !important;
+  border:none !important;
+  color:#fff !important;
+  font-weight:700;
+  letter-spacing:.3px;
+  padding:12px 16px;
+  border-radius:12px;
+  box-shadow:0 8px 18px rgba(123,30,39,.25);
+  transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn.btn-dark:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(123,30,39,.32);
+  filter:brightness(1.02);
+}
+.btn.btn-dark:active{ transform:translateY(0); }
+.btn.btn-dark:focus{
+  outline:3px solid rgba(200,169,106,.5);
+  outline-offset:2px;
+}
+
+
+form.row.g-3 {
+  border-left: 6px solid var(--burgundy);
+  background: linear-gradient(180deg, #ffffff 0%, #fff8f2 100%);
+  transition: box-shadow 0.3s ease;
+}
+
+form.row.g-3:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+form.row.g-3 .form-label {
+  color: var(--burgundy);
+  font-weight: 700;
+}
+
+form.row.g-3 .btn {
+  height: 48px;
+  font-weight: 600;
+}
+
+form.row.g-3 .btn-outline-secondary {
+  color: var(--burgundy-2);
+  border-color: var(--burgundy-2);
+}
+
+form.row.g-3 .btn-outline-secondary:hover {
+  background: var(--burgundy);
+  color: #fff;
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+<link rel="stylesheet" th:href="@{/css/cliente/busqueda.css}">
+<script src="https://kit.fontawesome.com/6f23470d40.js"
+	crossorigin="anonymous"></script>
+</head>
+<body class="pt-header">
+	<div th:replace="fragmentos/header :: siteHeader"></div>
+
+	<div class="containerBusqueda container">
+		<div class="textoEjercicio">
+			<h2 id="textoCambia">
+				Busqueda Avanzada: <span th:text="${descripcionEjercicio}">
+					Crea un método en el repositorio que busque un cliente por su
+					nombre. </span>
+			</h2>
+		</div>
+
+		<form class="busqueda" th:action="@{/busqueda/buscar}" method="get">
+			<select id="selectEjercicio" name="ejercicio">
+				<option value="Ejercicio1"
+					th:selected="${ejercicio == 'Ejercicio1'}">Ejercicio 1</option>
+				<option value="Ejercicio2"
+					th:selected="${ejercicio == 'Ejercicio2'}">Ejercicio 2</option>
+				<option value="Ejercicio3"
+					th:selected="${ejercicio == 'Ejercicio3'}">Ejercicio 3</option>
+				<option value="Ejercicio4"
+					th:selected="${ejercicio == 'Ejercicio4'}">Ejercicio 4</option>
+				<option value="Ejercicio5"
+					th:selected="${ejercicio == 'Ejercicio5'}">Ejercicio 5</option>
+				<option value="Ejercicio6"
+					th:selected="${ejercicio == 'Ejercicio6'}">Ejercicio 6</option>
+				<option value="Ejercicio7"
+					th:selected="${ejercicio == 'Ejercicio7'}">Ejercicio 7</option>
+				<option value="Ejercicio8"
+					th:selected="${ejercicio == 'Ejercicio8'}">Ejercicio 8</option>
+				<option value="Ejercicio9"
+					th:selected="${ejercicio == 'Ejercicio9'}">Ejercicio 9</option>
+				<option value="Ejercicio10"
+					th:selected="${ejercicio == 'Ejercicio10'}">Ejercicio 10</option>
+				<option value="Ejercicio11"
+					th:selected="${ejercicio == 'Ejercicio11'}">Ejercicio 11</option>
+			</select> <input type="text" name="q" placeholder="Buscar cliente..."
+				th:value="${q}">
+			<div id="grupoQ2">
+				<input type="text" name="q2" placeholder="Valor 2" th:value="${q2}">
+			</div>
+			<button type="submit">Buscar</button>
+		</form>
+
+		<div class="listaClientes" th:if="${clientes != null}">
+			<section class="clientes-modern">
+
+				<!-- Lista -->
+				<div class="clientes-grid" th:if="${!#lists.isEmpty(clientes)}">
+					<article class="cliente-card" th:each="c : ${clientes}">
+						<div class="foto-wrapper">
+							<img
+								th:src="${#strings.isEmpty(c.fotocliente)} 
+                     ? @{/img/user-placeholder.jpg} 
+                     : @{/imagen/{tmpImg}(tmpImg=${c.fotocliente})}"
+								th:alt="${'Foto de ' + c.nombre + ' ' + c.apellidos}"/>
+						</div>
+
+						<div class="cliente-body">
+							<h3 class="cliente-nombre"
+								th:text="${c.nombre + ' ' + c.apellidos}">Nombre Apellidos
+							</h3>
+							<p class="cliente-email" th:text="${c.email}">correo@dominio.com</p>
+
+							<div class="cliente-meta">
+								<span class="meta-chip"> ID: <strong th:text="${c.id}">1</strong>
+								</span>
+
+								
+								<span
+									th:classappend="${c.destacado == 1} ? 'meta-chip destacado' : 'meta-chip'"
+									th:text="${c.destacado == 1 ? 'Destacado' : 'No destacado'}">
+								</span> <span class="meta-chip" th:text="${c.telefono}">7471017854</span>
+
+								<span class="meta-chip"> Crédito: <strong
+									th:text="${#numbers.formatDecimal(c.credito,1,2)}">0.00</strong>
+								</span>
+							</div>
+						</div>
+					</article>
+				</div>
+
+				<!-- Sin resultados -->
+				<div class="sin-resultados" th:if="${#lists.isEmpty(clientes)}"
+					aria-live="polite">Sin resultados.</div>
+			</section>
+		</div>
+
+
+	</div>
+
+	<div th:replace="fragmentos/footer :: siteFooter"></div>
+	<script defer th:src="@{/JS/busquedaCliente.js}"></script>
+</body>
+</html>

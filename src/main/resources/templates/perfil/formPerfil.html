@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="*{id} != null ? 'Editar Perfil' : 'Registrar Perfil'">Perfil</title>
+
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/usuarios/formUsuario.css}">
+</head>
+
+<body>
+  <div th:replace="fragmentos/header :: siteHeader"></div>
+
+  <main class="main container">
+    <form class="ticket-wrap"
+          th:action="@{/perfil/guardar}"
+          th:object="${perfil}"
+          method="post">
+
+      <header class="ticket-header">
+        <div class="ticket-brand">
+          <i class="fa-solid fa-id-badge"></i>
+          <h1 class="brand-title"
+              th:text="*{id} != null ? 'Editar Perfil' : 'Registrar Perfil'"></h1>
+        </div>
+
+        <div class="meta-item" th:if="*{id} != null">
+          <label class="meta-label"><i class="fa-solid fa-hashtag"></i> ID Perfil</label>
+          <input type="number" th:field="*{id}" class="meta-input monospace" readonly>
+        </div>
+      </header>
+
+      <section class="ticket-block">
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-user-shield"></i> Nombre del Perfil</label>
+          <input type="text" th:field="*{nombre}" class="text-input"
+                 placeholder="Ej. Administrador, Alumno, Docente" required>
+        </div>
+      </section>
+
+      <footer class="ticket-footer">
+        <button type="submit" class="btn-primary">
+          <i class="fa-solid fa-check"></i> Guardar
+        </button>
+        <a th:href="@{/perfil/listado}" class="btn-outline">
+          <i class="fa-solid fa-xmark"></i> Cancelar
+        </a>
+      </footer>
+    </form>
+  </main>
+
+  <div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

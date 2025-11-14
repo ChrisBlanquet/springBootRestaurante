@@ -1,0 +1,202 @@
+:root {
+  --color-fondo-principal: rgba(26, 32, 44, 1);
+  --color-fondo-principal-trasparente: rgba(26, 32, 44, 0.8);
+  --color-texto-principal: #F8F4E3;
+  --color-realsarElemento: #D4AF37;
+  --color-destacado: #FFD700;
+  --fuente-secundaria: 'Lato', sans-serif;
+  --fuente-principal: 'Playfair Display', serif;
+  --tamano-fuente-chica: 1.1rem;
+}
+
+
+body {
+  background: var(--color-fondo-principal);
+  color: var(--color-texto-principal);
+  font-family: var(--fuente-secundaria);
+  margin: 0;
+  padding: 0;
+}
+
+/*CONTENEDOR*/
+.containerBusqueda {
+  max-width: 1000px;
+  margin: 110px auto 80px;
+  padding: 0 1.5rem;
+}
+
+/*TÍTULO*/
+.textoEjercicio h2 {
+  font-family: var(--fuente-principal);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-texto-principal);
+  margin-bottom: 1.5rem;
+}
+.textoEjercicio span {
+  color: var(--color-realsarElemento);
+}
+
+/*FORMULARIO */
+.busqueda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-fondo-principal-trasparente);
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  margin-bottom: 2.2rem;
+}
+
+
+.busqueda input[name="q"] {
+  flex: 1 1 60%;
+  font-size: 1.3rem;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: var(--color-texto-principal);
+}
+.busqueda input[name="q"]:focus {
+  border-color: var(--color-realsarElemento);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+}
+
+
+.busqueda select,
+.busqueda input[name="q2"] {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: var(--color-texto-principal);
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  outline: none;
+}
+
+.busqueda option {
+  color: black;
+  background: white;
+}
+
+.busqueda select:focus,
+.busqueda input[name="q2"]:focus {
+  border-color: var(--color-realsarElemento);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+/* Botón */
+.busqueda button {
+  background: var(--color-realsarElemento);
+  border: none;
+  color: #1a1a1a;
+  font-weight: 700;
+  padding: 0.75rem 1.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.busqueda button:hover {
+  background: #f5d96e;
+  transform: translateY(-2px);
+}
+
+
+.clientes-modern {
+  background: transparent;
+  padding: 0.5rem 0;
+}
+
+
+.clientes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+
+.cliente-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  background: var(--color-fondo-principal-trasparente);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  border-radius: 10px;
+}
+.cliente-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+/* Imagen */
+.foto-wrapper {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  background: #0f141f;
+}
+.foto-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*INFORMACIÓN */
+.cliente-body {
+  flex: 1;
+  color: var(--color-texto-principal);
+}
+.cliente-nombre {
+  margin: 0;
+  font-family: var(--fuente-principal);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.cliente-email {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin: 0.1rem 0 0.4rem;
+}
+
+
+.cliente-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.meta-chip {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.6rem;
+  background: rgba(248, 244, 227, 0.06);
+  border: 1px solid rgba(248, 244, 227, 0.12);
+}
+
+
+.meta-chip.destacado {
+  background: linear-gradient(90deg, #FFD700, #FFB700, #FFEA70);
+  color: #1a1a1a;
+  font-weight: 800;
+  border: 1px solid #FFC700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.8),
+              0 0 4px rgba(255, 230, 120, 0.5);
+}
+
+
+.sin-resultados {
+  margin-top: 1rem;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.8;
+}
+

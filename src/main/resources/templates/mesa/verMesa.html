@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalles de Mesa</title>
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/mesas/formMesas.css}">
+  <style>
+    .ticket-block p {
+      background: rgba(255,255,255,0.08);
+      padding: .7rem 1rem;
+      border-radius: .6rem;
+      color: #f6f6f6;
+      font-size: 1.05rem;
+      margin: 0;
+      border: 1px dashed rgba(230,201,115,0.3);
+    }
+    
+    .btn-primary{
+    	text-decoration:none;
+    }
+    
+    .btn-primary:hover{
+    	background:var(--ink);
+    }
+
+    .ticket-block p span {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .details-title {
+      text-align: center;
+      font-size: 1.5rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .ticket-header .meta-item {
+      text-align: right;
+    }
+
+    .ticket-header .meta-value {
+      color: var(--gold);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="fragmentos/header :: siteHeader"></div>
+
+<main class="main container">
+  <section class="ticket-wrap">
+    <header class="ticket-header">
+      <div class="ticket-brand">
+        <i class="fa-solid fa-circle-info"></i>
+        <h1 class="brand-title">Detalles de Mesa</h1>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label"><i class="fa-solid fa-hashtag"></i> ID</span>
+        <span class="meta-value" th:text="${mesa.idMesa}">—</span>
+      </div>
+    </header>
+
+    <section class="ticket-block">
+      <h2 class="details-title"><i class="fa-solid fa-chair"></i> Información General</h2>
+
+      <div class="block-row">
+        <label class="lbl"><i class="fa-solid fa-users"></i> Capacidad</label>
+        <p><span th:text="${mesa.capacidad}">4</span> personas</p>
+      </div>
+
+      <div class="block-row">
+        <label class="lbl"><i class="fa-solid fa-location-dot"></i> Ubicación</label>
+        <p th:text="${mesa.ubicacion}">Zona A</p>
+      </div>
+    </section>
+
+    <footer class="ticket-footer">
+      <a th:href="@{/mesa/editar/{id}(id=${mesa.idMesa})}" class="btn-primary">
+        <i class="fa-solid fa-pen-to-square"></i> Editar
+      </a>
+      <a th:href="@{/mesa/listado}" class="btn-outline">
+        <i class="fa-solid fa-arrow-left"></i> Volver
+      </a>
+    </footer>
+  </section>
+</main>
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>

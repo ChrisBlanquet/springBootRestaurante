@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detalles del Pedido</title>
+  <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+  <link rel="stylesheet" th:href="@{/css/pedido/verDetallesPedido.css}">
+</head>
+<body>
+
+  <div th:replace="fragmentos/header :: siteHeader"></div>
+
+  <main class="main container">
+    <div class="ticket-wrap">
+
+      <header class="ticket-header">
+        <div class="ticket-brand">
+          <i class="fa-solid fa-receipt"></i>
+          <h1 class="brand-title">Detalles del Pedido</h1>
+        </div>
+        <div class="ticket-meta">
+          <div class="meta-item">
+            <span class="meta-label"><i class="fa-solid fa-hashtag"></i> Folio</span>
+            <span class="meta-value monospace" th:text="${pedido.idPedido}">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label"><i class="fa-solid fa-calendar-day"></i> Fecha</span>
+            <span class="meta-value" th:text="${#dates.format(pedido.fecha, 'dd/MM/yyyy')}"></span>
+          </div>
+        </div>
+      </header>
+
+      <section class="ticket-block">
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-user"></i> Cliente</label>
+          <span class="meta-value"
+                th:text="${pedido.cliente != null ? pedido.cliente.nombre + ' ' + pedido.cliente.apellidos : '—'}"></span>
+        </div>
+
+        <div class="block-row">
+          <label class="lbl"><i class="fa-solid fa-id-badge"></i> Empleado</label>
+          <span class="meta-value"
+                 th:text="${pedido.atenciones != null && !pedido.atenciones.isEmpty() ? pedido.atenciones[0].empleado.nombreCompleto : '—'}"></span>
+
+			<span th:switch="${pedido.atenciones != null && !pedido.atenciones.isEmpty() ? pedido.atenciones[0].empleado.puesto : 0}">
+			  <span class="meta-value" style="font-style:italic; opacity:0.8;" th:case="1">Puesto: Mesero</span>
+			  <span class="meta-value" style="font-style:italic; opacity:0.8;" th:case="2">Puesto: Cocinero</span>
+			  <span class="meta-value" style="font-style:italic; opacity:0.8;" th:case="3">Puesto: Gerente</span>
+			  <span class="meta-value" style="font-style:italic; opacity:0.6;" th:case="*">Puesto: No asignado</span>
+			</span>
+        </div>
+        
+        
+        <!--Reservación -->
+			<div class="block-row" th:if="${pedido.reservar != null}">
+			  <label class="lbl">
+			    <i class="fa-solid fa-calendar-check"></i> Reservación
+			  </label>
+			  <div class="reserva-info">
+			
+			    <div class="reserva-item">
+			      <i class="fa-regular fa-calendar"></i>
+			      <span>Fecha:</span>
+			      <span class="meta-value" 
+			            th:text="${#temporals.format(pedido.reservar.fecha, 'dd/MM/yyyy')}">—</span>
+			    </div>
+			
+			    <div class="reserva-item">
+			      <i class="fa-regular fa-clock"></i>
+			      <span>Hora:</span>
+			      <span class="meta-value" 
+			            th:text="${pedido.reservar.hora}">—</span>
+			    </div>
+			
+			    <div class="reserva-item">
+			      <i class="fa-solid fa-chair"></i>
+			      <span>Mesa:</span>
+			      <span class="meta-value" 
+			            th:text="${pedido.reservar.mesa != null ? pedido.reservar.mesa.ubicacion : '—'}">—</span>
+			    </div>
+			
+			    <div class="reserva-item">
+			      <i class="fa-solid fa-tag"></i>
+			      <span>Estatus:</span>
+			      <span class="meta-value" 
+			            th:text="${pedido.reservar.estatus}">—</span>
+			    </div>
+			
+			  </div>
+			</div>
+			
+			<!-- Si no hay reservación -->
+			<div class="block-row" th:if="${pedido.reservar == null}">
+			  <label class="lbl"><i class="fa-solid fa-calendar-xmark"></i> Reservación</label>
+			  <span class="meta-value" style="opacity:0.6;">Sin reservación asignada</span>
+			</div>
+        
+      </section>
+
+      <div class="ticket-divider" aria-hidden="true"></div>
+
+      <!-- Productos -->
+      <section class="ticket-block">
+        <div class="block-row between">
+          <label class="lbl"><i class="fa-solid fa-box"></i> Productos del pedido</label>
+        </div>
+
+        <div class="items">
+          <div class="item-line" th:each="detalle : ${pedido.detalles}">
+            <span class="meta-value"
+                  th:text="${detalle.producto.nombre}">Nombre del producto</span>
+            <span class="meta-value"
+                  th:text="${detalle.cantidad}">1</span>
+            <span class="meta-value monospace"
+                  th:text="${#numbers.formatDecimal(detalle.subtotal, 1, 'COMMA', 2, 'POINT')}">0.00</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="ticket-divider dots" aria-hidden="true"></div>
+
+      <section class="ticket-block totals">
+        <div class="total-row">
+          <span class="total-label">Subtotal</span>
+          <span class="total-value monospace"
+                th:text="${#numbers.formatDecimal(pedido.total, 1, 'COMMA', 2, 'POINT')}"></span>
+        </div>
+        <div class="total-row grand">
+          <span class="total-label"><i class="fa-solid fa-dollar-sign"></i> Total</span>
+          <span class="total-value monospace"
+                th:text="${#numbers.formatDecimal(pedido.total, 1, 'COMMA', 2, 'POINT')}"></span>
+        </div>
+      </section>
+
+      <footer class="ticket-footer">
+        <a th:href="@{/pedido/listado}" class="btn-outline">
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </a>
+        <a th:href="@{/pedido/ticket/{id}(id=${pedido.idPedido})}" 
+   target="_blank"
+   class="btn-volver btn-ticket">
+   <i class="fa-solid fa-print"></i> Ticket
+</a>
+
+      </footer>
+
+    </div>
+  </main>
+
+  <div th:replace="fragmentos/footer :: siteFooter"></div>
+</body>
+</html>
