@@ -18,45 +18,56 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-        .authorizeHttpRequests(auth -> auth
+            .authorizeHttpRequests(auth -> auth
 
-        	    // Recursos públicos
-        	    .requestMatchers("/css/**", "/js/**", "/imagen/**", "/Login", "/registro/**","/inicio")
-        	        .permitAll()
+                // Recursos públicos
+                .requestMatchers("/css/**", "/js/**", "/imagen/**", "/Login", "/registro/**",
+                                 "/inicio", "/Inicio.css", "/403")
+                    .permitAll()
 
-        	    // SUPERVISOR
-        	    .requestMatchers("/mesa/**","/producto/**","/empleado")
-        	        .hasAnyAuthority("SUPERVISOR")
+                // CAJERO SOLO ESTAS
+                .requestMatchers("/cliente/crear",
+                				"/cliente/guardar",
+                                 "/cliente/listadocli",
+                                 "/pedido/crear",
+                                 "/pedido/guardar",
+                                 "/pedido/listado",
+                                 "/reservar/listado",
+                                 "/reservar/crear",
+                                 "/reservar/guardar")
+                    .hasAnyAuthority("CAJERO","ADMIN")
 
-        	    .requestMatchers("/reservar/**")
-        	        .hasAnyAuthority("CLIENTE")
+                // CLIENTE TODAS LAS DE RESERVAR
+                .requestMatchers("/reservar/**")
+                    .hasAnyAuthority("CLIENTE","ADMIN")
+                    
+                // SUPERVISOR
+                .requestMatchers("/mesa/**","/producto/**","/empleado/**")
+                    .hasAnyAuthority("SUPERVISOR","ADMIN")
 
-        	    // Páginas visibles sin iniciar sesión
-        	    .requestMatchers("/", "/inicio").permitAll()
-
-        	    // 🔥 Todo lo NO especificado → solo ADMIN lo puede abrir
-        	    .anyRequest().hasAuthority("ADMIN")
-        	)    .exceptionHandling(ex -> ex
-        	        .accessDeniedPage("/403")
-        		    )
-        	.formLogin(form -> form
-        	    .loginPage("/Login")
-        	    .loginProcessingUrl("/perform_login")
-        	    .usernameParameter("username")
-        	    .passwordParameter("password")
-        	    .defaultSuccessUrl("/inicio", true)
-        	    .failureUrl("/Login?error=true")
-        	    .permitAll()
-        	)
-        	.logout(logout -> logout
-        	    .logoutUrl("/salir")
-        	    .logoutSuccessUrl("/Login?logout=true")
-        	    .permitAll()
-        	)
-        	.csrf(csrf -> csrf.disable());
-
+                // Todo lo demás solo admin
+                .anyRequest().hasAuthority("ADMIN")
+            )
+            .exceptionHandling(ex -> ex.accessDeniedPage("/403"))
+            .formLogin(form -> form
+                .loginPage("/Login")
+                .loginProcessingUrl("/perform_login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/inicio", true)
+                .failureUrl("/Login?error=true")
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/salir")
+                .logoutSuccessUrl("/Login?logout=true")
+                .permitAll()
+            )
+            .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
+
+
 }
 
