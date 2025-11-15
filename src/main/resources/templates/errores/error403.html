@@ -3,15 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" th:href="@{/css/errores/error403.css}">
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center vh-100">
+<body>
 
-<div class="card shadow p-4 text-center" style="width: 400px;">
-    <h1 class="text-danger" style="font-size: 60px; font-weight: bold;">403</h1>
-    <h4 class="mb-3">Acceso no autorizado</h4>
-    <p class="text-muted mb-4">No tienes permisos para acceder a esta sección.</p>
-
-    <a href="/inicio" class="btn btn-primary w-100">Regresar al inicio</a>
+<div class="principal">
+<div class="animation">
+	    <lottie-player 
+    src="/animation/Animation403.json"  
+    background="transparent"
+    speed="1"
+    style="width: 500px; height: 500px;" 
+    loop 
+    autoplay>
+</lottie-player>
+</div>
+<div class="content">
+	    <h1 class="title">OOPS!</h1>
+    <h4 class="sub-title">Acceso Denegado</h4>
+    <p class="text">Su cuenta no tiene los permisos necesarios.
+Si necesita habilitarlos, puede contactar al administrador. ¡Estamos para ayudarle!</p>
+    <a href="/inicio" class="btn">Regresar al inicio</a>
+</div>
 </div>
 
 </body>

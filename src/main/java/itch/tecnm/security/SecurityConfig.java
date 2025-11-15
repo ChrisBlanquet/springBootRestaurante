@@ -22,30 +22,32 @@ public class SecurityConfig {
 
                 // Recursos públicos
                 .requestMatchers("/css/**", "/js/**", "/imagen/**", "/Login", "/registro/**",
-                                 "/inicio", "/Inicio.css", "/403")
+                        "/inicio", "/Inicio.css", "/403","/detalleCliente.css","/animation/**")
                     .permitAll()
+                    
+                    
+                .requestMatchers("pedido/listado")
+                .hasAnyAuthority("CAJERO","ADMIN","COCINERO")
 
-                // CAJERO SOLO ESTAS
-                .requestMatchers("/cliente/crear",
-                				"/cliente/guardar",
-                                 "/cliente/listadocli",
-                                 "/pedido/crear",
-                                 "/pedido/guardar",
-                                 "/pedido/listado",
-                                 "/reservar/listado",
-                                 "/reservar/crear",
+                // CAJERO 
+                .requestMatchers("/cliente/crear","/cliente/guardar","/cliente/ver/**",
+                                 "/cliente/listadocli","/pedido/crear","/pedido/guardar","/reservar/listado","/reservar/crear",
                                  "/reservar/guardar")
                     .hasAnyAuthority("CAJERO","ADMIN")
 
-                // CLIENTE TODAS LAS DE RESERVAR
+                // COCINERO 
+                .requestMatchers("/pedido/ver/**")
+                    .hasAnyAuthority("COCINERO","ADMIN")
+
+                // CLIENTE 
                 .requestMatchers("/reservar/**")
                     .hasAnyAuthority("CLIENTE","ADMIN")
-                    
+
                 // SUPERVISOR
                 .requestMatchers("/mesa/**","/producto/**","/empleado/**")
                     .hasAnyAuthority("SUPERVISOR","ADMIN")
 
-                // Todo lo demás solo admin
+                // Lo demás solo admin
                 .anyRequest().hasAuthority("ADMIN")
             )
             .exceptionHandling(ex -> ex.accessDeniedPage("/403"))
@@ -67,7 +69,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-
 }
-
