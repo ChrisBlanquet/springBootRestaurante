@@ -27,7 +27,7 @@ public class SecurityConfig {
                     
                     
                 .requestMatchers("pedido/listado")
-                .hasAnyAuthority("CAJERO","ADMIN","COCINERO")
+                .hasAnyAuthority("CAJERO","ADMIN","COCINERO","MESERO")
 
                 // CAJERO 
                 .requestMatchers("/cliente/crear","/cliente/guardar","/cliente/ver/**",
