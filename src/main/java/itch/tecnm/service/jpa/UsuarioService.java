@@ -34,6 +34,13 @@ public class UsuarioService implements IUsuario{
 	public Usuario GuardarUsuario(Usuario usuario) {
 		return usuarioRepo.save(usuario);
 	}
+
+	@Override
+	public Integer generarNuevoId() {
+	    Integer ultimoId = usuarioRepo.obtenerUltimoId();
+	    return (ultimoId == null ? 1 : ultimoId + 1);
+	}
+
 	
 	
 

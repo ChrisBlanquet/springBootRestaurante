@@ -1,0 +1,170 @@
+@charset "UTF-8";
+
+:root {
+  --bg-dark: #1e2127;
+  --gold: #e6c973;
+  --paper: #f7f7f9;
+  --ink: #111;
+  --border: rgba(230, 201, 115, 0.35);
+}
+
+/* ---- CONTENEDOR PRINCIPAL ---- */
+body {
+  background: var(--bg-dark);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  padding: 2rem 0;
+}
+
+/* ---- TARJETA PRINCIPAL ---- */
+.ticket-wrap {
+  width: min(440px, 95%);
+  background: var(--bg-dark);
+  color: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+}
+
+/* ---- CABECERA ---- */
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, #2a2f38 0%, #1f2329 100%);
+  border-bottom: 1px dashed var(--border);
+  padding: 1.2rem 1.8rem;
+}
+
+.ticket-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-login {
+  width: 55px;
+  border-radius: 8px;
+}
+
+.brand-title {
+  color: var(--gold);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* ---- FORMULARIO ---- */
+.ticket-block {
+  padding: 2rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.titulo-login {
+  color: var(--gold);
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+/* ---- CAMPOS ---- */
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.lbl {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 6px rgba(230, 201, 115, 0.4);
+}
+
+/* ---- PUNTOS DIVISORES ---- */
+.ticket-divider {
+  height: 10px;
+  margin: 1.5rem 0 0.8rem;
+  background: radial-gradient(circle, rgba(230, 201, 115, 0.4) 1.5px, transparent 1.6px) repeat-x;
+  background-size: 10px 6px;
+}
+
+/* ---- BOTONES ---- */
+.ticket-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding-top: 1.2rem;
+  border-top: 1px dashed var(--border);
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--gold) 60%, #f6e2af 100%);
+  color: var(--ink);
+  font-weight: 700;
+  border: none;
+  border-radius: 0.6rem;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  background: #fff;
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  border-radius: 0.6rem;
+  padding: 0.8rem 2rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.btn-outline:hover {
+  background: var(--gold);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .ticket-block {
+    padding: 1.4rem;
+  }
+}

@@ -23,5 +23,10 @@ public interface IPedidoService{
     List<Pedido> buscarPorCliente(String nombreOApellido);
 
     List<Pedido> buscarPorEmpleado(String nombreEmpleado);
+    
+    List<Pedido> buscarPedidosPorEmpleado(String claveEmpleado);
+
+
+
 
 }

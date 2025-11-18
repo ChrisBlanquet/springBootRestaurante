@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import itch.tecnm.Repository.IReservar;
 import itch.tecnm.model.Reservar;
+import itch.tecnm.model.UsuarioDetalle;
 import itch.tecnm.service.IClienteService;
 import itch.tecnm.service.IMesa;
+import itch.tecnm.service.IUsuarioDetalleService;
 
 @Controller
 @RequestMapping("/reservar")
@@ -31,44 +34,115 @@ public class ReservarController {
 
     @Autowired
     private IMesa serviceMesa;
+    
+    @Autowired
+    private IUsuarioDetalleService usuarioDetalleService;
+
 
     @GetMapping("/listado")
     public String listarReservas(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate inicio,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fin,
-            Model model) {
+            Model model,
+            Authentication auth) {
 
         List<Reservar> reservas;
 
-        if (inicio != null && fin != null) {
-            reservas = serviceReservar.buscarEntreFechas(inicio, fin);
-        } else if (inicio != null) {
-            reservas = serviceReservar.buscarEntreUnaFecha(inicio);
+        // === OBTENER ROLES DEL USUARIO LOGUEADO ===
+        boolean esCliente = auth.getAuthorities().stream()
+                         .anyMatch(a -> a.getAuthority().equals("CLIENTE"));
+
+        if (esCliente) {
+            // 🔥 SOLO SUS RESERVAS
+            String username = auth.getName();
+            UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
+
+            if (detalle != null && detalle.getIdCliente() != null) {
+                reservas = serviceReservar.buscarPorCliente(detalle.getIdCliente());
+            } else {
+                reservas = List.of();
+            }
+
         } else {
-            reservas = serviceReservar.todasLasReservas();
+            // 🔥 ADMIN, CAJERO, ETC → FILTRO NORMAL
+            if (inicio != null && fin != null) {
+                reservas = serviceReservar.buscarEntreFechas(inicio, fin);
+            } else if (inicio != null) {
+                reservas = serviceReservar.buscarEntreUnaFecha(inicio);
+            } else {
+                reservas = serviceReservar.todasLasReservas();
+            }
         }
 
         model.addAttribute("reservaLista", reservas);
         return "reservar/listaReservar";
     }
 
+    
+    
+    
+    @GetMapping("/mis-reservas")
+    public String misReservas(Model model, Authentication auth) {
+
+        String username = auth.getName();  
+        UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
+
+        if (detalle == null || detalle.getIdCliente() == null) {
+            return "redirect:/cliente/completar-datos";
+        }
+
+        Integer idCliente = detalle.getIdCliente();
+
+        List<Reservar> reservas = serviceReservar.buscarPorCliente(idCliente);
+
+        model.addAttribute("reservaLista", reservas);
+        return "reservar/listaReservar";
+    }
+    
+    
+
     @GetMapping("/crear")
-    public String crearReserva(Model model) {
+    public String crearReserva(Model model, Authentication auth) {
+
         Reservar nueva = new Reservar();
-        nueva.setCliente(null);
-        nueva.setMesa(null);
+
         model.addAttribute("reserva", nueva);
-        model.addAttribute("clientes", serviceCliente.bucarTodosClientes());
         model.addAttribute("mesas", serviceMesa.listarTodasLasMesas());
+
+        boolean esCliente = auth.getAuthorities()
+                                .stream()
+                                .anyMatch(a -> a.getAuthority().equals("CLIENTE"));
+
+        if (esCliente) {
+            String username = auth.getName();
+            UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
+
+            if (detalle != null && detalle.getIdCliente() != null) {
+
+                model.addAttribute("clientes",
+                    List.of(serviceCliente.buscarPorIdCliente(detalle.getIdCliente())));
+            }
+
+        } else {
+
+            model.addAttribute("clientes", serviceCliente.bucarTodosClientes());
+        }
+
         return "reservar/crearReserva";
     }
+
 
     
     @PostMapping("/guardar")
     public String guardarReserva(@ModelAttribute Reservar reserva) {
-        if (reserva.getCliente() != null && reserva.getCliente().getId() != null) {
-            reserva.setCliente(serviceCliente.buscarPorIdCliente(reserva.getCliente().getId()));
+
+        if (reserva.getCliente() == null || reserva.getCliente().getId() == null) {
+            throw new RuntimeException("ERROR: La reserva llegó sin cliente");
         }
+
+        reserva.setCliente(
+            serviceCliente.buscarPorIdCliente(reserva.getCliente().getId())
+        );
 
         if (reserva.getMesa() != null && reserva.getMesa().getIdMesa() != null) {
             reserva.setMesa(serviceMesa.buscarMesaPorId(reserva.getMesa().getIdMesa()));
@@ -77,6 +151,7 @@ public class ReservarController {
         serviceReservar.guardarReserva(reserva);
         return "redirect:/reservar/listado";
     }
+
 
     @GetMapping("/editar/{id}")
     public String editarReserva(@PathVariable("id") Integer id, Model model) {

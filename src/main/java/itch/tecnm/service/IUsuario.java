@@ -13,6 +13,8 @@ public interface IUsuario {
 	Usuario BuscarUsuarioId(Integer  IdUsuario);
 	
 	Usuario GuardarUsuario(Usuario usuario);
+	
+	 Integer generarNuevoId();
 
 }
 

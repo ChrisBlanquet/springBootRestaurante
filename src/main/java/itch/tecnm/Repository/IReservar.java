@@ -22,6 +22,9 @@ public interface IReservar {
 	public List<Reservar> buscarClienteyEstatus(Integer idCliente, int estatus);
 	
 	public List<Reservar> buscarClienteyEstatusyPedidoNull(Integer idCliente, Integer estatus);
+	
+	List<Reservar> buscarPorCliente(Integer idCliente);
+
 
 	
 	

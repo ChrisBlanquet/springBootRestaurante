@@ -22,11 +22,24 @@
 
         <div class="card-body p-4 p-md-5">
           <form method="post" th:action="@{/cliente/guardar}" th:object="${cliente}" enctype="multipart/form-data">
+          
+          <input type="hidden" name="origen" th:value="${origen}">
+          
+          
             <div class="row g-3">
               <div class="col-md-4" th:classappend="${cliente.Id} != null ? '' : ' d-none'">
                 <label for="Id" class="form-label">ID</label>
                 <input class="form-control" id="id" name="Id" th:field="${cliente.Id}" readonly>
               </div>
+              
+              <div class="col-12"
+     th:if="${origen != 'login' 
+             and #authorization.expression('hasAuthority(''ADMIN'') 
+                                          or hasAuthority(''CAJERO'')')}">
+    <label class="form-label"><i class="fa-solid fa-user"></i> Usuario del sistema</label>
+    <input type="text" class="form-control" name="username" required>
+</div>
+              
 
               <div class="col-md-8">
                 <label for="nombre" class="form-label">Nombre</label>

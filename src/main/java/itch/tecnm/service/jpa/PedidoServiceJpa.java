@@ -57,5 +57,10 @@ public class PedidoServiceJpa implements IPedidoService{
         return pedidoRepo.findByAtenciones_Empleado_NombreCompletoContainingIgnoreCase(nombreEmpleado);
     }
 	
+    @Override
+    public List<Pedido> buscarPedidosPorEmpleado(String claveEmpleado) {
+        return pedidoRepo.buscarPorEmpleadoClave(claveEmpleado);
+    }
+
 
 }

@@ -17,6 +17,9 @@
           th:action="@{/empleado/guardar}"
           th:object="${empleado}"
           method="post">
+          
+          <input type="hidden" name="origen" th:value="${origen}">
+          
 
       <header class="ticket-header">
         <div class="ticket-brand">
@@ -38,6 +41,18 @@
           <label class="lbl"><i class="fa-solid fa-user"></i> Nombre completo</label>
           <input type="text" class="text-input" th:field="*{nombreCompleto}" maxlength="100" required>
         </div>
+        
+<div class="block-row"
+     th:if="${origen != 'login'} 
+            and ${#authorization.expression('hasAuthority(''ADMIN'') or hasAuthority(''SUPERVISOR'')')}">
+   <label class="lbl"><i class="fa-solid fa-user"></i> Usuario del sistema</label>
+   <input type="text" class="text-input" name="username" required>
+</div>
+
+
+
+
+        
 
         <div class="block-row">
           <label class="lbl"><i class="fa-solid fa-briefcase"></i> Puesto</label>

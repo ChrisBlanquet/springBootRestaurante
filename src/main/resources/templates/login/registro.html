@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Crear cuenta · La mesa del autor</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/login/registro.css}">
+</head>
+
+<body>
+  <main class="main">
+    <section class="ticket-wrap">
+
+      <!-- CABECERA -->
+      <div class="ticket-header">
+        <div class="ticket-brand">
+          <img th:src="@{/imagen/imagenesEmpresa/logoCortes.png}" alt="Logo" class="logo-login">
+          <span class="brand-title">Crear Cuenta</span>
+        </div>
+        <i class="fa-solid fa-user-plus" style="color:var(--gold); font-size:1.5rem;"></i>
+      </div>
+
+      <!-- FORMULARIO -->
+      <div class="ticket-block">
+        <h2 class="titulo-login">Registro de Cliente</h2>
+
+        <form th:action="@{/registro/guardar}" th:object="${usuario}" method="post">
+
+          <div class="field">
+            <label class="lbl"><i class="fa-solid fa-user"></i> Nombre</label>
+            <input type="text" th:field="*{nombre}" placeholder="Tu nombre completo" required>
+          </div>
+
+          <div class="field">
+            <label class="lbl"><i class="fa-solid fa-envelope"></i> Email</label>
+            <input type="email" th:field="*{email}" placeholder="correo@ejemplo.com" required>
+          </div>
+
+          <div class="field">
+            <label class="lbl"><i class="fa-solid fa-user-tag"></i> Usuario</label>
+            <input type="text" th:field="*{username}" placeholder="Nombre de usuario" required>
+          </div>
+
+          <div class="field">
+            <label class="lbl"><i class="fa-solid fa-lock"></i> Contraseña</label>
+            <input type="password" th:field="*{password}" placeholder="Contraseña segura" required>
+          </div>
+
+          <div class="ticket-divider"></div>
+
+          <div class="ticket-footer">
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-check"></i> Registrar
+            </button>
+
+            <a th:href="@{/Login}" class="btn-outline">
+              <i class="fa-solid fa-arrow-left"></i> Volver
+            </a>
+          </div>
+
+        </form>
+      </div>
+
+    </section>
+  </main>
+</body>
+
+</html>

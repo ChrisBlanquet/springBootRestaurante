@@ -33,23 +33,40 @@
       <section class="ticket-block">
 
         <!-- Cliente -->
-        <div class="block-row">
-          <label class="lbl"><i class="fa-solid fa-user"></i> Cliente</label>
-          <div class="select-wrap">
-            <select class="select-input" th:field="*{cliente.id}" required>
-              <option value="" disabled
-                      th:selected="*{cliente == null}">
-                Selecciona un cliente…
-              </option>
-              <option th:each="c : ${clientes}"
-                      th:value="${c.id}"
-                      th:text="${c.nombre + ' ' + c.apellidos}"
-                      th:selected="${reserva.cliente != null and c.id == reserva.cliente.id}">
-              </option>
-            </select>
-            <i class="fa-solid fa-chevron-down select-arrow"></i>
-          </div>
-        </div>
+		<div class="block-row">
+		  <label class="lbl"><i class="fa-solid fa-user"></i> Cliente</label>
+		  <div class="select-wrap">
+		
+		    <!-- SELECT (solo visible para ADMIN/CAJERO) -->
+		    <select class="select-input"
+		            th:field="*{cliente.id}"
+		            th:disabled="${#authorization.expression('hasAuthority(''CLIENTE'')')}">
+		
+		      <option value="" disabled 
+		              th:selected="${reserva.cliente == null}">
+		        Selecciona un cliente…
+		      </option>
+		
+		      <option th:each="c : ${clientes}"
+		              th:value="${c.id}"
+		              th:text="${c.nombre + ' ' + c.apellidos}"
+		              th:selected="${reserva.cliente != null and c.id == reserva.cliente.id}">
+		      </option>
+		    </select>
+		
+		    <!-- IMPORTANTE !!
+		         Este hidden envía cliente.id cuando el SELECT está disabled
+		    -->
+		    <input type="hidden"
+		           th:if="${#authorization.expression('hasAuthority(''CLIENTE'')')}"
+		           th:name="cliente.id"
+		           th:value="${clientes[0].id}" />
+		
+		    <i class="fa-solid fa-chevron-down select-arrow"></i>
+		  </div>
+		</div>
+
+
 
         <!-- Mesa -->
         <div class="block-row">

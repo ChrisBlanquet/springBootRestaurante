@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,10 +35,12 @@ import itch.tecnm.model.Empleado;
 import itch.tecnm.model.Pedido;
 import itch.tecnm.model.Producto;
 import itch.tecnm.model.Reservar;
+import itch.tecnm.model.UsuarioDetalle;
 import itch.tecnm.service.IClienteService;
 import itch.tecnm.service.IEmpleado;
 import itch.tecnm.service.IPedidoService;
 import itch.tecnm.service.IProductoService;
+import itch.tecnm.service.IUsuarioDetalleService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpServletResponse;
@@ -67,6 +70,9 @@ public class PedidoController {
 	
 	@Autowired
 	private IReservar reservaService;
+	
+	@Autowired
+	private IUsuarioDetalleService usuarioDetalleService;
 
 	
 	
@@ -78,16 +84,46 @@ public class PedidoController {
 	        @RequestParam(required = false) String fechaExacta,
 	        @RequestParam(required = false) String cliente,
 	        @RequestParam(required = false) String empleado,
-	        Model model) {
+	        Model model,
+	        Authentication auth) {
 
 	    List<Pedido> pedidos = new ArrayList<>();
 
+	    // ----- SI ES MESERO, SOLO SUS PEDIDOS -----
+	    boolean esMesero = auth.getAuthorities().stream()
+	            .anyMatch(r -> r.getAuthority().equals("MESERO"));
 
+	    if (esMesero) {
+
+	        String username = auth.getName();
+	        UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
+
+	        if (detalle == null || detalle.getClaveEmpleado() == null) {
+	            return "redirect:/empleado/completar-datos";
+	        }
+
+	        Empleado emp = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
+
+	        if (emp == null) {
+	            return "redirect:/empleado/completar-datos";
+	        }
+
+	        // 🔥 Ahora sí, pedir los pedidos del mesero REAL
+	        pedidos = servicePedido.buscarPedidosPorEmpleado(emp.getClave());
+
+
+	        model.addAttribute("pedidoLista", pedidos);
+	        return "pedido/listaPedidos";
+	    }
+
+	    // ----- SI NO ES MESERO, FILTRA NORMAL -----
 	    if (fechaExacta != null && !fechaExacta.isEmpty()) {
 	        pedidos = servicePedido.buscarPorFechaExacta(LocalDate.parse(fechaExacta));
 	    }
 
-	    else if (fechaInicio != null && !fechaInicio.isEmpty() && fechaFin != null && !fechaFin.isEmpty()) {
+	    else if (fechaInicio != null && !fechaInicio.isEmpty() &&
+	             fechaFin != null && !fechaFin.isEmpty()) {
+
 	        pedidos = servicePedido.buscarPorRangoFechas(LocalDate.parse(fechaInicio), LocalDate.parse(fechaFin));
 	    }
 
@@ -106,17 +142,36 @@ public class PedidoController {
 	    model.addAttribute("pedidoLista", pedidos);
 	    return "pedido/listaPedidos";
 	}
+
+
 	
 	
 	
 	@GetMapping("/crear")
-	public String crearPedidos(Model model) {
-		 model.addAttribute("pedido", new Pedido());
-		 model.addAttribute("productos",serviceProducto.bucarTodosProductos());
-		 model.addAttribute("clientes", serviceCliente.bucarTodosClientes());
-		 model.addAttribute("empleados",serviceEmpleado.BuscarPuestoMesero(1));
-		return "pedido/crearPedidos";
+	public String crearPedidos(Model model, Authentication auth) {
+
+	    model.addAttribute("pedido", new Pedido());
+	    model.addAttribute("productos", serviceProducto.bucarTodosProductos());
+	    model.addAttribute("clientes", serviceCliente.bucarTodosClientes());
+
+	    String username = auth.getName();
+
+	    UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
+
+	    if (detalle == null || detalle.getClaveEmpleado() == null) {
+	        return "redirect:/empleado/completar-datos";
+	    }
+
+	    Empleado mesero = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
+
+	    List<Empleado> lista = new ArrayList<>();
+	    lista.add(mesero);
+
+	    model.addAttribute("empleados", lista);
+
+	    return "pedido/crearPedidos";
 	}
+
 	
 	
 	@GetMapping("/reservas/cliente/{idCliente}")

@@ -73,32 +73,35 @@
         <span th:text="${reserva.estatus == 1 ? 'Pendiente' : (reserva.estatus == 0 ? 'Cancelada' : 'Confirmada')}">Activa</span>
 
 
-		<div class="listaProductos_acciones">
-		
-		    <!--Mostrar botón Editar si no esta 2 -->
-		    <a th:if="${reserva.estatus != 2}"
-		       th:href="@{/reservar/editar/{id}(id=${reserva.idServicio})}" 
-		       class="listaProductos_acciones-verDetalles"
-		       title="Editar reservación">
-		        <i class="fa-solid fa-circle-info"></i>
-		    </a>
-		
-		    <!-- Mostrar botón Confirmar si no esta 2 -->
-		    <a th:if="${reserva.estatus != 2}"
-		       th:href="@{/reservar/confirmar/{id}(id=${reserva.idServicio})}"
-		       class="listaProductos_acciones-btnconfirmar"
-		       title="Confirmar reservación">
-		        <i class="fa-solid fa-check"></i>
-		    </a>
-		
-		    <!-- Mostrar botón Eliminar -->
-		    <a th:href="@{/reservar/eliminar/{id}(id=${reserva.idServicio})}"
-		       class="listaProductos_acciones-btneliminar"
-		       onclick="return confirm('¿Seguro que deseas cancelar esta reservación?');"
-		       title="Cancelar reservación">
-		        <i class="fa-solid fa-xmark"></i>
-		    </a>
-		</div>
+
+<div th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'', ''CAJERO'')')}" class="listaProductos_acciones">
+
+    <!-- Botón Editar (solo si estatus != 2) -->
+    <a th:if="${reserva.estatus != 2}"
+       th:href="@{/reservar/editar/{id}(id=${reserva.idServicio})}" 
+       class="listaProductos_acciones-verDetalles"
+       title="Editar reservación">
+        <i class="fa-solid fa-circle-info"></i>
+    </a>
+
+    <!-- Botón Confirmar (solo si estatus != 2) -->
+    <a th:if="${reserva.estatus != 2}"
+       th:href="@{/reservar/confirmar/{id}(id=${reserva.idServicio})}"
+       class="listaProductos_acciones-btnconfirmar"
+       title="Confirmar reservación">
+        <i class="fa-solid fa-check"></i>
+    </a>
+
+    <!-- Botón Eliminar -->
+    <a th:href="@{/reservar/eliminar/{id}(id=${reserva.idServicio})}"
+       class="listaProductos_acciones-btneliminar"
+       onclick="return confirm('¿Seguro que deseas cancelar esta reservación?');"
+       title="Cancelar reservación">
+        <i class="fa-solid fa-xmark"></i>
+    </a>
+
+</div>
+
 
     </div>
 </main>

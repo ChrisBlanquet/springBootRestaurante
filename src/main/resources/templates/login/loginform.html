@@ -57,14 +57,22 @@
 
           <div class="ticket-divider"></div>
 
-          <div class="ticket-footer">
-            <button type="submit" class="btn-primary">
-              <i class="fa-solid fa-right-to-bracket"></i> Entrar
-            </button>
-            <a th:href="@{/inicio}" class="btn-outline">
-              <i class="fa-solid fa-home"></i> Volver
-            </a>
-          </div>
+			<div class="ticket-footer">
+			    <button type="submit" class="btn-primary">
+			      <i class="fa-solid fa-right-to-bracket"></i> Entrar
+			    </button>
+			
+			    <a th:href="@{/registro/nuevo}" class="btn-outline">
+			      <i class="fa-solid fa-home"></i> Volver
+			    </a>
+			</div>
+			
+			<div class="ticket-footer">
+			    <a th:href="@{/registro}" class="btn-outline">
+			      <i class="fa-solid fa-user-plus"></i> Crear cuenta
+			    </a>
+			</div>
+
         </form>
       </div>
     </section>

@@ -56,4 +56,10 @@ public class ReservarService implements IReservar{
 		return reservaRepo.findByCliente_IdAndEstatusAndPedidosIsEmpty(idCliente, estatus);
 	}
 
+	@Override
+	public List<Reservar> buscarPorCliente(Integer idCliente) {
+	    return reservaRepo.buscarPorCliente(idCliente);
+	}
+
+
 }
