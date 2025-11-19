@@ -40,6 +40,12 @@ public class UsuarioService implements IUsuario{
 	    Integer ultimoId = usuarioRepo.obtenerUltimoId();
 	    return (ultimoId == null ? 1 : ultimoId + 1);
 	}
+	
+	@Override
+	public boolean existeUsername(String username) {
+	    return usuarioRepo.existsByUsername(username);
+	}
+
 
 	
 	

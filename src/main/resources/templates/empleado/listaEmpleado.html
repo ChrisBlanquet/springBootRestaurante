@@ -52,14 +52,18 @@
                        <span th:text="${empleado.clave}">EMP001</span>
                     </p>
 
-                    <p><i class="fa-solid fa-briefcase"></i> <strong>Puesto:</strong>
-                        <span th:switch="${empleado.puesto}">
-                            <span th:case="1">Mesero</span>
-                            <span th:case="2">Cocinero</span>
-                            <span th:case="3">Cajero</span>
-                            <span th:case="*">Administrador</span>
-                        </span>
-                    </p>
+					 <p>
+					    <i class="fa-solid fa-briefcase"></i> 
+					    <strong>Puesto:</strong>
+					
+					    <span th:switch="${empleado.puesto}">
+					        <span th:case="1">Mesero</span>
+					        <span th:case="2">Cocinero</span>
+					        <span th:case="3">Cajero</span>
+					        <span th:case="4">Administrador</span>
+					        <span th:case="*">Sin asignar</span>
+					    </span>
+					</p>
                 </div>
 
                 <div class="empleado_card_footer">

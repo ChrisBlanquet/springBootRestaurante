@@ -60,16 +60,37 @@ public class UsuarioController {
 
     @PostMapping("/guardar")
     public String guardarUsuario(@ModelAttribute Usuario usuario) {
-        if (usuario.getFechaRegistro() == null) {
+
+        // SI TIENE ID ES EDICIÓN
+        if (usuario.getId() != null) {
+
+            Usuario existente = serviceUsuario.BuscarUsuarioId(usuario.getId());
+
+            if (existente != null) {
+                // 🔥 Mantener contraseña ENCRIPTADA existente
+                usuario.setPassword(existente.getPassword());
+
+                // Mantener fecha registro
+                usuario.setFechaRegistro(existente.getFechaRegistro());
+            } else {
+                // Si no existe el usuario en DB, lo tratamos como NUEVO
+                usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+                usuario.setFechaRegistro(LocalDateTime.now());
+                usuario.setEstatus(1);
+            }
+
+        } else {
+            // REGISTRO NUEVO
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
             usuario.setFechaRegistro(LocalDateTime.now());
+            usuario.setEstatus(1);
         }
-        
-        String passwordPlano = usuario.getPassword();
-        String passwordEncriptado = passwordEncoder.encode(passwordPlano);
-        usuario.setPassword(passwordEncriptado);
+
         serviceUsuario.GuardarUsuario(usuario);
         return "redirect:/usuario/listado";
     }
+
+
 
     @GetMapping("/eliminar/{id}")
     public String eliminarUsuario(@PathVariable("id") Integer id) {

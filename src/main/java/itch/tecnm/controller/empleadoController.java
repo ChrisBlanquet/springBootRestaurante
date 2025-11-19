@@ -57,7 +57,7 @@ public class empleadoController {
 
 	    String usernameAsignado;
 
-	    // Caso 1: viene desde completar-datos (login)
+
 	    if ("login".equals(origen)) {
 	        usernameAsignado = auth.getName();
 	    } 
@@ -115,30 +115,52 @@ public class empleadoController {
     public String completarDatosEmpleado(Model model, Authentication auth) {
 
         String username = auth.getName();
-
         UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
 
         Empleado empleado;
 
-        if (detalle == null) {
-            detalle = new UsuarioDetalle();
-            detalle.setUsername(username);
-        }
-
-        if (detalle.getClaveEmpleado() == null) {
-            empleado = new Empleado();
+        if (detalle == null || detalle.getClaveEmpleado() == null) {
+            empleado = new Empleado(); // Nuevo empleado
         } else {
             empleado = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
-            if (empleado == null) {
-                empleado = new Empleado();
-            }
+            if (empleado == null) empleado = new Empleado();
         }
 
+        // OBTENER EL ROL ACTUAL DEL USUARIO
+        String rol = auth.getAuthorities().iterator().next().getAuthority();
+        System.out.println("ROL DETECTADO = " + rol);
+
+        // Asignar valor del puesto según el rol
+        int puesto = 0;
+
+        switch (rol) {
+            case "MESERO": puesto = 1; break;
+            case "COCINERO": puesto = 2; break;
+            case "CAJERO": puesto = 3; break;
+            case "ADMIN": puesto = 4; break;
+
+            // Supervisor usa el puesto del empleado si ya tiene uno
+            case "SUPERVISOR":
+                puesto = (empleado.getPuesto() != null ? empleado.getPuesto() : 0);
+                break;
+        }
+
+        // 🔥 ESTA ES LA CLAVE: ACTUALIZAR EL OBJETO empleado
+        empleado.setPuesto(puesto);
+
+        // ESTABLECER SI EL SELECT SE BLOQUEA
+        boolean bloquear =
+                rol.equals("MESERO") ||
+                rol.equals("COCINERO") ||
+                rol.equals("CAJERO");
+
         model.addAttribute("empleado", empleado);
+        model.addAttribute("puestoBloqueado", bloquear);
         model.addAttribute("origen", "login");
 
         return "/empleado/crearEmpleado";
     }
+
 
 
 

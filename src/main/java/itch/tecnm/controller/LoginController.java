@@ -29,9 +29,9 @@ public class LoginController {
     private PasswordEncoder passwordEncoder;
 
 
-    // ==================================================
+
     //      LOGIN
-    // ==================================================
+
     @GetMapping("/Login")
     public String login(Model model,
                         @RequestParam(value = "error", required = false) String error,
@@ -52,19 +52,17 @@ public class LoginController {
     }
 
 
-    // ==================================================
+
     //     FORMULARIO DE REGISTRO
-    // ==================================================
+
     @GetMapping("/registro")
     public String formularioRegistro(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "login/registro"; // Vista que te voy a generar si quieres
+        return "login/registro";
     }
 
 
-    // ==================================================
     //     GUARDAR USUARIO (REGISTRO)
-    // ==================================================
     @PostMapping("/registro/guardar")
     public String guardar(@ModelAttribute Usuario usuario) {
 
@@ -80,11 +78,11 @@ public class LoginController {
         // Encriptar contraseña
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
-        // Asignar perfil CLIENTE (id = 7)
+
         Perfil perfilCliente = perfilService.BuscarPorId(7);
         usuario.agregarPerfilUsuario(perfilCliente);
 
-        // Guardar usuario
+
         usuarioService.GuardarUsuario(usuario);
 
         return "redirect:/Login?registrado=true";

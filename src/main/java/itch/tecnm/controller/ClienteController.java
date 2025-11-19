@@ -68,6 +68,15 @@ public class ClienteController {
 
         String username = auth.getName();
 
+        // OBTENER EL ROL
+        String rol = auth.getAuthorities().iterator().next().getAuthority();
+        System.out.println("ROL DETECTADO = " + rol);
+
+        // 🔥 SI NO ES CLIENTE, NO DEBE ENTRAR AQUÍ
+        if (!rol.equals("CLIENTE")) {
+            return "redirect:/empleado/completar-datos";
+        }
+
         UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
         Cliente cliente;
 
@@ -88,7 +97,7 @@ public class ClienteController {
 
         return "cliente/formCliente";
     }
-	
+
 	
 
 	  @PostMapping("/guardar")

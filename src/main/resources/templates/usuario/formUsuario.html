@@ -78,11 +78,15 @@
                  placeholder="correo@ejemplo.com" required>
         </div>
 
-        <div class="block-row">
-          <label class="lbl"><i class="fa-solid fa-key"></i> Contraseña</label>
-          <input type="password" th:field="*{password}" class="text-input"
-                 placeholder="********" required>
-        </div>
+<div class="block-row" th:if="*{id} == null">
+  <label class="lbl"><i class="fa-solid fa-key"></i> Contraseña</label>
+  <input type="password"
+         th:field="*{password}"
+         class="text-input"
+         placeholder="********"
+         required>
+</div>
+
 
 			<div class="block-row">
 			  <label class="lbl"><i class="fa-solid fa-id-badge"></i> Perfil</label>

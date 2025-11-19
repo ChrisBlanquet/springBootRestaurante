@@ -54,19 +54,29 @@
 
         
 
-        <div class="block-row">
-          <label class="lbl"><i class="fa-solid fa-briefcase"></i> Puesto</label>
-          <div class="select-wrap">
-            <select class="select-input" th:field="*{puesto}" required>
-              <option value="" disabled th:selected="*{puesto} == null">Selecciona un puesto…</option>
-              <option value="1" th:selected="*{puesto} == 1">Mesero</option>
-              <option value="2" th:selected="*{puesto} == 2">Cocinero</option>
-              <option value="3" th:selected="*{puesto} == 3">Cajero</option>
-              <option value="4" th:selected="*{puesto} == 4">Administrador</option>
-            </select>
-            <i class="fa-solid fa-chevron-down select-arrow" aria-hidden="true"></i>
-          </div>
-        </div>
+<div class="block-row">
+  <label class="lbl"><i class="fa-solid fa-briefcase"></i> Puesto</label>
+  <div class="select-wrap">
+
+<select class="select-input"
+        th:field="*{puesto}"
+        th:disabled="${puestoBloqueado}"
+        required>
+
+    <option value="" disabled>Selecciona un puesto…</option>
+    <option value="1" th:selected="*{puesto} == 1">Mesero</option>
+    <option value="2" th:selected="*{puesto} == 2">Cocinero</option>
+    <option value="3" th:selected="*{puesto} == 3">Cajero</option>
+    <option value="4" th:selected="*{puesto} == 4">Administrador</option>
+
+</select>
+
+    <i class="fa-solid fa-chevron-down select-arrow"></i>
+  </div>
+  
+  
+</div>
+
       </section>
 
       <div class="ticket-divider" aria-hidden="true"></div>

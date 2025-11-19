@@ -20,28 +20,22 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
 
-            // ============================================
             //  RECURSOS PÚBLICOS
-            // ============================================
         		.requestMatchers(
         			    "/css/**", "/js/**", "/imagen/**",
         			    "/Login", "/registro/**",
         			    "/inicio", "/Inicio",
         			    "/Inicio.css", "/403",
         			    "/detalleCliente.css",
-        			    "/animation/**","/registro", "/registro/**"
+        			    "/animation/**","/registro", "/registro/**,","/producto/listaProducto"
         			).permitAll()
 
-            // ============================================
             //  COMPLETAR DATOS EMPLEADO
             //  MESERO/COCINERO/CAJERO/SUPERVISOR/ADMIN
-            // ============================================
             .requestMatchers("/empleado/completar-datos", "/empleado/guardar")
                 .hasAnyAuthority("MESERO","COCINERO","CAJERO","SUPERVISOR","ADMIN")
 
-            // ============================================
             //  CRUD EMPLEADOS (SUPERVISOR, ADMIN)
-            // ============================================
             .requestMatchers("/empleado/crearEmpleado",
                              "/empleado/listadoEmpleados",
                              "/empleado/editar/**",
@@ -49,27 +43,21 @@ public class SecurityConfig {
                              "/empleado/buscar")
                 .hasAnyAuthority("SUPERVISOR","ADMIN")
 
-            // ============================================
             //  CLIENTE COMPLETA SUS DATOS
-            // ============================================
             .requestMatchers("/cliente/completar-datos",
                              "/cliente/guardar")
                 .hasAnyAuthority("CLIENTE","ADMIN")
 
-            // ============================================
-            //  CRUD CLIENTES (CAJERO + ADMIN)
-            // ============================================
+            //  CRUD CLIENTES (CAJERO, ADMIN)
             .requestMatchers("/cliente/crear", "/cliente/ver/**",
                              "/cliente/listadocli", "/cliente/editar/**",
                              "/cliente/eliminar/**")
                 .hasAnyAuthority("CAJERO","ADMIN")
 
-            // ============================================
             //  RESERVACIONES
-            // ============================================
 
             // CLIENTE — solo crear, guardar y ver sus reservas
-            .requestMatchers("/reservar/mis-reservas",
+            .requestMatchers("/reservar/listado",
                              "/reservar/crear",
                              "/reservar/guardar")
                 .hasAnyAuthority("CLIENTE","ADMIN")
@@ -84,9 +72,7 @@ public class SecurityConfig {
                              "/reservar/confirmar/**")
                 .hasAnyAuthority("CAJERO","ADMIN")
 
-             // ============================================
             //  PEDIDOS
-            // ============================================
 
             // Crear pedidos (MESERO y CAJERO pueden crear)
             .requestMatchers("/pedido/crear", "/pedido/guardar")
@@ -103,10 +89,12 @@ public class SecurityConfig {
             // Listado de pedidos
             .requestMatchers("/pedido/listado")
             .hasAnyAuthority("MESERO","CAJERO","ADMIN","COCINERO")
+            
+            // Listado de productos
+            .requestMatchers("/producto/listaProductoAdmin","/producto/crearProducto","/producto/guardarProducto","/producto/eliminarProducto/**","producto/editarProducto/**")
+            .hasAnyAuthority("SUPERVISOR","ADMIN")
 
-            // ============================================
             //  TODO LO DEMÁS REQUIERE AUTENTICACIÓN
-            // ============================================
             .anyRequest().authenticated()
         )
 

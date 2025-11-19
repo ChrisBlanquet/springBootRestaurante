@@ -15,6 +15,8 @@ public interface IUsuario {
 	Usuario GuardarUsuario(Usuario usuario);
 	
 	 Integer generarNuevoId();
+	 
+	 boolean existeUsername(String username);
 
 }
 

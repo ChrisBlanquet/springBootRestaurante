@@ -123,6 +123,11 @@
 
 						<p sec:authorize="isAuthenticated()" sec:authentication="name"
 							class="user-menu__name"></p>
+							
+							<p sec:authorize="isAuthenticated()">
+										    Rol:
+										    <span th:text="${#authentication.authorities.iterator().next().authority}"></span>
+										</p>
 
 						<div class="login-information">
 							<a sec:authorize="isAuthenticated()" th:href="@{/usuario/perfil}"
