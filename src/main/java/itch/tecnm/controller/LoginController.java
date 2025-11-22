@@ -62,9 +62,15 @@ public class LoginController {
     }
 
 
-    //     GUARDAR USUARIO (REGISTRO)
     @PostMapping("/registro/guardar")
-    public String guardar(@ModelAttribute Usuario usuario) {
+    public String guardar(@ModelAttribute Usuario usuario, Model model) {
+    	
+    	 if (usuarioService.existeUsername(usuario.getUsername())) {
+    	        model.addAttribute("usuario", usuario);
+    	        model.addAttribute("errorUsername", "El nombre de usuario ya está en uso");
+    	        return "login/registro";
+    	    }
+    	
 
         usuario.setFechaRegistro(LocalDateTime.now());
         usuario.setEstatus(1);

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import itch.tecnm.model.Empleado;
 import itch.tecnm.model.UsuarioDetalle;
 import itch.tecnm.service.IEmpleado;
+import itch.tecnm.service.IUsuario;
 import itch.tecnm.service.IUsuarioDetalleService;
 
 @Controller
@@ -28,6 +29,9 @@ public class empleadoController {
 	
 	@Autowired
 	private IUsuarioDetalleService usuarioDetalleService;
+	
+	@Autowired
+	private IUsuario usuarioService;
 	
 	@GetMapping("/listadoEmpleados")
 	public String mostrarListaEmpleados(Model model) {
@@ -50,7 +54,50 @@ public class empleadoController {
 	        @ModelAttribute("empleado") Empleado empleado,
 	        @RequestParam(value = "username", required = false) String usernameForm,
 	        @RequestParam(value = "origen", required = false) String origen,
-	        Authentication auth) {
+	        Authentication auth,Model model) {
+		
+		
+		
+		
+		if (!"login".equals(origen)) {  // solo si no viene del login
+
+		    if (usernameForm == null || usernameForm.trim().isEmpty()) {
+		        model.addAttribute("empleado", empleado);
+		        model.addAttribute("errorUsername", "Debes escribir un nombre de usuario.");
+		        return "/empleado/crearEmpleado";
+		    }
+
+		    // 1️⃣ usuario existe?
+		    if (!usuarioService.existeUsername(usernameForm)) {
+		        model.addAttribute("empleado", empleado);
+		        model.addAttribute("errorUsername", 
+		            "El usuario '" + usernameForm + "' NO existe en el sistema.");
+		        return "/empleado/crearEmpleado";
+		    }
+
+		    // 2️⃣ validar que el usuario tenga un perfil de empleado
+		    var perfiles = usuarioService.obtenerPerfilesPorUsername(usernameForm);
+
+		    boolean esEmpleado =
+		            perfiles.stream().anyMatch(p ->
+		                    p.getId() == 4 || // CAJERO
+		                    p.getId() == 5 || // MESERO
+		                    p.getId() == 8 || // COCINERO
+		                    p.getId() == 6 || // SUPERVISOR
+		                    p.getId() == 1    // ADMIN
+		            );
+
+		    if (!esEmpleado) {
+		        model.addAttribute("empleado", empleado);
+		        model.addAttribute("errorUsername",
+		                "El usuario '" + usernameForm + "' existe, pero NO es un rol de empleado.");
+		        return "/empleado/crearEmpleado";
+		    }
+		}
+		
+		
+		
+		
 
 	    // Guardar empleado normalmente
 	    serviceEmpleado.guardarEmpleado(empleado);
@@ -90,6 +137,7 @@ public class empleadoController {
 
     @GetMapping("/eliminar/{clave}")
     public String eliminarEmpleado(@PathVariable("clave") String clave) {
+    	usuarioDetalleService.limpiarEmpleado(clave);
         serviceEmpleado.eliminarEmpleado(clave);
         return "redirect:/empleado/listadoEmpleados";		
     }

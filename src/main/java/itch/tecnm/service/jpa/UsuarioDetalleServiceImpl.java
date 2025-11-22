@@ -22,4 +22,21 @@ public class UsuarioDetalleServiceImpl implements IUsuarioDetalleService {
     public void guardar(UsuarioDetalle detalle) {
         repo.save(detalle);
     }
+    
+    
+    @Override
+    public void eliminarPorUsername(String username) {
+    	repo.deleteById(username);
+    }
+
+	@Override
+	public void limpiarCliente(Integer idCliente) {
+		repo.limpiarCliente(idCliente);
+	}
+
+	@Override
+	public void limpiarEmpleado(String claveEmpleado) {
+		repo.limpiarEmpleado(claveEmpleado);
+	}
+
 }

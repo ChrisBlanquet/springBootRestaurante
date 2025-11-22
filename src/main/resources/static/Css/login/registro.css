@@ -29,7 +29,7 @@ body {
 
 /* ---- TARJETA PRINCIPAL ---- */
 .ticket-wrap {
-  width: min(440px, 95%);
+  width: min(550px);
   background: var(--bg-dark);
   color: #fff;
   border-radius: 18px;
@@ -85,6 +85,8 @@ body {
 .field {
   display: flex;
   flex-direction: column;
+  gap:10px;
+  padding: 1rem 0;
 }
 
 .lbl {

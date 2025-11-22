@@ -25,6 +25,13 @@
       <!-- FORMULARIO -->
       <div class="ticket-block">
         <h2 class="titulo-login">Registro de Cliente</h2>
+        
+	        <div th:if="${errorUsername}" 
+	     style="background:#ffd6d6; color:#b30000; padding:12px; margin-bottom:15px; border-radius:8px;">
+	    <i class="fa-solid fa-circle-exclamation"></i>
+	    <span th:text="${errorUsername}"></span>
+	</div>
+        
 
         <form th:action="@{/registro/guardar}" th:object="${usuario}" method="post">
 
@@ -61,6 +68,8 @@
           </div>
 
         </form>
+        
+        
       </div>
      
       

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import itch.tecnm.model.Cliente;
 import itch.tecnm.model.UsuarioDetalle;
 import itch.tecnm.service.IClienteService;
+import itch.tecnm.service.IUsuario;
 import itch.tecnm.service.IUsuarioDetalleService;
 
 @Controller
@@ -33,6 +34,9 @@ public class ClienteController {
 	
     @Autowired
     private IUsuarioDetalleService usuarioDetalleService;
+    
+    @Autowired
+    private IUsuario usuarioService;
 
 
 	@GetMapping("/listadocli")
@@ -106,7 +110,44 @@ public class ClienteController {
 	            @RequestParam(value = "username", required = false) String usernameForm,
 	            @RequestParam(value = "origen", required = false) String origen,
 	            @RequestParam("archivo") MultipartFile multiPart,
-	            Authentication auth) {
+	            Authentication auth,Model model) {
+		  
+		  
+		  if (!"login".equals(origen)) {  // Solo cuando el usuario lo escribe manualmente
+
+			    if (usernameForm == null || usernameForm.trim().isEmpty()) {
+			        model.addAttribute("cliente", cliente);
+			        model.addAttribute("origen", origen);
+			        model.addAttribute("errorUsername", "Debes escribir un nombre de usuario.");
+			        return "cliente/formCliente";
+			    }
+
+			    // Verificar que el usuario exista
+			    if (!usuarioService.existeUsername(usernameForm)) {
+			        model.addAttribute("cliente", cliente);
+			        model.addAttribute("origen", origen);
+			        model.addAttribute("errorUsername",
+			            "El usuario '" + usernameForm + "' NO existe en el sistema.");
+			        return "cliente/formCliente";
+			    }
+
+			    // Verificar que sea CLIENTE (perfil id = 7)
+			    var perfiles = usuarioService.obtenerPerfilesPorUsername(usernameForm);
+
+			    boolean esCliente = perfiles.stream()
+			            .anyMatch(p -> p.getId() == 7);  // PERFIL CLIENTE
+
+			    if (!esCliente) {
+			        model.addAttribute("cliente", cliente);
+			        model.addAttribute("origen", origen);
+			        model.addAttribute("errorUsername",
+			                "El usuario '" + usernameForm + "' existe, pero NO es un CLIENTE registrado.");
+			        return "cliente/formCliente";
+			    }
+			}
+
+		  
+		  
 
 	        // ---------------------------------------
 	        // 1. Guardado normal del cliente
@@ -181,6 +222,7 @@ public class ClienteController {
 	
 	@PostMapping("/eliminar/{id}")
 	public String eliminarCliente(@PathVariable("id") int idCliente) {
+		usuarioDetalleService.limpiarCliente(idCliente);
 		serviceCliente.eliminarCliente(idCliente);
 		return "redirect:/cliente/listadocli";
 	}

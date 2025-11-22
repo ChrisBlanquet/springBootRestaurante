@@ -45,6 +45,17 @@ public class ProductoController {
 		return "productoC/detalleProducto";
 	}
 	
+	@GetMapping("/listaProductoAdmin/verProducto/{id}")
+	public String verDetalleProductoAdmin(@PathVariable("id") int idProducto,Model model) {
+		
+		Producto producto=serviceProduct.buscarPorIdProducto(idProducto);
+		
+		System.out.println("El producto encontrado es "+producto);
+		model.addAttribute("productoID",producto);
+		
+		return "productoC/detalleProductoAdmin";
+	}
+	
 	
 	@GetMapping("/listaProductoAdmin")
 	public String mostrarListaProductoAdmin(

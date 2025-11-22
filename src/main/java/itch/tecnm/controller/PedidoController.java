@@ -162,15 +162,24 @@ public class PedidoController {
 	        return "redirect:/empleado/completar-datos";
 	    }
 
-	    Empleado mesero = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
+	    Empleado empleadoLogueado = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
 
-	    List<Empleado> lista = new ArrayList<>();
-	    lista.add(mesero);
+	    String rol = auth.getAuthorities().iterator().next().getAuthority();
+	    System.out.println("ROL ACTUAL: " + rol);
 
-	    model.addAttribute("empleados", lista);
+	    List<Empleado> listaEmpleados;
+	    if (rol.equals("MESERO")) {
+	        listaEmpleados = List.of(empleadoLogueado);
+	    } 
+	    else {
+	        listaEmpleados = serviceEmpleado.BuscarPuestoMesero(1);
+	    }
+
+	    model.addAttribute("empleados", listaEmpleados);
 
 	    return "pedido/crearPedidos";
 	}
+
 
 	
 	

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import itch.tecnm.Repository.UsuarioRepository;
+import itch.tecnm.model.Perfil;
 import itch.tecnm.model.Usuario;
 import itch.tecnm.service.IUsuario;
 
@@ -41,10 +42,16 @@ public class UsuarioService implements IUsuario{
 	    return (ultimoId == null ? 1 : ultimoId + 1);
 	}
 	
-	@Override
-	public boolean existeUsername(String username) {
-	    return usuarioRepo.existsByUsername(username);
-	}
+    @Override
+    public boolean existeUsername(String username) {
+        return usuarioRepo.existsByUsername(username);
+    }
+    
+    @Override
+    public List<Perfil> obtenerPerfilesPorUsername(String username) {
+        return usuarioRepo.obtenerPerfilesPorUsername(username);
+    }
+
 
 
 	

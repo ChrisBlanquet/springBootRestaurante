@@ -6,17 +6,22 @@
   <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
-  <link rel="stylesheet" th:href="@{/css/pedido/formPedidos.css}">
+  <link rel="stylesheet" th:href="@{/css/empleado/crearEmpleado.css}">
 </head>
 
 <body>
   <div th:replace="fragmentos/header :: siteHeader"></div>
 
   <main class="main container">
+
+
+  
     <form class="ticket-wrap"
           th:action="@{/empleado/guardar}"
           th:object="${empleado}"
           method="post">
+          
+          
           
           <input type="hidden" name="origen" th:value="${origen}">
           
@@ -27,14 +32,29 @@
           <h1 class="brand-title" 
               th:text="*{clave} != null ? 'Editar Empleado' : 'Nuevo Empleado'">Nuevo Empleado</h1>
         </div>
+        
         <div class="ticket-meta">
+        
           <div class="meta-item">
             <span class="meta-label"><i class="fa-solid fa-hashtag"></i> Clave</span>
-            <input type="text" th:field="*{clave}" class="meta-input" maxlength="8" required
-                   th:readonly="*{clave} != null">
+			<input type="text"
+			       th:field="*{clave}"
+			       class="meta-input"
+			       maxlength="8"
+			       required
+			       pattern="EMP-[0-9]{1,4}"
+			       title="Formato permitido: EMP-0000"
+			       th:readonly="*{clave} != null"
+			       placeholder="EMP-0000">
+
           </div>
         </div>
       </header>
+      
+      <div th:if="${errorUsername}" class="alert-error">
+  <i class="fa-solid fa-circle-exclamation"></i>
+  <span th:text="${errorUsername}"></span>
+</div>
 
       <section class="ticket-block">
         <div class="block-row">

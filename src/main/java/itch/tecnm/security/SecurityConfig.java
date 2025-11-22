@@ -10,25 +10,34 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	    @Bean
+	    public PasswordEncoder passwordEncoder() {
+	        return new BCryptPasswordEncoder();
+	    }
+	
+	    @Bean
+	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	
+	        http.authorizeHttpRequests(auth -> auth
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	        	//  RECURSOS PÚBLICOS
+	        		.requestMatchers(
+	        		        "/css/**",
+	        		        "/js/**",
+	        		        "/imagen/**",
+	        		        "/Login",
+	        		        "/registro",
+	        		        "/registro/**",
+	        		        "/inicio",
+	        		        "/Inicio",
+	        		        "/Inicio.css",
+	        		        "/403",
+	        		        "/detalleCliente.css",
+	        		        "/animation/**",
+	        		        "/producto/listaProducto","/login/**","/login/registro",
+	        		        "/login/**"
+	        		).permitAll()
 
-        http.authorizeHttpRequests(auth -> auth
-
-            //  RECURSOS PÚBLICOS
-        		.requestMatchers(
-        			    "/css/**", "/js/**", "/imagen/**",
-        			    "/Login", "/registro/**",
-        			    "/inicio", "/Inicio",
-        			    "/Inicio.css", "/403",
-        			    "/detalleCliente.css",
-        			    "/animation/**","/registro", "/registro/**,","/producto/listaProducto"
-        			).permitAll()
 
             //  COMPLETAR DATOS EMPLEADO
             //  MESERO/COCINERO/CAJERO/SUPERVISOR/ADMIN
@@ -46,13 +55,18 @@ public class SecurityConfig {
             //  CLIENTE COMPLETA SUS DATOS
             .requestMatchers("/cliente/completar-datos",
                              "/cliente/guardar")
-                .hasAnyAuthority("CLIENTE","ADMIN")
+                .hasAnyAuthority("CLIENTE","ADMIN","CAJERO")
 
-            //  CRUD CLIENTES (CAJERO, ADMIN)
-            .requestMatchers("/cliente/crear", "/cliente/ver/**",
-                             "/cliente/listadocli", "/cliente/editar/**",
-                             "/cliente/eliminar/**")
-                .hasAnyAuthority("CAJERO","ADMIN")
+             // CRUD CLIENTES (CAJERO, ADMIN)
+                .requestMatchers(
+                    "/cliente/crear",
+                    "/cliente/ver/**",
+                    "/cliente/listadocli",
+                    "/cliente/editar/**",
+                    "/cliente/eliminar/**"
+                )
+                .hasAnyAuthority("CAJERO", "ADMIN","SUPERVISOR")
+
 
             //  RESERVACIONES
 
@@ -60,7 +74,7 @@ public class SecurityConfig {
             .requestMatchers("/reservar/listado",
                              "/reservar/crear",
                              "/reservar/guardar")
-                .hasAnyAuthority("CLIENTE","ADMIN")
+                .hasAnyAuthority("CLIENTE","ADMIN","CAJERO")
 
             // LISTADO GENERAL — cajero y admin (también cocinero y mesero pueden verlo)
             .requestMatchers("/reservar/listado")
@@ -77,8 +91,11 @@ public class SecurityConfig {
             // Crear pedidos (MESERO y CAJERO pueden crear)
             .requestMatchers("/pedido/crear", "/pedido/guardar")
             .hasAnyAuthority("MESERO","CAJERO","ADMIN")
+            
+            
 
-            // Editar pedido (solo MESERO dueño, pero eso ya lo controlas en controlador)
+
+            // Editar pedido 
             .requestMatchers("/pedido/editar/**")
             .hasAnyAuthority("MESERO","CAJERO","ADMIN")
 
@@ -91,8 +108,17 @@ public class SecurityConfig {
             .hasAnyAuthority("MESERO","CAJERO","ADMIN","COCINERO")
             
             // Listado de productos
-            .requestMatchers("/producto/listaProductoAdmin","/producto/crearProducto","/producto/guardarProducto","/producto/eliminarProducto/**","producto/editarProducto/**")
+            .requestMatchers("/producto/listaProductoAdmin","/producto/listaProductoAdmin/verProducto/**","/producto/crearProducto","/producto/guardarProducto","/producto/eliminarProducto/**","producto/editarProducto/**")
             .hasAnyAuthority("SUPERVISOR","ADMIN")
+            
+         // Eliminar pedidos: SOLO CAJERO Y ADMIN
+            .requestMatchers("/pedido/eliminar/**")
+                .hasAnyAuthority("CAJERO","ADMIN")
+                
+                
+                //MESA
+                .requestMatchers("/mesa/**","/perfil/**","usuario/**")
+                .hasAnyAuthority("SUPERVISOR","ADMIN")
 
             //  TODO LO DEMÁS REQUIERE AUTENTICACIÓN
             .anyRequest().authenticated()

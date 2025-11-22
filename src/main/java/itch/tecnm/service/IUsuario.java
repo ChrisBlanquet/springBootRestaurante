@@ -2,6 +2,7 @@ package itch.tecnm.service;
 
 import java.util.List;
 
+import itch.tecnm.model.Perfil;
 import itch.tecnm.model.Usuario;
 
 public interface IUsuario {
@@ -17,6 +18,9 @@ public interface IUsuario {
 	 Integer generarNuevoId();
 	 
 	 boolean existeUsername(String username);
+	 
+	 List<Perfil> obtenerPerfilesPorUsername(String username);
+
 
 }
 

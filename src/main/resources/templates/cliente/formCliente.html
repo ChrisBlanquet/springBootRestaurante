@@ -19,6 +19,11 @@
           <h2 class="mb-0">Formulario de Usuario</h2>
           <p class="subtitle mb-0">Ingresa los datos del cliente</p>
         </div>
+        
+        <div th:if="${errorUsername}" class="alert alert-danger text-center">
+    <span th:text="${errorUsername}"></span>
+</div>
+        
 
         <div class="card-body p-4 p-md-5">
           <form method="post" th:action="@{/cliente/guardar}" th:object="${cliente}" enctype="multipart/form-data">

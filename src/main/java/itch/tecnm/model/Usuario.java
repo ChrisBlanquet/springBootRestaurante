@@ -21,6 +21,7 @@ public class Usuario {
 
     @Id
     private Integer id;
+    
 
     private String username;
     private String nombre;

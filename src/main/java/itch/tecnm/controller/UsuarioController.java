@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import itch.tecnm.model.Usuario;
+import itch.tecnm.model.UsuarioDetalle;
+import itch.tecnm.service.IClienteService;
+import itch.tecnm.service.IEmpleado;
 import itch.tecnm.service.IPerfilService;
 import itch.tecnm.service.IUsuario;
+import itch.tecnm.service.IUsuarioDetalleService;
 
 @Controller
 @RequestMapping(value="/usuario")
@@ -29,6 +33,15 @@ public class UsuarioController {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private IUsuarioDetalleService detalleUsuario;
+    
+	@Autowired
+	private IClienteService serviceCliente;
+	
+	@Autowired
+	private IEmpleado serviceEmpleado;
 
 
     @GetMapping("/listado")
@@ -94,9 +107,40 @@ public class UsuarioController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminarUsuario(@PathVariable("id") Integer id) {
+
+        // 1. BUSCAR USUARIO
+        Usuario usuario = serviceUsuario.BuscarUsuarioId(id);
+        if (usuario == null) {
+            return "redirect:/usuario/listado";
+        }
+
+        String username = usuario.getUsername();
+
+        // 2. BUSCAR DETALLE
+        UsuarioDetalle detalle1 = detalleUsuario.buscarPorUsername(username);
+
+        if (detalle1 != null) {
+
+            // 3A. ELIMINAR CLIENTE SI EXISTE
+            if (detalle1.getIdCliente() != null) {
+            	serviceCliente.eliminarCliente(detalle1.getIdCliente());
+            }
+
+            // 3B. ELIMINAR EMPLEADO SI EXISTE
+            if (detalle1.getClaveEmpleado() != null) {
+            	serviceEmpleado.eliminarEmpleado(detalle1.getClaveEmpleado());
+            }
+
+            // 4. ELIMINAR REGISTRO DE usuario_detalle
+            detalleUsuario.eliminarPorUsername(username);
+        }
+
+        // 5. ELIMINAR EL USUARIO
         serviceUsuario.EliminarUsuario(id);
+
         return "redirect:/usuario/listado";
     }
+
 
 
     @GetMapping("/ver/{id}")
