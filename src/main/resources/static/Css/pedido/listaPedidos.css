@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root{
-	--tamano_tabla_column:2fr 2fr 3fr 3fr 2fr 3fr;
+	--tamano_tabla_column:2fr 2fr 3fr 3fr 2fr minmax(250px, 1fr);
 }
 
 .main {
@@ -329,15 +329,25 @@
 
 
 
-@media (max-width: 992px) {
-    .listaProductos_serch_box {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .listaProductos_serch_box input,
-    .listaProductos_serch_box button,
-    .listaProductos_serch_box a {
-        width: 100%;
-    }
+@media screen and (max-width:1080px){
+	.listaProductos_acciones-verDetalles{
+		font-size: 0.8rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.listaProductos_acciones{
+	padding: 0.4rem 0.8rem;
+    border-radius: 16px;
+    font-weight: 500;
+	}
+	
+	.listaProductos_item{
+	font-size: 0.8em;
+	}
+	
+	.listaProductos-descripcion{
+	padding: 0 12px;
+	}
 }

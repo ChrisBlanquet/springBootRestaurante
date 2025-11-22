@@ -51,9 +51,6 @@
       th:text="${#temporals.format(user.fechaRegistro, 'dd/MM/yyyy')}">05/11/2025</span>
 
 <div class="listaProductos_acciones">
-	  <a th:href="@{usuario/ver/{id}(id=${user.id})}" class="listaProductos_acciones-verDetalles">
-	    <i class="fa-solid fa-circle-info"></i> Ver Detalles
-	  </a>
 	  <a th:href="@{/usuario/editar/{id}(id=${user.id})}" class="listaProductos_acciones-btneditar">
 	    <i class="fa-solid fa-pen-to-square"></i>
 	  </a>

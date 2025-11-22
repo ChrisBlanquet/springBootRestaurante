@@ -111,9 +111,12 @@
     width: fit-content;
     justify-content: center;
     align-items: center;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 200;
+    flex-wrap:wrap;
     background-color: rgba(201, 185, 185, 0.137);
+     white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .tag_acciones{
@@ -181,7 +184,7 @@
     text-decoration: none;
     background-color: var(--color-realsarElemento);
     color: var(--color-fondo-principal);
-    padding: 0.4rem 0.8rem;
+    padding: 0.4rem 0.2rem;
     border-radius: 16px;
     font-weight: 500;
     font-family: var(--fuente-principal);
@@ -203,8 +206,8 @@
     background-color: rgb(233, 238, 246, 1);
     padding: 0.5rem 0.8rem;
     border-radius: 100%;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
     justify-content: center;
     align-items: center;
     text-decoration:none;

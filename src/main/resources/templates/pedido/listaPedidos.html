@@ -84,7 +84,7 @@
             <span th:text="${pedido.atenciones != null && !pedido.atenciones.isEmpty() ? pedido.atenciones[0].empleado.nombreCompleto : '—'}"></span>
             <span class="listaProductos-descripcion" th:text="${pedido.total}"></span>
             <div class="listaProductos_acciones">
-                <a  th:href="@{/pedido/ver/{id} (id=${pedido.idPedido})}" class="listaProductos_acciones-verDetalles"><i class="fa-solid fa-circle-info"></i>Ver Detalles</a>
+                <a  th:href="@{/pedido/ver/{id} (id=${pedido.idPedido})}" class="listaProductos_acciones-verDetalles"><i class="fa-solid fa-circle-info"></i>Detalles</a>
                 <a th:href="@{/pedido/editar/{id} (id=${pedido.idPedido})}" class="listaProductos_acciones-btneditar"><i class="fa-solid fa-pen-to-square"></i></a>
                 <a class="listaProductos_acciones-btneliminar" th:href="@{/pedido/eliminar/{id} (id=${pedido.idPedido})}" onclick="return confirm('¿Seguro que deseas eliminar este producto?');"><i class="fa-solid fa-trash"></i></a>
         
