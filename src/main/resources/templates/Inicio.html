@@ -1,23 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Titulo</title>
- <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
-<link rel="stylesheet" th:href="@{/Inicio.css}">
- <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Inicio</title>
+
+    <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
+    <link rel="stylesheet" th:href="@{/inicio.css}">
+    <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-	 <div th:replace="fragmentos/header :: siteHeader"></div>
+
+    <div th:replace="fragmentos/header :: siteHeader"></div>
+
     <div class="hero">
         <section class="hero__landing">
             <div class="hero__parrafos">
-                <h2 class="hero__title"> El Arte de la Arrachera.</h2>
-                <p class="hero__subtitle">Descubre la inigualable ternura y sabor de nuestra Arrachera Premium, una experiencia culinaria elevada a la perfección.</p>
+                <h2 class="hero__title">El Arte de la Arrachera.</h2>
+                <p class="hero__subtitle">Descubre la inigualable ternura y sabor de nuestra Arrachera Premium.</p>
                 <a th:href="@{/producto/listaProducto}" class="hero__cta">Ordenar Ahora</a>
             </div>
         </section>
     </div>
+
     <div th:replace="fragmentos/footer :: siteFooter"></div>
+
 </body>
 </html>

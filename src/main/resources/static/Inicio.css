@@ -19,7 +19,7 @@ body{
 }
 
 .hero__landing{
-    background-image: url(../imagen/imagenesEmpresa/fondoLandingPage.png);
+    background-image:url("/imagen/imagenesEmpresa/fondoLandingPage.png");
     background-size: cover;
     background-position: center;
     width: 100%;

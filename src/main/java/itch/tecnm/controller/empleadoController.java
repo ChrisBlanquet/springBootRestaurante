@@ -39,14 +39,14 @@ public class empleadoController {
 		List<Empleado> listaEmpleado = serviceEmpleado.MostrartodosEmpledos();
 		model.addAttribute("listaEmpleado", listaEmpleado);
 
-		return "/empleado/listaEmpleado";
+		return "empleado/listaEmpleado";
 	}
 	
 	
 	@GetMapping("/crearEmpleado")
 	public String CrearEmpleado(Empleado empleado,Model model) {
 		model.addAttribute("empleado", new Empleado());
-		return "/empleado/crearEmpleado";
+		return "empleado/crearEmpleado";
 	}
 	
 	@PostMapping("/guardar")
@@ -64,7 +64,7 @@ public class empleadoController {
 		    if (usernameForm == null || usernameForm.trim().isEmpty()) {
 		        model.addAttribute("empleado", empleado);
 		        model.addAttribute("errorUsername", "Debes escribir un nombre de usuario.");
-		        return "/empleado/crearEmpleado";
+		        return "empleado/crearEmpleado";
 		    }
 
 		    // 1️⃣ usuario existe?
@@ -72,7 +72,7 @@ public class empleadoController {
 		        model.addAttribute("empleado", empleado);
 		        model.addAttribute("errorUsername", 
 		            "El usuario '" + usernameForm + "' NO existe en el sistema.");
-		        return "/empleado/crearEmpleado";
+		        return "empleado/crearEmpleado";
 		    }
 
 		    // 2️⃣ validar que el usuario tenga un perfil de empleado
@@ -91,7 +91,7 @@ public class empleadoController {
 		        model.addAttribute("empleado", empleado);
 		        model.addAttribute("errorUsername",
 		                "El usuario '" + usernameForm + "' existe, pero NO es un rol de empleado.");
-		        return "/empleado/crearEmpleado";
+		        return "empleado/crearEmpleado";
 		    }
 		}
 		
@@ -132,7 +132,7 @@ public class empleadoController {
     public String editarEmpleado(@PathVariable("clave") String clave, Model model) {
         Empleado empleado = serviceEmpleado.buscarPorClave(clave);
         model.addAttribute("empleado", empleado);
-        return "/empleado/crearEmpleado";
+        return "empleado/crearEmpleado";
     }
 
     @GetMapping("/eliminar/{clave}")
@@ -206,7 +206,7 @@ public class empleadoController {
         model.addAttribute("puestoBloqueado", bloquear);
         model.addAttribute("origen", "login");
 
-        return "/empleado/crearEmpleado";
+        return "empleado/crearEmpleado";
     }
 
 

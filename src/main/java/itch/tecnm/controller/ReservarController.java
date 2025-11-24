@@ -48,7 +48,7 @@ public class ReservarController {
 
         List<Reservar> reservas;
 
-        // === OBTENER ROLES DEL USUARIO LOGUEADO ===
+
         boolean esCliente = auth.getAuthorities().stream()
                          .anyMatch(a -> a.getAuthority().equals("CLIENTE"));
 
@@ -75,7 +75,7 @@ public class ReservarController {
         }
 
         model.addAttribute("reservaLista", reservas);
-        return "reservar/listaReservar";
+        return "reservar/ListaReservar";
     }
 
     
@@ -96,7 +96,7 @@ public class ReservarController {
         List<Reservar> reservas = serviceReservar.buscarPorCliente(idCliente);
 
         model.addAttribute("reservaLista", reservas);
-        return "reservar/listaReservar";
+        return "reservar/ListaReservar";
     }
     
     

@@ -29,10 +29,11 @@ public class LoginController {
     private PasswordEncoder passwordEncoder;
 
 
+    // ============================
+    //          LOGIN
+    // ============================
 
-    //      LOGIN
-
-    @GetMapping("/Login")
+    @GetMapping("/login")
     public String login(Model model,
                         @RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
@@ -42,7 +43,12 @@ public class LoginController {
         if (logout != null) model.addAttribute("logout", true);
         if (registrado != null) model.addAttribute("registrado", true);
 
-        return "/login/loginform";
+        return "login/loginform";
+    }
+
+    @GetMapping("/")
+    public String raiz() {
+        return "redirect:/login";
     }
 
 
@@ -52,8 +58,9 @@ public class LoginController {
     }
 
 
-
-    //     FORMULARIO DE REGISTRO
+    // ============================
+    //      REGISTRO
+    // ============================
 
     @GetMapping("/registro")
     public String formularioRegistro(Model model) {
@@ -61,36 +68,29 @@ public class LoginController {
         return "login/registro";
     }
 
-
     @PostMapping("/registro/guardar")
     public String guardar(@ModelAttribute Usuario usuario, Model model) {
-    	
-    	 if (usuarioService.existeUsername(usuario.getUsername())) {
-    	        model.addAttribute("usuario", usuario);
-    	        model.addAttribute("errorUsername", "El nombre de usuario ya está en uso");
-    	        return "login/registro";
-    	    }
-    	
+
+        if (usuarioService.existeUsername(usuario.getUsername())) {
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("errorUsername", "El nombre de usuario ya está en uso");
+            return "login/registro";
+        }
 
         usuario.setFechaRegistro(LocalDateTime.now());
         usuario.setEstatus(1);
 
-        // Generar ID manual
         if (usuario.getId() == null) {
-            Integer nuevoId = usuarioService.generarNuevoId();
-            usuario.setId(nuevoId);
+            usuario.setId(usuarioService.generarNuevoId());
         }
 
-        // Encriptar contraseña
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-
 
         Perfil perfilCliente = perfilService.BuscarPorId(7);
         usuario.agregarPerfilUsuario(perfilCliente);
 
-
         usuarioService.GuardarUsuario(usuario);
 
-        return "redirect:/Login?registrado=true";
+        return "redirect:/login?registrado=true";
     }
 }
