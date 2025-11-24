@@ -65,7 +65,11 @@
             <div class="listaProductos__item_container-idimg">
                 <span class="listaProductos_item_id"  th:text="${producto.Id}">1</span>
 				<picture class="listaProductos_container-img">
-				    <img class="listaProductos_img" th:src="${producto.foto != null and !#strings.isEmpty(producto.foto)} ? @{/imagen/{tmpImg}(tmpImg=${producto.foto})} : @{/imagen/imagenesEmpresa/default_producto.jpg}" alt="Arrachera Premium">
+				    <img class="listaProductos_img"
+				     th:src="${producto.foto != null and !#strings.isEmpty(producto.foto)} 
+				        ? @{/uploads/{tmpImg}(tmpImg=${producto.foto})} 
+				        : @{/uploads/default_producto.jpg}"
+				     alt="imagen producto">
 				</picture>
             </div>
             <span class="listaProductos-nombreProducuto" th:text="${producto.nombre}">Arrachedddra Premium</span>

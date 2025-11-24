@@ -108,7 +108,7 @@ public class ProductoController {
 
 	    if (!multiPart.isEmpty()) {
 	        try {
-	        	 String ruta = "C:\\Users\\cris_\\Pictures\\ProyectoSpring";
+	        	String ruta = "uploads/";
 
 	            String original = multiPart.getOriginalFilename();
 	            String extension = "";

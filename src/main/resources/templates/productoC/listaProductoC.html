@@ -62,7 +62,10 @@
   <div class="container content-principal">
     <div class="cards-grid">
       <div class="food-card" th:each="producto : ${listaProducto}">
-        <img th:src="@{/imagen/{tmpImg}(tmpImg=${producto.foto})}" alt="producto" class="card-img-top food-img">
+        <img th:src="@{/uploads/{tmpImg}(tmpImg=${producto.foto})}" 
+		     alt="producto" 
+		     class="card-img-top food-img">
+
 
         <div class="card-body">
           <h5 class="card-title" th:text="${producto.nombre}">Nombre</h5>

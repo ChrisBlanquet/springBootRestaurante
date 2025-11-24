@@ -2,60 +2,139 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
- <link rel="stylesheet" th:href="@{/css/fragment/header.css}">
- <script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<title>Lista de Clientes</title>
 
-
-<!--
+<script src="https://kit.fontawesome.com/6f23470d40.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" th:href="@{/css/fragment/header.css}">
 <link rel="stylesheet" th:href="@{/listaC.css}">
- -->
 </head>
+
 <body>
- <div th:replace="fragmentos/header :: siteHeader"></div>
 
-<h1 class="text-center mt-5">Lista de Clientes</h1>
+<div th:replace="fragmentos/header :: siteHeader"></div>
 
-<div class="container pt-main">
-  <div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered align-middle w-100">
-      <thead class="table-dark text-center">
-        <tr>
-          <th>Id</th>
-          <th>Usuario</th>
-          <th>Correo</th>
-          <th>Crédito</th>
-          <th>Teléfono</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="cliente : ${clienteLista}">
-          <td class="text-center" th:text="${cliente.id}"></td>
-          <td>
-            <div class="d-flex align-items-center">
-              <img th:src="@{/imagen/{tmpImg} (tmpImg = ${cliente.fotocliente})}" alt="usuario" class="rounded-circle me-2" width="40" height="40">
-              <div>
-                <span th:text="${cliente.nombre} + ' ' + ${cliente.apellidos}" class="fw-semibold"></span>
-                <div>
-                  <small class="text-muted" th:text="${cliente.destacado==1 ? 'Destacado' : ''}"></small>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td th:text="${cliente.email}"></td>
-          <td th:text="${cliente.credito}"></td>
-          <td th:text="${cliente.telefono}"></td>
-          <td class="text-center">
-            <a th:href="@{/cliente/ver/{id} (id=${cliente.id})}" class="btn btn-outline-secondary btn-sm">⋮</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<main class="main container">
+
+    <div class="listaProductos">
+
+        <h2>Lista de Clientes</h2>
+
+        
+<div class="listaProductos_header">
+
+   <form class="listaProductos_serch_box"
+      th:action="@{/cliente/listadocli}"
+      method="get">
+
+    <i class="fa-solid fa-magnifying-glass"></i>
+
+    <input type="text" 
+           name="nombre"
+           placeholder="Buscar cliente..."
+           th:value="${param.nombre}" />
+
+    <button type="submit" class="btn_buscar">
+        <i class="fa-solid fa-search"></i> Buscar
+    </button>
+
+    <button type="button" class="btn_limpiar" onclick="window.location.href='/cliente/listadocli'">
+        <i class="fa-solid fa-eraser"></i> Borrar filtros
+    </button>
+
+</form>
+
+
+    <a th:href="@{/cliente/crear}" class="btn_agregarProducto">
+        <i class="fa-solid fa-user-plus"></i> Crear Cliente
+    </a>
+
 </div>
+        </div>
 
- <div th:replace="fragmentos/footer :: siteFooter"></div>
+        <!-- ENCABEZADOS -->
+        <div class="listaProductos_encabezados">
+            <span class="encabezados_tag">ID</span>
+            <span class="encabezados_tag">Cliente</span>
+            <span class="encabezados_tag">Correo</span>
+            <span class="encabezados_tag">Crédito</span>
+            <span class="encabezados_tag">Teléfono</span>
+            <span class="encabezados_tag tag_acciones">Acciones</span>
+        </div>
+
+    </div>
+
+    <!-- ITEM CLIENTE -->
+    <div th:each="cliente : ${clienteLista}" class="listaProductos_item">
+
+        <!-- ID + IMG -->
+        <div class="listaProductos__item_container-idimg">
+            <span class="listaProductos_item_id" th:text="${cliente.id}">1</span>
+
+            <picture class="listaProductos_container-img">
+                <img class="cliente-image"
+     th:src="${cliente.fotocliente != null and !#strings.isEmpty(cliente.fotocliente)} 
+                ? @{/uploads/{img}(img=${cliente.fotocliente})} 
+                : @{/uploads/default_cliente.jpg}"
+     alt="Imagen del cliente">
+
+            </picture>
+        </div>
+
+        <!-- NOMBRE -->
+        <span class="listaProductos-nombreProducuto"
+              th:text="${cliente.nombre} + ' ' + ${cliente.apellidos}">
+            Nombre Cliente
+        </span>
+
+        <!-- CORREO -->
+        <span class="listaProductos-descripcion"
+              th:text="${cliente.email}">
+            Cliente Email
+        </span>
+
+        <!-- CRÉDITO -->
+        <span class="listaProductos-precio"
+              th:text="${cliente.credito}">
+            $1000
+        </span>
+
+        <!-- TELÉFONO -->
+        <span class="listaProductos-descripcion"
+              th:text="${cliente.telefono}">
+            7471234567
+        </span>
+
+        <!-- ACCIONES -->
+        <div class="listaProductos_acciones">
+
+            <!-- VER DETALLES -->
+            <a th:href="@{/cliente/ver/{id}(id=${cliente.id})}"
+               class="listaProductos_acciones-verDetalles">
+                <i class="fa-solid fa-circle-info"></i> Ver Detalles
+            </a>
+
+            <!-- EDITAR -->
+            <a th:href="@{/cliente/editar/{id}(id=${cliente.id})}"
+               class="listaProductos_acciones-btneditar">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+
+            <!-- ELIMINAR -->
+            <form th:action="@{/cliente/eliminar/{id}(id=${cliente.id})}"
+                  method="post"
+                  onsubmit="return confirm('¿Seguro que deseas eliminar este cliente?');">
+                <button type="submit" class="listaProductos_acciones-btneliminar">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+</main>
+
+<div th:replace="fragmentos/footer :: siteFooter"></div>
+
 </body>
 </html>

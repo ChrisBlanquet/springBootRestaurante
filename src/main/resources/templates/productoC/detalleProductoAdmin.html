@@ -15,9 +15,12 @@
         <section class="detalleProducto_admin">
             <div class="container detalleProducto_admin__container">
                 <div class="detalleProducto_admin__imagen">
-   				<img th:src="${productoID.foto != null and !#strings.isEmpty(productoID.foto)} 
-                 ? @{/imagen/{tmpImg}(tmpImg=${productoID.foto})} 
-                 : @{/imagen/imagenesEmpresa/default_producto.jpg}" alt="Producto" class="formAdminProducto__img">
+				<img th:src="${productoID.foto != null and !#strings.isEmpty(productoID.foto)} 
+				         ? @{/uploads/{tmpImg}(tmpImg=${productoID.foto})} 
+				         : @{/uploads/default_producto.jpg}"
+				     alt="Producto"
+				     class="formAdminProducto__img">
+
                 </div>
                 <div class="detalleProducto_admin__info">
                     <div class="detalleProducto_admin_id">

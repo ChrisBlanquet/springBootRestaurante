@@ -39,18 +39,27 @@ public class ClienteController {
     private IUsuario usuarioService;
 
 
-	@GetMapping("/listadocli")
-	public String mostrarListaClientes(Model model) {
+    @GetMapping("/listadocli")
+    public String mostrarListaClientes(
+            @RequestParam(value = "nombre", required = false) String nombre,
+            Model model) {
 
-		List<Cliente> lista = serviceCliente.bucarTodosClientes();
-		model.addAttribute("clienteLista", lista);
+        List<Cliente> lista;
 
-		return "listaC";
-	}
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            lista = serviceCliente.buscarContengaCadena(nombre);
+        } else {
+            lista = serviceCliente.bucarTodosClientes();
+        }
+
+        model.addAttribute("clienteLista", lista);
+        model.addAttribute("param", nombre);
+        return "listaC";
+    }
+
 
 	@GetMapping("/ver/{id}")
 	public String verDetalleCliente(@PathVariable("id") int idCliente, Model model) {
-		// Primero se debe buscar
 		Cliente cliente = serviceCliente.buscarPorIdCliente(idCliente);
 
 		System.out.println("El cliente encontrado es " + cliente);
@@ -76,7 +85,7 @@ public class ClienteController {
         String rol = auth.getAuthorities().iterator().next().getAuthority();
         System.out.println("ROL DETECTADO = " + rol);
 
-        // 🔥 SI NO ES CLIENTE, NO DEBE ENTRAR AQUÍ
+        // SI NO ES CLIENTE, NO DEBE ENTRAR AQUÍ
         if (!rol.equals("CLIENTE")) {
             return "redirect:/empleado/completar-datos";
         }
@@ -164,7 +173,7 @@ public class ClienteController {
 
 	        if (!multiPart.isEmpty()) {
 	            try {
-	                String ruta = "C:\\Users\\cris_\\Pictures\\ProyectoSpring";
+	            	String ruta = "uploads/";
 
 	                String original = multiPart.getOriginalFilename();
 	                String extension = "";

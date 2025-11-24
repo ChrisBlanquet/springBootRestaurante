@@ -44,9 +44,12 @@
       <!-- Media -->
       <aside class="product-media">
         <figure class="product-figure">
-          <img class="product-image"
-               th:src="@{/imagen/{tmpImg}(tmpImg=${productoID.foto})}"
-               alt="Imagen del producto">
+		<img class="product-image"
+		     th:src="${productoID.foto != null and !#strings.isEmpty(productoID.foto)} 
+		                ? @{/uploads/{img}(img=${productoID.foto})} 
+		                : @{/uploads/default_producto.jpg}"
+		     alt="Imagen del producto">
+
         </figure>
       </aside>
 

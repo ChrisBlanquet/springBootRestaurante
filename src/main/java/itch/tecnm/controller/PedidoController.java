@@ -158,20 +158,33 @@ public class PedidoController {
 
 	    UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
 
-	    if (detalle == null || detalle.getClaveEmpleado() == null) {
-	        return "redirect:/empleado/completar-datos";
+	    // ---- ROLES ----
+	    boolean esAdmin = auth.getAuthorities().stream()
+	            .anyMatch(r -> r.getAuthority().equals("ADMIN"));
+
+	    boolean esSupervisor = auth.getAuthorities().stream()
+	            .anyMatch(r -> r.getAuthority().equals("SUPERVISOR"));
+
+	    boolean esMesero = auth.getAuthorities().stream()
+	            .anyMatch(r -> r.getAuthority().equals("MESERO"));
+
+	    if (!esAdmin && !esSupervisor) {
+	        if (detalle == null || detalle.getClaveEmpleado() == null) {
+	            return "redirect:/empleado/completar-datos";
+	        }
 	    }
 
-	    Empleado empleadoLogueado = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
+	    Empleado empleadoLogueado = null;
+	    if (detalle != null && detalle.getClaveEmpleado() != null) {
+	        empleadoLogueado = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
+	    }
 
-	    String rol = auth.getAuthorities().iterator().next().getAuthority();
-	    System.out.println("ROL ACTUAL: " + rol);
 
 	    List<Empleado> listaEmpleados;
-	    if (rol.equals("MESERO")) {
+
+	    if (esMesero) {
 	        listaEmpleados = List.of(empleadoLogueado);
-	    } 
-	    else {
+	    } else {
 	        listaEmpleados = serviceEmpleado.BuscarPuestoMesero(1);
 	    }
 
@@ -179,6 +192,7 @@ public class PedidoController {
 
 	    return "pedido/crearPedidos";
 	}
+
 
 
 	
@@ -499,7 +513,8 @@ public class PedidoController {
 	
 	
 	@GetMapping("/editar/{id}")
-	public String editarPedido(@PathVariable("id") Integer idPedido, Model model) {
+	public String editarPedido(@PathVariable("id") Integer idPedido, Model model, Authentication auth) {
+
 	    Pedido pedido = servicePedido.encontrarPedidoID(idPedido);
 	    if (pedido == null) {
 	        return "redirect:/pedido/listado";
@@ -508,14 +523,55 @@ public class PedidoController {
 	    model.addAttribute("pedido", pedido);
 	    model.addAttribute("clientes", serviceCliente.bucarTodosClientes());
 	    model.addAttribute("productos", serviceProducto.bucarTodosProductos());
-	    model.addAttribute("empleados", serviceEmpleado.BuscarPuestoMesero(1));
 	    model.addAttribute("pedidoLista", pedido.getDetalles());
 
-	    
-	    if (pedido.getCliente() != null) {
-	        List<Reservar> reservasCliente = reservaService.buscarClienteyEstatusyPedidoNull(pedido.getCliente().getId(), 2);
 
-	        
+	    String username = auth.getName();
+	    UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
+
+
+	    boolean esAdmin = auth.getAuthorities().stream()
+	            .anyMatch(r -> r.getAuthority().equals("ADMIN"));
+
+	    boolean esSupervisor = auth.getAuthorities().stream()
+	            .anyMatch(r -> r.getAuthority().equals("SUPERVISOR"));
+
+	    boolean esMesero = auth.getAuthorities().stream()
+	            .anyMatch(r -> r.getAuthority().equals("MESERO"));
+
+
+	    if (!esAdmin && !esSupervisor) {
+
+	        if (detalle == null || detalle.getClaveEmpleado() == null) {
+	            return "redirect:/empleado/completar-datos";
+	        }
+	    }
+
+
+	    Empleado empleadoLogueado = null;
+	    if (detalle != null && detalle.getClaveEmpleado() != null) {
+	        empleadoLogueado = serviceEmpleado.buscarPorClave(detalle.getClaveEmpleado());
+	    }
+
+	    // 🔥 CARGAR LISTA DE EMPLEADOS PARA EL SELECT
+	    List<Empleado> listaEmpleados;
+
+	    if (esMesero) {
+	        // MESERO solo puede verse a sí mismo
+	        listaEmpleados = List.of(empleadoLogueado);
+	    } else {
+	        // ADMIN, SUPERVISOR, CAJERO ven todos los meseros
+	        listaEmpleados = serviceEmpleado.BuscarPuestoMesero(1);
+	    }
+
+	    model.addAttribute("empleados", listaEmpleados);
+
+	    // 🔥 RESERVAS
+	    if (pedido.getCliente() != null) {
+	        List<Reservar> reservasCliente =
+	                reservaService.buscarClienteyEstatusyPedidoNull(
+	                        pedido.getCliente().getId(), 2);
+
 	        if (pedido.getReservar() != null && !reservasCliente.contains(pedido.getReservar())) {
 	            reservasCliente.add(pedido.getReservar());
 	        }
@@ -525,6 +581,7 @@ public class PedidoController {
 
 	    return "pedido/crearPedidos";
 	}
+
 
 
 

@@ -1,15 +1,10 @@
 package itch.tecnm.controller;
 
 import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import itch.tecnm.model.UsuarioDetalle;
-import itch.tecnm.service.IUsuarioDetalleService;
 
 /*
 import itch.tecnm.model.Cliente;
@@ -32,9 +27,7 @@ public class InicioController {
 		model.addAttribute("fecha", fechaActual);
 		return "Inicio";
 	}*/
-	
-	@Autowired
-	private IUsuarioDetalleService usuarioDetalleService;
+
 	
 	@GetMapping("/cliente")
 	public String datosCliente(Model model) {
@@ -54,55 +47,10 @@ public class InicioController {
 	
 	
 	@GetMapping("/inicio")
-	public String inicio(Authentication auth) {
-
-	    if (auth == null) {
-	        return "inicio";
-	    }
-
-	    String username = auth.getName();
-
-	    boolean esAdmin = auth.getAuthorities().stream()
-	            .anyMatch(r -> r.getAuthority().equals("ADMIN"));
-
-	    boolean esSupervisor = auth.getAuthorities().stream()
-	            .anyMatch(r -> r.getAuthority().equals("SUPERVISOR"));
-
-	    boolean esCliente = auth.getAuthorities().stream()
-	            .anyMatch(r -> r.getAuthority().equals("CLIENTE"));
-
-	    boolean esEmpleado = auth.getAuthorities().stream()
-	            .anyMatch(r -> 
-	                r.getAuthority().equals("MESERO") ||
-	                r.getAuthority().equals("COCINERO") ||
-	                r.getAuthority().equals("CAJERO")
-	            );
-
-	    // ADMIN y SUPERVISOR NO necesitan datos
-	    if (esAdmin || esSupervisor) {
-	        return "inicio";
-	    }
-
-	    UsuarioDetalle detalle = usuarioDetalleService.buscarPorUsername(username);
-
-	    // CLIENTE → debe tener idCliente
-	    if (esCliente) {
-	        if (detalle == null || detalle.getIdCliente() == null) {
-	            return "redirect:/cliente/completar-datos";
-	        }
-	        return "inicio";
-	    }
-
-	    // EMPLEADO → debe tener claveEmpleado
-	    if (esEmpleado) {
-	        if (detalle == null || detalle.getClaveEmpleado() == null) {
-	            return "redirect:/empleado/completar-datos";
-	        }
-	        return "inicio";
-	    }
-
+	public String inicio() {
 	    return "inicio";
 	}
+
 
 
 
